@@ -1,26 +1,31 @@
-Package: template
+Package: rscto
 Type: Package
 Title: Template for Packages
 Version: 0.0.0.9000
 Authors@R: c(
   person('Jake', 'Hughey', , 'jakejhughey@gmail.com', c('aut', 'cre')),
-  person('Josh', 'Schoenbachler', , 'josh.schoenbachler@gmail.com', 'aut'))
+  person('Robert', 'On', , 'roberton@gmail.com', 'aut'))
 Description: Template for hugheylab R Packages.
-URL: https://hugheylab.org, https://github.com/hugheylab/r_package_template
+URL: https://github.com/jakejh/rscto
 License: GPL-2
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.1
 Roxygen: list(markdown = TRUE)
-Depends: R (>= 3.5)
+Depends: R (>= 4.1)
 Imports:
-  data.table (>= 1.11.8),
-  foreach (>= 1.4.4)
+  checkmate (>= 2.1.0),
+  curl (>= 4.3.2),
+  data.table (>= 1.14.2),
+  fs (>= 1.5.2),
+  glue (>= 1.6.2),
+  httr (>= 1.4.3),
+  jsonlite (>= 1.8.0),
+  qs (>= 0.25.3),
+  withr (>= 2.5.0)
 Suggests:
-  doParallel (>= 1.0.16),
   knitr,
-  qs,
   rmarkdown,
-  testthat (>= 3.0.3)
+  testthat (>= 3.1.4)
 Config/testthat/edition: 3
 VignetteBuilder: knitr

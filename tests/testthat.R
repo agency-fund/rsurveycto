@@ -1,4 +1,4 @@
-library(testthat)
-library(template)
+library('testthat')
+library('rscto')
 
-test_check('template')
+test_check('rscto')
