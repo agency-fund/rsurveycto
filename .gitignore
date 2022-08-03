@@ -1,0 +1,9 @@
+inst/doc
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+data-raw/GSE143524.yml
+inst/extdata/archive
+test_script*.R
+*.DS_Store
