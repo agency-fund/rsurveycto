@@ -30,7 +30,7 @@ jobs:
           repository = '${{ github.event.repository.name }}'
           branch = system("echo ${BRANCH_NAME}", intern = TRUE)
 
-          source('https://raw.githubusercontent.com/hugheylab/actions/main/workflows/custom-lint.R')
+          source('https://raw.githubusercontent.com/youth-impact/rsurveycto/main/.github/custom-lint.R')
 
           lfDt = getLintDt(lintsFound, repository, branch)
           issueStr = getFormattedIssueStr(lfDt)
