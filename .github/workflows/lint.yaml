@@ -37,22 +37,22 @@ jobs:
 
           library('gh')
           issuesGet = gh(
-            glue('GET /repos/hugheylab/{repository}/issues'),
+            glue('GET /repos/youth-impact/{repository}/issues'),
             labels = 'lint')
 
           if (length(issuesGet) > 0) {
             issuesPatch = gh(
-              glue('PATCH /repos/hugheylab/{repository}/issues/{issuesGet[[1L]]$number}'),
+              glue('PATCH /repos/youth-impact/{repository}/issues/{issuesGet[[1L]]$number}'),
               state = 'closed')}
 
           if (nrow(lfDt) > 0) {
             issuesPost = gh(
-              glue('POST /repos/hugheylab/{repository}/issues'),
+              glue('POST /repos/youth-impact/{repository}/issues'),
               title = 'lintr found issues with code',
               body = issueStr)
 
             labelsPost = gh(
-              glue('POST /repos/hugheylab/{repository}/issues/{issuesPost$number}/labels'),
+              glue('POST /repos/youth-impact/{repository}/issues/{issuesPost$number}/labels'),
               'lint')}
 
         shell: Rscript {0}
