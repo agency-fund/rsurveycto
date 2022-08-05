@@ -4,7 +4,11 @@
 
 ## Installation
 
-Clone the repo, build the source package, then install it using `install.packages()`. Or use `remotes::install_github()` if you've set up your GitHub personal access token.
+```r
+if (!requireNamespace('remotes', quietly = TRUE))
+  install.packages('remotes')
+remotes::install_github('youth-impact/rscto')
+```
 
 ## Usage
 

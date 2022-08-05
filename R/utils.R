@@ -6,7 +6,7 @@ NULL
 
 
 get_auth = function(auth_file) {
-  auth = readLines(auth_file)
+  auth = readLines(auth_file, warn = FALSE)
   assert_character(auth, min.chars = 1L, any.missing = FALSE, len = 2L)
   return(auth)}
 
