@@ -1,15 +1,14 @@
-# rscto
+# rsurveycto
 
-`rscto` is a very useful package.
+`rsurveycto` is a very useful package.
 
 ## Installation
 
 ```r
 if (!requireNamespace('remotes', quietly = TRUE))
   install.packages('remotes')
-remotes::install_github('youth-impact/rscto')
+remotes::install_github('youth-impact/rsurveycto')
 ```
-
 ## Usage
 
 In progress.

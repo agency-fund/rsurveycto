@@ -1,13 +1,71 @@
+#' Get a SurveyCTO authentication session object
+#'
+#' Authenticates with SurveyCTO and fetches corresponding credentials.
+#'
+#' @param auth_file String indicating path to file containing authorization
+#'   information, which should have servername on the first line, username on
+#'   the second, and password on the third. If `auth_file` is not `NULL`, other
+#'   arguments are ignored. If `auth_file` is `NULL`, other arguments must be
+#'   provided.
+#' @param servername String indicating name of the SurveyCTO server.
+#' @param username String indicating username for the SurveyCTO account.
+#' @param password String indicating password for the SurveyCTO account.
+#'
+#' @return `scto_auth` object for an authenticated SurveyCTO session.
+#'
+#' @examples
+#' \dontrun{
+#' # preferred approach, avoids storing any credentials in code
+#' auth = scto_auth('scto_auth.txt')
+#'
+#' # alternate approach
+#' auth = scto_auth('my_server', 'my_user', 'my_pw', auth_file = NULL)
+#' }
+#'
+#' @seealso [scto_pull()], [scto_push()]
+#'
+#' @export
+scto_auth = function(
+    auth_file = NULL, servername = NULL, username = NULL, password = NULL) {
+
+  if (is.null(auth_file)) {
+    assert_string(servername)
+    assert_string(username)
+    assert_string(password)
+  } else {
+    assert_string(auth_file)
+    assert_file_exists(auth_file)
+    auth_char = readLines(auth_file, warn = FALSE)
+    if (!test_character(auth_char, any.missing = FALSE, len = 3L)) {
+      stop('auth_file must have exactly three lines: servername, username, and password.')}
+    servername = auth_char[1L]
+    username = auth_char[2L]
+    password = auth_char[3L]}
+
+  handle = curl::new_handle()
+  curl::handle_setopt(
+    handle = handle,
+    httpauth = 1,
+    userpwd = glue('{username}:{password}'))
+
+  csrf_token = get_csrf_token(servername, username, password)
+
+  auth = list(
+    servername = servername,
+    hostname = glue('https://{servername}.surveycto.com'),
+    handle = handle,
+    csrf_token = csrf_token)
+  class(auth) = 'scto_auth'
+  return(auth)}
+
+
 #' Access SurveyCTO data using the API
 #'
 #' This function pulls data from SurveyCTO using the API.
 #'
 #' @param id String indicating ID of dataset or form to fetch.
-#' @param servername String indicating name of the SurveyCTO server.
+#' @param auth [scto_auth()] object.
 #' @param type String indicating type of SurveyCTO data.
-#' @param auth_file String indicating path to file containing authorization
-#'   credentials, which should contain the username on the first line and the
-#'   password on the second.
 #' @param start_dt Date, string coercible to a date, or an integer
 #'   (corresponding to days since 1970-01-01) indicating earliest date for which
 #'   to fetch data.
@@ -21,18 +79,19 @@
 #'
 #' @examples
 #' \dontrun{
-#' options(scto_auth_file = 'scto_auth.txt')
-#' test_data = scto_get('my_form', 'my_server', 'dataset')
+#' auth = scto_auth('scto_auth.txt')
+#' test_data = scto_pull('my_form', auth, 'dataset')
 #' }
+#'
+#' @seealso [scto_push()]
+#'
 #' @export
-scto_get = function(
-    id, servername, type = c('dataset', 'form'),
-    auth_file = getOption('scto_auth_file'), start_dt = 0L,
+scto_pull = function(
+    id, auth, type = c('dataset', 'form'), start_dt = 0L,
     drop_empty_cols = TRUE, refresh = FALSE, cache_dir = 'scto_data') {
 
   assert_string(id)
-  assert_string(servername)
-  assert_file_exists(auth_file)
+  assert_class(auth, 'scto_auth')
   type = match.arg(type)
   start_dt = as.integer(data.table::as.IDate(start_dt))
   assert_logical(drop_empty_cols, any.missing = FALSE, len = 1L)
@@ -41,23 +100,14 @@ scto_get = function(
 
   fs::dir_create(cache_dir, recurse = TRUE)
   local_file = fs::path(
-    cache_dir, glue('{id}_{type}_{servername}_{start_dt}.qs'))
+    cache_dir, glue('{id}_{type}_{auth$servername}_{start_dt}.qs'))
 
   if (fs::file_exists(local_file) && !refresh) {
     scto_data = qs::qread(local_file)
     if (drop_empty_cols) drop_empties(scto_data)
     return(scto_data)}
 
-  assert_file_exists(auth_file)
-  auth = get_auth(auth_file)
-
-  handle = curl::new_handle()
-  curl::handle_setopt(
-    handle = handle,
-    httpauth = 1,
-    userpwd = paste(auth, collapse = ':'))
-
-  base_url = glue('https://{servername}.surveycto.com/api/v2')
+  base_url = glue('https://{auth$servername}.surveycto.com/api/v2')
 
   suf = if (type == 'form') {
     glue('forms/data/wide/json/{id}?date={start_dt}')
@@ -65,7 +115,7 @@ scto_get = function(
     glue('datasets/data/csv/{id}')}
   request_url = glue('{base_url}/{suf}')
 
-  response = curl::curl_fetch_memory(request_url, handle = handle)
+  response = curl::curl_fetch_memory(request_url, handle = auth$handle)
   status = response$status_code
   content = rawToChar(response$content)
 
@@ -88,40 +138,40 @@ scto_get = function(
 #' This function uploads a csv file to SurveyCTO using web POSTs and GETs to
 #' replace data in an existing Server Dataset.
 #'
-#' @param data data.frame to upload
+#' @param data data.frame to upload.
 #' @param dataset_id String indicating existing dataset ID on the server.
 #' @param dataset_title String indicating title of dataset.
-#' @param servername String indicating name of the SurveyCTO server.
-#' @param auth_file String indicating path to file containing authorization
-#'   credentials, with the username on the first line and the password on the
-#'   second.
+#' @param auth [scto_auth()] object.
 #'
 #' @return An object of class [httr::response()].
 #'
 #' @examples
 #' \dontrun{
-#' options(scto_auth_file = 'scto_auth.txt')
-#' scto_upload(data, 'my_dataset', 'My Dataset', 'my_server')
+#' auth = scto_auth('scto_auth.txt')
+#' scto_push(data, 'my_dataset', 'My Dataset', auth)
 #' }
 #'
+#' @seealso [scto_pull()]
+#'
 #' @export
-scto_upload = function(
-    data, dataset_id, dataset_title, servername,
-    auth_file = getOption('scto_auth_file')) {
+scto_push = function(data, dataset_id, dataset_title, auth) {
+  assert_data_frame(data)
+  assert_string(dataset_id)
+  assert_string(dataset_title)
+  assert_class(auth, 'scto_auth')
+
+  # TODO: potential function arguments that need to be tested/validated before
+  # turning into actual function arguments.
+  dataset_exists = TRUE # possible to upload to non-existant datasets?
+  dataset_upload_mode = 'clear' # append, merge
+  dataset_type = 'SERVER' # form dataset updates/uploads?
 
   path = withr::local_tempfile(fileext = '.csv')
   fwrite(data, path, logical01 = TRUE)
 
-  # don't move these parameters to function arguments until we've had a
-  # chance to see what they do and how they work.
-  dataset_exists = TRUE
-  dataset_upload_mode = 'clear'
-  dataset_type = 'SERVER'
-
   # authentication
-  csrf_token = get_csrf_token(servername, auth_file)
   upload_url = glue(
-    'https://{servername}.surveycto.com/datasets/{dataset_id}/upload?csrf_token={csrf_token}')
+    '{auth$hostname}/datasets/{dataset_id}/upload?csrf_token={auth$csrf_token}')
 
   # data upload
   upload_res = POST(

@@ -5,10 +5,22 @@
 NULL
 
 
-get_auth = function(auth_file) {
-  auth = readLines(auth_file, warn = FALSE)
-  assert_character(auth, min.chars = 1L, any.missing = FALSE, len = 2L)
-  return(auth)}
+get_csrf_token = function(servername, username, password) {
+  index_url = glue('https://{servername}.surveycto.com/index.html')
+  index_res = GET(index_url)
+  csrf_token = httr::headers(index_res)$`x-csrf-token`
+
+  login_url = glue(
+    'https://{servername}.surveycto.com/login?spring-security-redirect=%2F')
+  login_res = POST(
+    login_url,
+    body = list(
+      username = username,
+      password = password,
+      csrf_token = csrf_token),
+    encode = 'form')
+
+  return(csrf_token)}
 
 
 drop_empties = function(d) {
@@ -16,22 +28,3 @@ drop_empties = function(d) {
     all(is.na(d[[col]])) || isTRUE(all(d[[col]] == ''))})
   cols = colnames(d)[idx]
   d[, c(cols) := NULL]}
-
-
-get_csrf_token = function(servername, auth_file) {
-  index_url = glue('https://{servername}.surveycto.com/index.html')
-  index_res = GET(index_url)
-  csrf_token = httr::headers(index_res)$`x-csrf-token`
-  auth = get_auth(auth_file)
-
-  login_url = glue(
-    'https://{servername}.surveycto.com/login?spring-security-redirect=%2F')
-  login_res = POST(
-    login_url,
-    body = list(
-      username = auth[1L],
-      password = auth[2L],
-      csrf_token = csrf_token),
-    encode = 'form')
-
-  return(csrf_token)}

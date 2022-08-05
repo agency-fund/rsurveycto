@@ -10,3 +10,4 @@
 ^lint_ignore\.csv$
 ^NEWS\.md$
 ^README\.md$
+^scto_auth\.txt$
