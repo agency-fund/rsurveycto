@@ -16,9 +16,12 @@
     <loc>https://template.hugheylab.org/reference/index.html</loc>
   </url>
   <url>
-    <loc>https://template.hugheylab.org/reference/scto_get.html</loc>
+    <loc>https://template.hugheylab.org/reference/scto_auth.html</loc>
   </url>
   <url>
-    <loc>https://template.hugheylab.org/reference/scto_upload.html</loc>
+    <loc>https://template.hugheylab.org/reference/scto_pull.html</loc>
+  </url>
+  <url>
+    <loc>https://template.hugheylab.org/reference/scto_push.html</loc>
   </url>
 </urlset>
