@@ -1,4 +1,4 @@
 library('testthat')
-library('rscto')
+library('rsurveycto')
 
-test_check('rscto')
+test_check('rsurveycto')
