@@ -63,8 +63,8 @@ scto_auth = function(
 #'
 #' This function pulls data from SurveyCTO using the API.
 #'
-#' @param id String indicating ID of dataset or form to fetch.
 #' @param auth [scto_auth()] object.
+#' @param id String indicating ID of dataset or form to fetch.
 #' @param type String indicating type of SurveyCTO data.
 #' @param start_dt Date, string coercible to a date, or an integer
 #'   (corresponding to days since 1970-01-01) indicating earliest date for which
@@ -80,14 +80,14 @@ scto_auth = function(
 #' @examples
 #' \dontrun{
 #' auth = scto_auth('scto_auth.txt')
-#' test_data = scto_pull('my_form', auth, 'dataset')
+#' test_data = scto_pull(auth, 'my_form', 'dataset')
 #' }
 #'
 #' @seealso [scto_push()]
 #'
 #' @export
 scto_pull = function(
-    id, auth, type = c('dataset', 'form'), start_dt = 0L,
+    auth, id, type = c('dataset', 'form'), start_dt = 0L,
     drop_empty_cols = TRUE, refresh = FALSE, cache_dir = 'scto_data') {
 
   assert_string(id)
@@ -138,17 +138,17 @@ scto_pull = function(
 #' This function uploads a csv file to SurveyCTO using web POSTs and GETs to
 #' replace data in an existing Server Dataset.
 #'
+#' @param auth [scto_auth()] object.
 #' @param data data.frame to upload.
 #' @param dataset_id String indicating existing dataset ID on the server.
 #' @param dataset_title String indicating title of dataset.
-#' @param auth [scto_auth()] object.
 #'
 #' @return An object of class [httr::response()].
 #'
 #' @examples
 #' \dontrun{
 #' auth = scto_auth('scto_auth.txt')
-#' scto_push(data, 'my_dataset', 'My Dataset', auth)
+#' scto_push(auth, data, 'my_dataset', 'My Dataset')
 #' }
 #'
 #' @seealso [scto_pull()]

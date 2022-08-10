@@ -5,8 +5,8 @@
 \title{Access SurveyCTO data using the API}
 \usage{
 scto_pull(
-  id,
   auth,
+  id,
   type = c("dataset", "form"),
   start_dt = 0L,
   drop_empty_cols = TRUE,
@@ -15,9 +15,9 @@ scto_pull(
 )
 }
 \arguments{
-\item{id}{String indicating ID of dataset or form to fetch.}
-
 \item{auth}{\code{\link[=scto_auth]{scto_auth()}} object.}
+
+\item{id}{String indicating ID of dataset or form to fetch.}
 
 \item{type}{String indicating type of SurveyCTO data.}
 
@@ -42,7 +42,7 @@ This function pulls data from SurveyCTO using the API.
 \examples{
 \dontrun{
 auth = scto_auth('scto_auth.txt')
-test_data = scto_pull('my_form', auth, 'dataset')
+test_data = scto_pull(auth, 'my_form', 'dataset')
 }
 
 }

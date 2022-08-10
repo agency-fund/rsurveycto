@@ -25,7 +25,7 @@ replace data in an existing Server Dataset.
 \examples{
 \dontrun{
 auth = scto_auth('scto_auth.txt')
-scto_push(data, 'my_dataset', 'My Dataset', auth)
+scto_push(auth, data, 'my_dataset', 'My Dataset')
 }
 
 }
