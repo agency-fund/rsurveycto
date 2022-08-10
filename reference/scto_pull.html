@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rsurveycto</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.9003</span>
       </span>
     </div>
 
@@ -57,8 +57,8 @@
 
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">scto_pull</span><span class="op">(</span></span>
-<span>  <span class="va">id</span>,</span>
 <span>  <span class="va">auth</span>,</span>
+<span>  <span class="va">id</span>,</span>
 <span>  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"dataset"</span>, <span class="st">"form"</span><span class="op">)</span>,</span>
 <span>  start_dt <span class="op">=</span> <span class="fl">0L</span>,</span>
 <span>  drop_empty_cols <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -69,12 +69,12 @@
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>id</dt>
-<dd><p>String indicating ID of dataset or form to fetch.</p></dd>
-
-
-<dt>auth</dt>
+    <dl><dt>auth</dt>
 <dd><p><code><a href="scto_auth.html">scto_auth()</a></code> object.</p></dd>
+
+
+<dt>id</dt>
+<dd><p>String indicating ID of dataset or form to fetch.</p></dd>
 
 
 <dt>type</dt>
@@ -116,7 +116,7 @@ or to attempt to load locally cached data.</p></dd>
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="va">auth</span> <span class="op">=</span> <span class="fu"><a href="scto_auth.html">scto_auth</a></span><span class="op">(</span><span class="st">'scto_auth.txt'</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">test_data</span> <span class="op">=</span> <span class="fu">scto_pull</span><span class="op">(</span><span class="st">'my_form'</span>, <span class="va">auth</span>, <span class="st">'dataset'</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">test_data</span> <span class="op">=</span> <span class="fu">scto_pull</span><span class="op">(</span><span class="va">auth</span>, <span class="st">'my_form'</span>, <span class="st">'dataset'</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
