@@ -5,3 +5,4 @@ inst/doc
 .Ruserdata
 *.DS_Store
 scto_auth.txt
+scto_data

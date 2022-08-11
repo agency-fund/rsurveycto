@@ -25,6 +25,7 @@ get_csrf_token = function(servername, username, password) {
 
 drop_empties = function(d) {
   idx = sapply(colnames(d), function(col) {
-    all(is.na(d[[col]])) || isTRUE(all(d[[col]] == ''))})
+    all(is.na(d[[col]]) | d[[col]] == '')})
+    # all(is.na(d[[col]])) || isTRUE(all(d[[col]] == ''))})
   cols = colnames(d)[idx]
   d[, c(cols) := NULL]}
