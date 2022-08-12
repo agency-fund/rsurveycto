@@ -119,6 +119,16 @@ scto_pull = function(
   status = response$status_code
   content = rawToChar(response$content)
 
+  if (status == 417L) {
+    x = regexpr('[0-9]+', content)
+    wt = as.numeric(substr(content, x, x + attr(x, 'match.length') - 1L))
+    message(glue('Waiting {wt} seconds for SurveyCTO to hand over the data.'))
+    Sys.sleep(wt + 5)
+
+    response = curl::curl_fetch_memory(request_url, handle = auth$handle)
+    status = response$status_code
+    content = rawToChar(response$content)}
+
   if (status != 200L) {
     message(glue('Response content:\n{content}'))
     stop(glue('Non-200 response: {status}'))}
