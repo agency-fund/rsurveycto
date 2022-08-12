@@ -66,7 +66,7 @@ scto_auth = function(
 #' @param auth [scto_auth()] object.
 #' @param id String indicating ID of dataset or form to fetch.
 #' @param type String indicating type of SurveyCTO data.
-#' @param start_dt Date, string coercible to a date, or an integer
+#' @param start_date Date, string coercible to a date, or an integer
 #'   (corresponding to days since 1970-01-01) indicating earliest date for which
 #'   to fetch data.
 #' @param drop_empty_cols Logical indicating whether to drop columns that
@@ -87,20 +87,20 @@ scto_auth = function(
 #'
 #' @export
 scto_pull = function(
-    auth, id, type = c('dataset', 'form'), start_dt = 0L,
+    auth, id, type = c('dataset', 'form'), start_date = 0L,
     drop_empty_cols = TRUE, refresh = FALSE, cache_dir = 'scto_data') {
 
-  assert_string(id)
   assert_class(auth, 'scto_auth')
+  assert_string(id)
   type = match.arg(type)
-  start_dt = as.integer(data.table::as.IDate(start_dt))
+  start_date = as.integer(data.table::as.IDate(start_date))
   assert_logical(drop_empty_cols, any.missing = FALSE, len = 1L)
   assert_logical(refresh, any.missing = FALSE, len = 1L)
   assert_string(cache_dir)
 
   fs::dir_create(cache_dir, recurse = TRUE)
   local_file = fs::path(
-    cache_dir, glue('{id}_{type}_{auth$servername}_{start_dt}.qs'))
+    cache_dir, glue('{id}_{type}_{auth$servername}_{start_date}.qs'))
 
   if (fs::file_exists(local_file) && !refresh) {
     scto_data = qs::qread(local_file)
@@ -110,7 +110,7 @@ scto_pull = function(
   base_url = glue('https://{auth$servername}.surveycto.com/api/v2')
 
   suf = if (type == 'form') {
-    glue('forms/data/wide/json/{id}?date={start_dt}')
+    glue('forms/data/wide/json/{id}?date={start_date}')
   } else {
     glue('datasets/data/csv/{id}')}
   request_url = glue('{base_url}/{suf}')
@@ -122,7 +122,7 @@ scto_pull = function(
   if (status == 417L) {
     x = regexpr('[0-9]+', content)
     wt = as.numeric(substr(content, x, x + attr(x, 'match.length') - 1L))
-    message(glue('Waiting {wt} seconds for SurveyCTO to hand over the data.'))
+    message(glue('Waiting {wt} seconds for SurveyCTO to hand over the data...'))
     Sys.sleep(wt + 5)
 
     response = curl::curl_fetch_memory(request_url, handle = auth$handle)
@@ -139,7 +139,7 @@ scto_pull = function(
     fread(text = content, na.strings = '')}
 
   qs::qsave(scto_data, local_file)
-  if (drop_empty_cols) drop_empties(scto_data)
+  if (drop_empty_cols) drop_empties(scto_data)[]
   return(scto_data)}
 
 
@@ -158,17 +158,17 @@ scto_pull = function(
 #' @examples
 #' \dontrun{
 #' auth = scto_auth('scto_auth.txt')
-#' scto_push(auth, data, 'my_dataset', 'My Dataset')
+#' res = scto_push(auth, data, 'my_dataset', 'My Dataset')
 #' }
 #'
 #' @seealso [scto_pull()]
 #'
 #' @export
-scto_push = function(data, dataset_id, dataset_title, auth) {
+scto_push = function(auth, data, dataset_id, dataset_title) {
+  assert_class(auth, 'scto_auth')
   assert_data_frame(data)
   assert_string(dataset_id)
   assert_string(dataset_title)
-  assert_class(auth, 'scto_auth')
 
   # TODO: potential function arguments that need to be tested/validated before
   # turning into actual function arguments.

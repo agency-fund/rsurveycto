@@ -8,7 +8,7 @@ scto_pull(
   auth,
   id,
   type = c("dataset", "form"),
-  start_dt = 0L,
+  start_date = 0L,
   drop_empty_cols = TRUE,
   refresh = FALSE,
   cache_dir = "scto_data"
@@ -21,7 +21,7 @@ scto_pull(
 
 \item{type}{String indicating type of SurveyCTO data.}
 
-\item{start_dt}{Date, string coercible to a date, or an integer
+\item{start_date}{Date, string coercible to a date, or an integer
 (corresponding to days since 1970-01-01) indicating earliest date for which
 to fetch data.}
 

@@ -1,13 +1,10 @@
 library('data.table')
-library('qs')
 
-# snapshot = function(xObs, path) {
-#   if (file.exists(path)) {
-#     xExp = qread(path)
-#   } else {
-#     qsave(xObs, path)
-#     xExp = xObs}
-#   return(xExp)}
-#
-# dataDir = 'data'
-# if (!dir.exists(dataDir)) dir.create(dataDir)
+if (Sys.getenv('SCTO_AUTH') == '') {
+  auth_file = 'scto_auth.txt'
+} else {
+  auth_file = withr::local_tempfile()
+  writeLines(Sys.getenv('SCTO_AUTH'), auth_file)}
+
+auth_args = readLines(auth_file)
+cache_dir = withr::local_tempdir()

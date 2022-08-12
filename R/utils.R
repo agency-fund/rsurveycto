@@ -23,7 +23,24 @@ get_csrf_token = function(servername, username, password) {
   return(csrf_token)}
 
 
+#' Drop empty columns from a data.table
+#'
+#' An empty column is one whose only values are `NA` or "".
+#'
+#' @param d `data.table`.
+#'
+#' @return `d` modified by reference, invisibly.
+#'
+#' @examples
+#' library('data.table')
+#' d = data.table(w = 3:4, x = c('', 'foo'), y = c(NA, NA), z = c(NA, ''))
+#' drop_empties(d)
+#'
+#' @seealso [scto_push()]
+#'
+#' @export
 drop_empties = function(d) {
+  assert_data_table(d)
   idx = sapply(colnames(d), function(col) {
     all(is.na(d[[col]]) | d[[col]] == '')})
     # all(is.na(d[[col]])) || isTRUE(all(d[[col]] == ''))})

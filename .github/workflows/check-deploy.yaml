@@ -19,6 +19,7 @@ jobs:
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
+      SCTO_AUTH: ${{ secrets.SCTO_AUTH }}
     timeout-minutes: 30
     steps:
       - uses: hugheylab/actions/R-CMD-check@main

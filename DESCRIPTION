@@ -1,13 +1,13 @@
 Package: rsurveycto
 Type: Package
 Title: Template for Packages
-Version: 0.0.0.9005
+Version: 0.0.0.9006
 Authors@R: c(
   person('Jake', 'Hughey', , 'jakejhughey@gmail.com', c('aut', 'cre')),
   person('Robert', 'On', , 'roberton@gmail.com', 'aut'))
 Description: Template for hugheylab R Packages.
 URL: https://github.com/youth-impact/rsurveycto
-License: GPL-2
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.1

@@ -4,16 +4,16 @@
 \alias{scto_push}
 \title{Upload data to SurveyCTO}
 \usage{
-scto_push(data, dataset_id, dataset_title, auth)
+scto_push(auth, data, dataset_id, dataset_title)
 }
 \arguments{
+\item{auth}{\code{\link[=scto_auth]{scto_auth()}} object.}
+
 \item{data}{data.frame to upload.}
 
 \item{dataset_id}{String indicating existing dataset ID on the server.}
 
 \item{dataset_title}{String indicating title of dataset.}
-
-\item{auth}{\code{\link[=scto_auth]{scto_auth()}} object.}
 }
 \value{
 An object of class \code{\link[httr:response]{httr::response()}}.
@@ -25,7 +25,7 @@ replace data in an existing Server Dataset.
 \examples{
 \dontrun{
 auth = scto_auth('scto_auth.txt')
-scto_push(auth, data, 'my_dataset', 'My Dataset')
+res = scto_push(auth, data, 'my_dataset', 'My Dataset')
 }
 
 }
