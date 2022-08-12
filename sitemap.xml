@@ -4,6 +4,12 @@
     <loc>https://template.hugheylab.org/404.html</loc>
   </url>
   <url>
+    <loc>https://template.hugheylab.org/LICENSE-text.html</loc>
+  </url>
+  <url>
+    <loc>https://template.hugheylab.org/LICENSE.html</loc>
+  </url>
+  <url>
     <loc>https://template.hugheylab.org/authors.html</loc>
   </url>
   <url>
@@ -11,6 +17,9 @@
   </url>
   <url>
     <loc>https://template.hugheylab.org/news/index.html</loc>
+  </url>
+  <url>
+    <loc>https://template.hugheylab.org/reference/drop_empties.html</loc>
   </url>
   <url>
     <loc>https://template.hugheylab.org/reference/index.html</loc>
