@@ -1,10 +1,2 @@
-url: https://template.hugheylab.org
-navbar:
-  structure:
-    right: [hugheylab, github]
-  components:
-    hugheylab:
-      text: "Hughey Lab"
-      href: "https://www.hugheylab.org/software/"
-      aria-label: "Hughey Lab"
-      target: "_blank"
+template:
+  bootstrap: 5
