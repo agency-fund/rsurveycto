@@ -44,5 +44,5 @@ drop_empties = function(d) {
   idx = sapply(colnames(d), function(col) {
     all(is.na(d[[col]]) | d[[col]] == '')})
     # all(is.na(d[[col]])) || isTRUE(all(d[[col]] == ''))})
-  cols = colnames(d)[idx]
+  cols = colnames(d)[which(idx)]
   d[, c(cols) := NULL]}
