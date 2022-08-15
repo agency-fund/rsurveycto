@@ -87,13 +87,18 @@ scto_auth = function(
 #'
 #' @export
 scto_pull = function(
-    auth, id, type = c('dataset', 'form'), start_date = 0L,
+    auth, id, type = c('dataset', 'form'), start_date = 1L,
     drop_empty_cols = TRUE, refresh = FALSE, cache_dir = 'scto_data') {
 
   assert_class(auth, 'scto_auth')
   assert_string(id)
   type = match.arg(type)
+
   start_date = as.integer(data.table::as.IDate(start_date))
+  if (!test_integer(start_date, any.missing = FALSE, len = 1L)) {
+    stop('start_date must be coercible to a single date.')}
+  start_date = max(1L, start_date) # rate-limiting only applies to date 0
+
   assert_logical(drop_empty_cols, any.missing = FALSE, len = 1L)
   assert_logical(refresh, any.missing = FALSE, len = 1L)
   assert_string(cache_dir)
@@ -119,15 +124,15 @@ scto_pull = function(
   status = response$status_code
   content = rawToChar(response$content)
 
-  if (status == 417L) {
-    x = regexpr('[0-9]+', content)
-    wt = as.numeric(substr(content, x, x + attr(x, 'match.length') - 1L))
-    message(glue('Waiting {wt} seconds for SurveyCTO to hand over the data...'))
-    Sys.sleep(wt + 5)
-
-    response = curl::curl_fetch_memory(request_url, handle = auth$handle)
-    status = response$status_code
-    content = rawToChar(response$content)}
+#   if (status == 417L) {
+#     x = regexpr('[0-9]+', content)
+#     wt = as.numeric(substr(content, x, x + attr(x, 'match.length') - 1L))
+#     message(glue('Waiting {wt} seconds for SurveyCTO to hand over the data...'))
+#     Sys.sleep(wt + 5)
+#
+#     response = curl::curl_fetch_memory(request_url, handle = auth$handle)
+#     status = response$status_code
+#     content = rawToChar(response$content)}
 
   if (status != 200L) {
     message(glue('Response content:\n{content}'))

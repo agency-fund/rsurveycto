@@ -8,7 +8,7 @@ scto_pull(
   auth,
   id,
   type = c("dataset", "form"),
-  start_date = 0L,
+  start_date = 1L,
   drop_empty_cols = TRUE,
   refresh = FALSE,
   cache_dir = "scto_data"

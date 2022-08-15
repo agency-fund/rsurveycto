@@ -16,7 +16,7 @@ test_that('scto_pull dataset not ok', {
 })
 
 test_that('scto_pull form ok', {
-  skip_if(Sys.getenv('GITHUB_JOB') == 'R-CMD-check') # due to API rate-limiting
+  # skip_if(Sys.getenv('GITHUB_JOB') == 'R-CMD-check') # due to API rate-limiting
   d = scto_pull(
     auth, 'hh_listing_example_1', 'form', refresh = TRUE, cache_dir = cache_dir)
   expect_data_table(d)
