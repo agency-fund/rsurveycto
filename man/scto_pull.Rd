@@ -10,7 +10,7 @@ scto_pull(
   type = c("dataset", "form"),
   start_date = 1L,
   drop_empty_cols = TRUE,
-  refresh = FALSE,
+  refresh = TRUE,
   cache_dir = "scto_data"
 )
 }

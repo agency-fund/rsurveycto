@@ -88,7 +88,7 @@ scto_auth = function(
 #' @export
 scto_pull = function(
     auth, id, type = c('dataset', 'form'), start_date = 1L,
-    drop_empty_cols = TRUE, refresh = FALSE, cache_dir = 'scto_data') {
+    drop_empty_cols = TRUE, refresh = TRUE, cache_dir = 'scto_data') {
 
   assert_class(auth, 'scto_auth')
   assert_string(id)
