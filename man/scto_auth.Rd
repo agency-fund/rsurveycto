@@ -41,5 +41,5 @@ auth = scto_auth('my_server', 'my_user', 'my_pw', auth_file = NULL)
 
 }
 \seealso{
-\code{\link[=scto_pull]{scto_pull()}}, \code{\link[=scto_push]{scto_push()}}
+\code{\link[=scto_read]{scto_read()}}, \code{\link[=scto_write]{scto_write()}}
 }

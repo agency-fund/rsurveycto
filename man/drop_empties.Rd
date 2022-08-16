@@ -22,5 +22,5 @@ drop_empties(d)
 
 }
 \seealso{
-\code{\link[=scto_push]{scto_push()}}
+\code{\link[=scto_write]{scto_write()}}
 }

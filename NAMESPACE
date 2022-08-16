@@ -2,8 +2,8 @@
 
 export(drop_empties)
 export(scto_auth)
-export(scto_pull)
-export(scto_push)
+export(scto_read)
+export(scto_write)
 import(checkmate)
 importFrom(data.table,":=")
 importFrom(data.table,data.table)

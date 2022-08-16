@@ -22,7 +22,7 @@
 #' auth = scto_auth('my_server', 'my_user', 'my_pw', auth_file = NULL)
 #' }
 #'
-#' @seealso [scto_pull()], [scto_push()]
+#' @seealso [scto_read()], [scto_write()]
 #'
 #' @export
 scto_auth = function(
@@ -61,43 +61,52 @@ scto_auth = function(
 
 #' Access SurveyCTO data using the API
 #'
-#' This function pulls data from SurveyCTO using the API.
+#' This function reads data from SurveyCTO using the API.
 #'
 #' @param auth [scto_auth()] object.
-#' @param id String indicating ID of dataset or form to fetch.
-#' @param type String indicating type of SurveyCTO data.
-#' @param start_date Date, string coercible to a date, or an integer
-#'   (corresponding to days since 1970-01-01) indicating earliest date for which
-#'   to fetch data.
+#' @param id String indicating ID of the resource to fetch.
+#' @param type String indicating whether the resource is a server dataset or a
+#'   form.
+#' @param start_date Date-time or something coercible to a date-time
+#'   indicating the earliest date-time for which to fetch data. Only used for
+#'   forms.
+#' @param review_status String or character vector indicating which submissions
+#'   to fetch. Possible values are "approved", "pending", "rejected", or any
+#'   combination of the three. Only used for forms.
 #' @param drop_empty_cols Logical indicating whether to drop columns that
 #'   contain only `NA` or only an empty string.
 #' @param refresh Logical indicating whether to fetch fresh data using the API
 #'   or to attempt to load locally cached data.
 #' @param cache_dir String indicating path to directory in which to cache data.
 #'
-#' @return A data.table.
+#' @return A `data.table`.
 #'
 #' @examples
 #' \dontrun{
 #' auth = scto_auth('scto_auth.txt')
-#' test_data = scto_pull(auth, 'my_form', 'dataset')
+#' test_data = scto_read(auth, 'my_form', 'dataset')
 #' }
 #'
-#' @seealso [scto_push()]
+#' @seealso [scto_write()]
 #'
 #' @export
-scto_pull = function(
-    auth, id, type = c('dataset', 'form'), start_date = 1L,
-    drop_empty_cols = TRUE, refresh = TRUE, cache_dir = 'scto_data') {
+scto_read = function(
+    auth, id, type = c('dataset', 'form'), start_date = '1900-01-01',
+    review_status = 'approved', drop_empty_cols = TRUE, refresh = TRUE,
+    cache_dir = 'scto_data') {
 
   assert_class(auth, 'scto_auth')
   assert_string(id)
   type = match.arg(type)
 
-  start_date = as.integer(data.table::as.IDate(start_date))
-  if (!test_integer(start_date, any.missing = FALSE, len = 1L)) {
-    stop('start_date must be coercible to a single date.')}
-  start_date = max(1L, start_date) # rate-limiting only applies to date 0
+  if (type == 'form') {
+    start_date = as.POSIXct(start_date)
+    assert_posixct(start_date, any.missing = FALSE, len = 1L)
+    start_date = as.numeric(start_date)
+
+    review_status = match.arg(
+      review_status, c('approved', 'pending', 'rejected'), several.ok = TRUE)
+    review_status = paste(review_status, collapse = ',')}
 
   assert_logical(drop_empty_cols, any.missing = FALSE, len = 1L)
   assert_logical(refresh, any.missing = FALSE, len = 1L)
@@ -115,7 +124,7 @@ scto_pull = function(
   base_url = glue('https://{auth$servername}.surveycto.com/api/v2')
 
   suf = if (type == 'form') {
-    glue('forms/data/wide/json/{id}?date={start_date}')
+    glue('forms/data/wide/json/{id}?date={start_date}&r={review_status}')
   } else {
     glue('datasets/data/csv/{id}')}
   request_url = glue('{base_url}/{suf}')
@@ -134,7 +143,9 @@ scto_pull = function(
 #     status = response$status_code
 #     content = rawToChar(response$content)}
 
-  if (status != 200L) {
+  if (status == 500L) {
+    stop(glue('A {type} named `{id}` on `{auth$server}` does not exist.'))
+  } else if (status != 200L) {
     message(glue('Response content:\n{content}'))
     stop(glue('Non-200 response: {status}'))}
 
@@ -150,12 +161,12 @@ scto_pull = function(
 
 #' Upload data to SurveyCTO
 #'
-#' This function uploads a csv file to SurveyCTO using web POSTs and GETs to
-#' replace data in an existing Server Dataset.
+#' This function uploads data to SurveyCTO using web POSTs and GETs to
+#' replace an existing server dataset.
 #'
 #' @param auth [scto_auth()] object.
-#' @param data data.frame to upload.
-#' @param dataset_id String indicating existing dataset ID on the server.
+#' @param data `data.frame` to upload.
+#' @param dataset_id String indicating ID of existing server dataset.
 #' @param dataset_title String indicating title of dataset.
 #'
 #' @return An object of class [httr::response()].
@@ -163,13 +174,13 @@ scto_pull = function(
 #' @examples
 #' \dontrun{
 #' auth = scto_auth('scto_auth.txt')
-#' res = scto_push(auth, data, 'my_dataset', 'My Dataset')
+#' res = scto_write(auth, data, 'my_dataset', 'My Dataset')
 #' }
 #'
-#' @seealso [scto_pull()]
+#' @seealso [scto_read()]
 #'
 #' @export
-scto_push = function(auth, data, dataset_id, dataset_title) {
+scto_write = function(auth, data, dataset_id, dataset_title) {
   assert_class(auth, 'scto_auth')
   assert_data_frame(data)
   assert_string(dataset_id)

@@ -36,7 +36,7 @@ get_csrf_token = function(servername, username, password) {
 #' d = data.table(w = 3:4, x = c('', 'foo'), y = c(NA, NA), z = c(NA, ''))
 #' drop_empties(d)
 #'
-#' @seealso [scto_push()]
+#' @seealso [scto_write()]
 #'
 #' @export
 drop_empties = function(d) {
