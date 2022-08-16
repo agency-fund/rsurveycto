@@ -28,9 +28,9 @@
     <loc>/reference/scto_auth.html</loc>
   </url>
   <url>
-    <loc>/reference/scto_pull.html</loc>
+    <loc>/reference/scto_read.html</loc>
   </url>
   <url>
-    <loc>/reference/scto_push.html</loc>
+    <loc>/reference/scto_write.html</loc>
   </url>
 </urlset>
