@@ -11,6 +11,8 @@ scto_read(
   start_date = "1900-01-01",
   review_status = "approved",
   drop_empty_cols = TRUE,
+  convert_datetime = c("CompletionDate", "SubmissionDate", "starttime", "endtime"),
+  datetime_format = "\%b \%e, \%Y \%I:\%M:\%S \%p",
   refresh = TRUE,
   cache_dir = "scto_data"
 )
@@ -33,6 +35,13 @@ combination of the three. Only used for forms.}
 
 \item{drop_empty_cols}{Logical indicating whether to drop columns that
 contain only \code{NA} or only an empty string.}
+
+\item{convert_datetime}{Character vector of column names in the data for
+which to convert strings to datetimes (POSIXct). Use \code{NULL} to not convert
+any columns to datetimes.}
+
+\item{datetime_format}{String indicating format of datetimes from SurveyCTO.
+See \code{\link[=strptime]{strptime()}}.}
 
 \item{refresh}{Logical indicating whether to fetch fresh data using the API
 or to attempt to load locally cached data.}

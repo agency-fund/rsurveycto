@@ -1,12 +1,13 @@
 Package: rsurveycto
 Type: Package
-Title: Template for Packages
-Version: 0.0.0.9011
+Title: Interact with data on SurveyCTO
+Version: 0.0.0.9012
 Authors@R: c(
   person('Jake', 'Hughey', , 'jakejhughey@gmail.com', c('aut', 'cre')),
   person('Robert', 'On', , 'roberton@gmail.com', 'aut'))
-Description: Template for hugheylab R Packages.
-URL: https://github.com/youth-impact/rsurveycto
+Description: Uses SurveyCTO's API to read and write data from server datasets
+  and forms on a SurveyCTO server.
+URL: https://youth-impact.github.io/rsurveycto, https://github.com/youth-impact/rsurveycto
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

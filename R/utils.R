@@ -1,5 +1,5 @@
 #' @import checkmate
-#' @importFrom data.table data.table := fread fwrite
+#' @importFrom data.table data.table := set fread fwrite
 #' @importFrom glue glue
 #' @importFrom httr GET POST
 NULL
