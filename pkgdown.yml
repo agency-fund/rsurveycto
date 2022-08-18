@@ -2,5 +2,8 @@ pandoc: 2.14.2
 pkgdown: 2.0.6
 pkgdown_sha: ~
 articles: {}
-last_built: 2022-08-16T15:22Z
+last_built: 2022-08-18T21:32Z
+urls:
+  reference: https://youth-impact.github.io/rsurveycto/reference
+  article: https://youth-impact.github.io/rsurveycto/articles
 
