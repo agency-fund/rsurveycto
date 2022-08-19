@@ -143,7 +143,7 @@ scto_read = function(
 
   res = curl::curl_fetch_memory(request_url, handle = auth$handle)
   status = res$status_code
-  content = rawToChar(rese$content)
+  content = rawToChar(res$content)
 
 #   if (status == 417L) {
 #     x = regexpr('[0-9]+', content)
