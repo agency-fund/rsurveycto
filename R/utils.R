@@ -42,7 +42,11 @@ get_csrf_token = function(servername, username, password) {
 drop_empties = function(d) {
   assert_data_table(d)
   idx = sapply(colnames(d), function(col) {
-    all(is.na(d[[col]]) | d[[col]] == '')})
+    i = is.na(d[[col]])
+    if (is.character(d[[col]])) {
+      i = i | d[[col]] == ''}
+    all(i)})
+    # all(is.na(d[[col]]) | d[[col]] == '')})
     # all(is.na(d[[col]])) || isTRUE(all(d[[col]] == ''))})
   cols = colnames(d)[which(idx)]
   d[, c(cols) := NULL]}
