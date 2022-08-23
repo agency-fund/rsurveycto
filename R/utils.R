@@ -20,8 +20,18 @@ get_csrf_token = function(servername, username, password) {
       csrf_token = csrf_token),
     encode = 'form')
 
+  if (is.null(csrf_token)) {
+    stop(glue(
+      'Unable to log in to SurveyCTO server `{servername}`.',
+      ' Please check that server is running.'))}
+
   return(csrf_token)}
 
+
+is_empty = function(x) {
+  i = is.na(x)
+  if (is.character(x)) i = i | x == ''
+  return(all(i))}
 
 #' Drop empty columns from a data.table
 #'
@@ -41,12 +51,6 @@ get_csrf_token = function(servername, username, password) {
 #' @export
 drop_empties = function(d) {
   assert_data_table(d)
-  idx = sapply(colnames(d), function(col) {
-    i = is.na(d[[col]])
-    if (is.character(d[[col]])) {
-      i = i | d[[col]] == ''}
-    all(i)})
-    # all(is.na(d[[col]]) | d[[col]] == '')})
-    # all(is.na(d[[col]])) || isTRUE(all(d[[col]] == ''))})
+  idx = sapply(d, is_empty)
   cols = colnames(d)[which(idx)]
-  d[, c(cols) := NULL]}
+  d[, c(cols) := NULL][]}

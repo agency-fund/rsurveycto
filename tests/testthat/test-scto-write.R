@@ -1,7 +1,10 @@
-auth = scto_auth(auth_file = auth_file)
+if (identical(Sys.getenv('NOT_CRAN'), 'true')) { # !on_cran()
+  auth = scto_auth(auth_file = auth_file)}
+
 set.seed(as.integer(Sys.time()))
 
 test_that('scto_write ok', {
+  skip_on_cran()
   skip_if(Sys.getenv('GITHUB_JOB') == 'R-CMD-check') # avoid concurrent changes
   dataset_id = 'cases'
   dataset_title = 'Cases'

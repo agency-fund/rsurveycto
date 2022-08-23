@@ -167,7 +167,7 @@ scto_read = function(
     fread(text = content, na.strings = '')}
 
   qs::qsave(scto_data, local_file)
-  if (drop_empty_cols) drop_empties(scto_data)[]
+  if (drop_empty_cols) drop_empties(scto_data)
 
   cols = intersect(colnames(scto_data), convert_datetime)
   for (col in cols) {
