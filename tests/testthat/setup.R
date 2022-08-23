@@ -7,5 +7,4 @@ if (Sys.getenv('SCTO_AUTH') == '') {
   writeLines(Sys.getenv('SCTO_AUTH'), auth_file)}
 
 auth_args = readLines(auth_file)
-print(length(auth_args))
 cache_dir = withr::local_tempdir(.local_envir = teardown_env())
