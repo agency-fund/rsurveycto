@@ -55,7 +55,7 @@ scto_get_attachments = function(
   reportAssertions(coll)
 
   fs::dir_create(output_dir, recurse = TRUE)
-  for (i in 1:length(urls)) {
+  for (i in seq_along(urls)) {
     path = file.path(output_dir, filenames[i])
     res = curl::curl_fetch_disk(urls[i], path = path, handle = auth$handle)}
 
