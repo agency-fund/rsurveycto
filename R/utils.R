@@ -33,6 +33,7 @@ is_empty = function(x) {
   if (is.character(x)) i = i | x == ''
   return(all(i))}
 
+
 #' Drop empty columns from a data.table
 #'
 #' An empty column is one whose only values are `NA` or "".

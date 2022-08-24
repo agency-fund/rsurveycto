@@ -2,6 +2,7 @@
 
 export(drop_empties)
 export(scto_auth)
+export(scto_get_attachments)
 export(scto_read)
 export(scto_write)
 import(checkmate)
