@@ -15,3 +15,5 @@ if (Sys.getenv('SCTO_PRIVATE_KEY') == '') {
 } else {
   private_key = withr::local_tempfile(.local_envir = teardown_env())
   writeLines(Sys.getenv('SCTO_PRIVATE_KEY'), private_key)}
+
+print(private_key)
