@@ -31,3 +31,18 @@ test_that('scto_read form not ok', {
     auth, 'hh_listing_example_1', 'form', start_date = 'coffee', refresh = TRUE,
     cache_dir = cache_dir))
 })
+
+test_that('scto_read form encrypted no key', {
+  skip_on_cran()
+  d = scto_read(
+    auth, 'hh_example_encrypted', 'form', refresh = TRUE, cache_dir = cache_dir)
+  expect_data_table(d, ncols = 7L)
+})
+
+test_that('scto_read form encrypted key', {
+  skip_on_cran()
+  d = scto_read(
+    auth, 'hh_example_encrypted', 'form', private_key = private_key,
+    refresh = TRUE, cache_dir = cache_dir)
+  expect_data_table(d, ncols = 20L)
+})

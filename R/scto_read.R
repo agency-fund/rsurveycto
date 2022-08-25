@@ -11,6 +11,8 @@
 #' @param review_status String or character vector indicating which submissions
 #'   to fetch. Possible values are "approved", "pending", "rejected", or any
 #'   combination of the three. Only used for forms.
+#' @param private_key String indicating path to private key file. Only needs to
+#'   be non-`NULL` to read encrypted form data.
 #' @param drop_empty_cols Logical indicating whether to drop columns that
 #'   contain only `NA` or only an empty string.
 #' @param convert_datetime Character vector of column names in the data for
@@ -35,7 +37,7 @@
 #' @export
 scto_read = function(
     auth, id, type = c('dataset', 'form'), start_date = '1900-01-01',
-    review_status = 'approved', drop_empty_cols = TRUE,
+    review_status = 'approved', private_key = NULL, drop_empty_cols = TRUE,
     convert_datetime = c(
       'CompletionDate', 'SubmissionDate', 'starttime', 'endtime'),
     datetime_format = '%b %e, %Y %I:%M:%S %p', refresh = TRUE,
@@ -48,11 +50,14 @@ scto_read = function(
   if (type == 'form') {
     start_date = as.POSIXct(start_date)
     assert_posixct(start_date, any.missing = FALSE, len = 1L)
-    start_date = as.numeric(start_date)
+    start_date = max(1, as.numeric(start_date))
 
     review_status = match.arg(
       review_status, c('approved', 'pending', 'rejected'), several.ok = TRUE)
-    review_status = paste(review_status, collapse = ',')}
+    review_status = paste(review_status, collapse = ',')
+
+    assert_string(private_key, null.ok = TRUE)
+    if (!is.null(private_key)) assert_file_exists(private_key)}
 
   assert_logical(drop_empty_cols, any.missing = FALSE, len = 1L)
 
@@ -80,7 +85,11 @@ scto_read = function(
     glue('datasets/data/csv/{id}')}
   request_url = glue('{base_url}/{suf}')
 
-  res = curl::curl_fetch_memory(request_url, handle = auth$handle)
+  res = if (type == 'form' && !is.null(private_key)) {
+    POST(request_url, body = list(private_key = httr::upload_file(private_key)))
+  } else {
+    curl::curl_fetch_memory(request_url, handle = auth$handle)}
+
   status = res$status_code
   content = rawToChar(res$content)
 

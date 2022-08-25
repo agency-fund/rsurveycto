@@ -11,7 +11,7 @@ scto_write(auth, data, dataset_id, dataset_title)
 
 \item{data}{\code{data.frame} to upload.}
 
-\item{dataset_id}{String indicating ID of existing server dataset.}
+\item{dataset_id}{String indicating ID of existing dataset.}
 
 \item{dataset_title}{String indicating title of dataset.}
 }
@@ -20,7 +20,7 @@ An object of class \code{\link[httr:response]{httr::response()}}.
 }
 \description{
 This function uploads data to SurveyCTO using web POSTs and GETs to
-replace an existing server dataset.
+replace an existing dataset.
 }
 \examples{
 \dontrun{

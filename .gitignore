@@ -6,3 +6,4 @@ inst/doc
 *.DS_Store
 scto_auth.txt
 scto_data
+*.pem

@@ -9,6 +9,7 @@ scto_get_attachments(
   scto_data,
   column_name,
   output_dir = "scto_data",
+  private_key = NULL,
   overwrite = TRUE
 )
 }
@@ -22,6 +23,9 @@ SurveyCTO form.}
 download file attachments. Should contain URLs, can contain missing values.}
 
 \item{output_dir}{String indicating path to directory in which to save files.}
+
+\item{private_key}{String indicating path to private key file. Only needs to
+be non-\code{NULL} to decrypt encrypted file attachments.}
 
 \item{overwrite}{Logical indicating whether to overwrite existing files.}
 }

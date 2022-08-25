@@ -10,6 +10,7 @@ scto_read(
   type = c("dataset", "form"),
   start_date = "1900-01-01",
   review_status = "approved",
+  private_key = NULL,
   drop_empty_cols = TRUE,
   convert_datetime = c("CompletionDate", "SubmissionDate", "starttime", "endtime"),
   datetime_format = "\%b \%e, \%Y \%I:\%M:\%S \%p",
@@ -31,6 +32,9 @@ forms.}
 \item{review_status}{String or character vector indicating which submissions
 to fetch. Possible values are "approved", "pending", "rejected", or any
 combination of the three. Only used for forms.}
+
+\item{private_key}{String indicating path to private key file. Only needs to
+be non-\code{NULL} to read encrypted form data.}
 
 \item{drop_empty_cols}{Logical indicating whether to drop columns that
 contain only \code{NA} or only an empty string.}

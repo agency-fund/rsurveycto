@@ -1,11 +1,11 @@
 #' Upload data to SurveyCTO
 #'
 #' This function uploads data to SurveyCTO using web POSTs and GETs to
-#' replace an existing server dataset.
+#' replace an existing dataset.
 #'
 #' @param auth [scto_auth()] object.
 #' @param data `data.frame` to upload.
-#' @param dataset_id String indicating ID of existing server dataset.
+#' @param dataset_id String indicating ID of existing dataset.
 #' @param dataset_title String indicating title of dataset.
 #'
 #' @return An object of class [httr::response()].
@@ -27,7 +27,7 @@ scto_write = function(auth, data, dataset_id, dataset_title) {
 
   # TODO: potential function arguments that need to be tested/validated before
   # turning into actual function arguments.
-  dataset_exists = TRUE # possible to upload to non-existant datasets?
+  dataset_exists = TRUE # possible to upload to non-existent datasets?
   dataset_upload_mode = 'clear' # append, merge
   dataset_type = 'SERVER' # form dataset updates/uploads?
 
