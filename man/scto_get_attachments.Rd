@@ -6,8 +6,7 @@
 \usage{
 scto_get_attachments(
   auth,
-  scto_data,
-  column_name,
+  urls,
   output_dir = "scto_data",
   private_key = NULL,
   overwrite = TRUE
@@ -16,11 +15,9 @@ scto_get_attachments(
 \arguments{
 \item{auth}{\code{\link[=scto_auth]{scto_auth()}} object.}
 
-\item{scto_data}{\code{data.table} from \code{\link[=scto_read]{scto_read()}} containing data from a
-SurveyCTO form.}
-
-\item{column_name}{String indicating column in \code{scto_data} for which to
-download file attachments. Should contain URLs, can contain missing values.}
+\item{urls}{Character vector of API URLs for file attachments. Will typically
+be derived from a column of a \code{data.table} returned by \code{\link[=scto_read]{scto_read()}}. Can
+contain missing values.}
 
 \item{output_dir}{String indicating path to directory in which to save files.}
 
@@ -30,8 +27,8 @@ be non-\code{NULL} to decrypt encrypted file attachments.}
 \item{overwrite}{Logical indicating whether to overwrite existing files.}
 }
 \value{
-A character vector of file names. Each element corresponds to a row
-of \code{scto_data}, with \code{NA} for rows lacking a valid URL.
+A character vector of file names of the same length as \code{urls}, with
+\code{NA} for missing or invalid URLs.
 }
 \description{
 This function downloads files in bulk.
@@ -40,7 +37,7 @@ This function downloads files in bulk.
 \dontrun{
 auth = scto_auth('scto_auth.txt')
 scto_data = scto_read(auth, 'my_form', 'form')
-filenames = scto_get_attachments(auth, scto_data, 'my_column')
+filenames = scto_get_attachments(auth, scto_data[['my_attachment']])
 }
 
 }

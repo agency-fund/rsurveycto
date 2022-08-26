@@ -4,37 +4,32 @@
 #' This function downloads files in bulk.
 #'
 #' @param auth [scto_auth()] object.
-#' @param scto_data `data.table` from [scto_read()] containing data from a
-#'   SurveyCTO form.
-#' @param column_name String indicating column in `scto_data` for which to
-#'   download file attachments. Should contain URLs, can contain missing values.
+#' @param urls Character vector of API URLs for file attachments. Will typically
+#'   be derived from a column of a `data.table` returned by [scto_read()]. Can
+#'   contain missing values.
 #' @param output_dir String indicating path to directory in which to save files.
 #' @param private_key String indicating path to private key file. Only needs to
 #'   be non-`NULL` to decrypt encrypted file attachments.
 #' @param overwrite Logical indicating whether to overwrite existing files.
 #'
-#' @return A character vector of file names. Each element corresponds to a row
-#'   of `scto_data`, with `NA` for rows lacking a valid URL.
+#' @return A character vector of file names of the same length as `urls`, with
+#'   `NA` for missing or invalid URLs.
 #'
 #' @examples
 #' \dontrun{
 #' auth = scto_auth('scto_auth.txt')
 #' scto_data = scto_read(auth, 'my_form', 'form')
-#' filenames = scto_get_attachments(auth, scto_data, 'my_column')
+#' filenames = scto_get_attachments(auth, scto_data[['my_attachment']])
 #' }
 #'
 #' @seealso [scto_auth()], [scto_read()], [scto_write()]
 #'
 #' @export
 scto_get_attachments = function(
-    auth, scto_data, column_name, output_dir = 'scto_data', private_key = NULL,
-    overwrite = TRUE) {
+    auth, urls, output_dir = 'scto_data', private_key = NULL, overwrite = TRUE) {
 
   assert_class(auth, 'scto_auth')
-  assert_data_table(scto_data, col.names = 'unique')
-  assert_string(column_name)
-  assert_choice(column_name, colnames(scto_data))
-  assert_character(scto_data[[column_name]])
+  assert_character(urls)
   assert_string(output_dir)
   assert_string(private_key, null.ok = TRUE)
   if (!is.null(private_key)) assert_file_exists(private_key)
@@ -44,15 +39,15 @@ scto_get_attachments = function(
     '^https://[a-z0-9_-]+\\.surveycto\\.com/api/v2/forms/[a-z0-9_-]+/',
     'submissions/uuid:[a-z0-9-]+/attachments/[a-zA-Z0-9_.-]+$')
 
-  r = rep(NA_character_, nrow(scto_data))
-  idx = grepl(pat, scto_data[[column_name]])
+  r = rep(NA_character_, length(urls))
+  idx = grepl(pat, urls)
   if (!any(idx)) return(r)
 
-  urls = scto_data[[column_name]][idx]
+  urls = urls[idx]
   x = strsplit(urls, '/')
   filenames = basename(urls) # depends on SurveyCTO making filenames unique
 
-  # these longer filenames were declared by devtools to be non-portable
+  # devtools said these longer filenames were non-portable
   # filenames = paste0(sapply(x, `[[`, 9L), '__', sapply(x, `[[`, 11L))
   # filenames = sub('^uuid:', '', filenames)
 
@@ -63,6 +58,7 @@ scto_get_attachments = function(
   reportAssertions(coll)
 
   fs::dir_create(output_dir, recurse = TRUE)
+
   for (i in seq_along(urls)) {
     path = file.path(output_dir, filenames[i])
     if (is.null(private_key)) {
