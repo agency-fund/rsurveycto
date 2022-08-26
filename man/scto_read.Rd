@@ -21,9 +21,9 @@ scto_read(
 \arguments{
 \item{auth}{\code{\link[=scto_auth]{scto_auth()}} object.}
 
-\item{id}{String indicating ID of the resource to fetch.}
+\item{id}{String indicating ID of the dataset or form.}
 
-\item{type}{String indicating whether the resource is a dataset or a form.}
+\item{type}{String indicating whether \code{id} corresponds to a dataset or form.}
 
 \item{start_date}{Date-time or something coercible to a date-time
 indicating the earliest date-time for which to fetch data. Only used for

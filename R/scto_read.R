@@ -3,8 +3,8 @@
 #' This function reads data from SurveyCTO using the API.
 #'
 #' @param auth [scto_auth()] object.
-#' @param id String indicating ID of the resource to fetch.
-#' @param type String indicating whether the resource is a dataset or a form.
+#' @param id String indicating ID of the dataset or form.
+#' @param type String indicating whether `id` corresponds to a dataset or form.
 #' @param start_date Date-time or something coercible to a date-time
 #'   indicating the earliest date-time for which to fetch data. Only used for
 #'   forms.
