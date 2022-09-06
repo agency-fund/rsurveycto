@@ -1,4 +1,3 @@
-
 #' Download file attachments from a SurveyCTO form
 #'
 #' This function downloads files in bulk.
@@ -62,7 +61,7 @@ scto_get_attachments = function(
   for (i in seq_along(urls)) {
     path = file.path(output_dir, filenames[i])
     if (is.null(private_key)) {
-      res = curl::curl_fetch_disk(urls[i], path = path, handle = auth$handle)
+      res = curl::curl_download(urls[i], path, handle = auth$handle)
     } else {
       res = POST(
         urls[i], body = list(private_key = httr::upload_file(private_key)))

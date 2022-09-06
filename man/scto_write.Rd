@@ -19,8 +19,8 @@ scto_write(auth, data, dataset_id, dataset_title)
 An object of class \code{\link[httr:response]{httr::response()}}.
 }
 \description{
-This function uploads data to SurveyCTO using web POSTs and GETs to
-replace an existing dataset.
+This function uses a web POST request to replace an existing dataset on a
+SurveyCTO server. The function is in beta, so use with caution.
 }
 \examples{
 \dontrun{
