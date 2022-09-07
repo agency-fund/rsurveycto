@@ -19,4 +19,11 @@
     
 ## Additional information
 
+Per CRAN feedback:
+
+- Software names in the title and description are in single quotes.
+- The description includes a link to the API's documentation (the only link that does not require a login).
+- The description field has more detail about the package's functionality.
+- The functions do not write by default.
+
 The tests require login credentials for a SurveyCTO server, which is why they are skipped on CRAN. They pass locally, on GitHub Actions (using repository secrets), and on R-hub (using environmental variables).
