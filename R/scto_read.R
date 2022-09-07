@@ -20,9 +20,6 @@
 #'   any columns to datetimes.
 #' @param datetime_format String indicating format of datetimes from SurveyCTO.
 #'   See [strptime()].
-#' @param refresh Logical indicating whether to fetch fresh data using the API
-#'   or to attempt to load locally cached data.
-#' @param cache_dir String indicating path to directory in which to cache data.
 #'
 #' @return A `data.table`.
 #'
@@ -40,8 +37,8 @@ scto_read = function(
     review_status = 'approved', private_key = NULL, drop_empty_cols = TRUE,
     convert_datetime = c(
       'CompletionDate', 'SubmissionDate', 'starttime', 'endtime'),
-    datetime_format = '%b %e, %Y %I:%M:%S %p', refresh = TRUE,
-    cache_dir = 'scto_data') {
+    datetime_format = '%b %e, %Y %I:%M:%S %p') {
+    # , refresh = TRUE, cache_dir = 'scto_data') {
 
   assert_class(auth, 'scto_auth')
   assert_string(id)
@@ -64,18 +61,18 @@ scto_read = function(
   assert_character(convert_datetime, any.missing = FALSE, null.ok = TRUE)
   assert_string(datetime_format)
 
-  assert_logical(refresh, any.missing = FALSE, len = 1L)
-  assert_string(cache_dir)
-  assert_path_for_output(cache_dir, overwrite = TRUE)
+  # assert_logical(refresh, any.missing = FALSE, len = 1L)
+  # assert_string(cache_dir)
+  # assert_path_for_output(cache_dir, overwrite = TRUE)
 
-  fs::dir_create(cache_dir, recurse = TRUE)
-  local_file = fs::path(
-    cache_dir, glue('{id}_{type}_{auth$servername}_{start_date}.qs'))
+  # fs::dir_create(cache_dir, recurse = TRUE)
+  # local_file = fs::path(
+  #   cache_dir, glue('{id}_{type}_{auth$servername}_{start_date}.qs'))
 
-  if (fs::file_exists(local_file) && !refresh) {
-    scto_data = qs::qread(local_file)
-    if (drop_empty_cols) drop_empties(scto_data)
-    return(scto_data)}
+  # if (fs::file_exists(local_file) && !refresh) {
+  #   scto_data = qs::qread(local_file)
+  #   if (drop_empty_cols) drop_empties(scto_data)
+  #   return(scto_data)}
 
   base_url = glue('https://{auth$servername}.surveycto.com/api/v2')
 
@@ -114,7 +111,7 @@ scto_read = function(
   } else {
     fread(text = content, na.strings = '')}
 
-  qs::qsave(scto_data, local_file)
+  # qs::qsave(scto_data, local_file)
   if (drop_empty_cols) drop_empties(scto_data)
 
   cols = intersect(colnames(scto_data), convert_datetime)

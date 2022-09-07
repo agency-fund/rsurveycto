@@ -5,7 +5,7 @@
 
 library('data.table')
 
-cache_dir = withr::local_tempdir(.local_envir = teardown_env())
+output_dir = withr::local_tempdir(.local_envir = teardown_env())
 
 if (Sys.getenv('SCTO_AUTH') == '') {
   auth_file = 'scto_auth.txt'

@@ -7,7 +7,7 @@
 scto_get_attachments(
   auth,
   urls,
-  output_dir = "scto_data",
+  output_dir,
   private_key = NULL,
   overwrite = TRUE
 )

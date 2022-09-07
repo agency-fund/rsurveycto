@@ -13,9 +13,7 @@ scto_read(
   private_key = NULL,
   drop_empty_cols = TRUE,
   convert_datetime = c("CompletionDate", "SubmissionDate", "starttime", "endtime"),
-  datetime_format = "\%b \%e, \%Y \%I:\%M:\%S \%p",
-  refresh = TRUE,
-  cache_dir = "scto_data"
+  datetime_format = "\%b \%e, \%Y \%I:\%M:\%S \%p"
 )
 }
 \arguments{
@@ -45,11 +43,6 @@ any columns to datetimes.}
 
 \item{datetime_format}{String indicating format of datetimes from SurveyCTO.
 See \code{\link[=strptime]{strptime()}}.}
-
-\item{refresh}{Logical indicating whether to fetch fresh data using the API
-or to attempt to load locally cached data.}
-
-\item{cache_dir}{String indicating path to directory in which to cache data.}
 }
 \value{
 A \code{data.table}.

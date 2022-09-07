@@ -25,7 +25,7 @@
 #'
 #' @export
 scto_get_attachments = function(
-    auth, urls, output_dir = 'scto_data', private_key = NULL, overwrite = TRUE) {
+    auth, urls, output_dir, private_key = NULL, overwrite = TRUE) {
 
   assert_class(auth, 'scto_auth')
   assert_character(urls)
@@ -56,7 +56,7 @@ scto_get_attachments = function(
       file.path(output_dir, filename), overwrite = overwrite, add = coll)}
   reportAssertions(coll)
 
-  fs::dir_create(output_dir, recurse = TRUE)
+  if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
 
   for (i in seq_along(urls)) {
     path = file.path(output_dir, filenames[i])

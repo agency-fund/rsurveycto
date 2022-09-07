@@ -1,12 +1,16 @@
 Package: rsurveycto
 Type: Package
-Title: Interact with Data on SurveyCTO
-Version: 0.0.4
+Title: Interact with Data on 'SurveyCTO'
+Version: 0.0.5
 Authors@R: c(
   person('Jake', 'Hughey', , 'jakejhughey@gmail.com', c('aut', 'cre')),
   person('Robert', 'On', , 'roberton@gmail.com', 'aut'))
-Description: Uses SurveyCTO's API to read and write data from datasets and
-  forms on a SurveyCTO server.
+Description: 'SurveyCTO' is a platform for mobile data collection in offline settings.
+  The 'rsurveycto' R package uses the 'SurveyCTO' REST API
+  <https://docs.surveycto.com/05-exporting-and-publishing-data/05-api-access/01.api-access.html>
+  to read datasets and forms from a 'SurveyCTO' server into R as 'data.table's
+  and to download file attachments. The package also has limited support to
+  write datasets to a server.
 URL: https://youth-impact.github.io/rsurveycto/, https://github.com/youth-impact/rsurveycto
 License: MIT + file LICENSE
 Encoding: UTF-8
@@ -18,11 +22,9 @@ Imports:
   checkmate (>= 2.1.0),
   curl (>= 4.3.2),
   data.table (>= 1.14.2),
-  fs (>= 1.5.2),
   glue (>= 1.6.2),
   httr (>= 1.4.3),
   jsonlite (>= 1.8.0),
-  qs (>= 0.25.3),
   withr (>= 2.5.0)
 Suggests:
   knitr,
