@@ -1,14 +1,14 @@
 #' @import checkmate
 #' @importFrom data.table data.table := set fread fwrite
 #' @importFrom glue glue
-#' @importFrom httr GET POST
+#' @importFrom httr GET POST content add_headers headers cookies set_cookies
 NULL
 
 
-get_csrf_token = function(servername, username, password) {
+get_session_auth = function(servername, username, password) {
   index_url = glue('https://{servername}.surveycto.com/index.html')
   index_res = GET(index_url)
-  csrf_token = httr::headers(index_res)$`x-csrf-token`
+  csrf_token = headers(index_res)$`x-csrf-token`
 
   login_url = glue(
     'https://{servername}.surveycto.com/login?spring-security-redirect=%2F')
@@ -25,7 +25,10 @@ get_csrf_token = function(servername, username, password) {
       'Unable to log in to SurveyCTO server `{servername}`.',
       ' Please check that server is running.'))}
 
-  return(csrf_token)}
+  scto_cookies = cookies(login_res)
+  session_id = scto_cookies$value[scto_cookies$name == "JSESSIONID"]
+
+  return(list(csrf_token = csrf_token, session_id = session_id))}
 
 
 is_empty = function(x) {

@@ -120,3 +120,31 @@ scto_read = function(
       scto_data[[col]], format = datetime_format))}
 
   return(scto_data)}
+
+#' Access SurveyCTO meta data
+#'
+#' This function reads meta-data from SurveyCTO, specifically a list of
+#' forms, datasets, groups and publishing information.
+#'
+#' @param auth [scto_auth()] object.
+#'
+#' @return A list containing SurveyCTO server metadata
+#'
+#' @examples
+#' \dontrun{
+#' auth = scto_auth('scto_auth.txt')
+#' scto_data = scto_meta(auth)
+#' }
+#'
+#' @seealso [scto_auth()], [scto_read()], [scto_write()]
+#'
+#' @export
+scto_meta = function(auth) {
+  forms_url <- glue("https://{auth$servername}.surveycto.com/console/forms-groups-datasets/get")
+
+  forms_json <- content(
+    GET(forms_url,
+        set_cookies(JSESSIONID = auth$session_id),
+        add_headers("x-csrf-token" = auth$csrf_token)))
+
+  return(forms_json)}
