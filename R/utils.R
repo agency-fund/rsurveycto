@@ -10,6 +10,10 @@ get_csrf_token = function(servername, username, password) {
   index_res = GET(index_url)
   csrf_token = httr::headers(index_res)$`x-csrf-token`
 
+  if (is.null(csrf_token)) {
+    stop(glue('Unable to log in to SurveyCTO server `{servername}`.',
+              ' Please check that server is running.'))}
+
   login_url = glue(
     'https://{servername}.surveycto.com/login?spring-security-redirect=%2F')
   login_res = POST(
@@ -19,11 +23,6 @@ get_csrf_token = function(servername, username, password) {
       password = password,
       csrf_token = csrf_token),
     encode = 'form')
-
-  if (is.null(csrf_token)) {
-    stop(glue(
-      'Unable to log in to SurveyCTO server `{servername}`.',
-      ' Please check that server is running.'))}
 
   return(csrf_token)}
 
@@ -52,6 +51,7 @@ is_empty = function(x) {
 #' @export
 drop_empties = function(d) {
   assert_data_table(d)
+  if (nrow(d) == 0) return(d)
   idx = sapply(d, is_empty)
   cols = colnames(d)[which(idx)]
   d[, c(cols) := NULL][]}
