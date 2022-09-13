@@ -4,7 +4,14 @@
 \alias{scto_write}
 \title{Upload data to SurveyCTO}
 \usage{
-scto_write(auth, data, dataset_id, dataset_title)
+scto_write(
+  auth,
+  data,
+  dataset_id,
+  dataset_title = dataset_id,
+  append = FALSE,
+  fill = FALSE
+)
 }
 \arguments{
 \item{auth}{\code{\link[=scto_auth]{scto_auth()}} object.}
@@ -13,19 +20,30 @@ scto_write(auth, data, dataset_id, dataset_title)
 
 \item{dataset_id}{String indicating ID of existing dataset.}
 
-\item{dataset_title}{String indicating title of dataset.}
+\item{dataset_title}{String indicating title of dataset. Will replace the
+existing title, regardless of \code{append}.}
+
+\item{append}{Logical indicating whether to append or replace the dataset.}
+
+\item{fill}{Logical indicating whether to implicitly fill missing columns
+with \code{NA}s, i.e., whether to allow a mismatch between columns of the
+existing dataset and columns of \code{data}. Only used if \code{append} is \code{TRUE}.}
 }
 \value{
-An object of class \code{\link[httr:response]{httr::response()}}.
+A list with elements:
+\itemize{
+\item \code{data_old}: A \code{data.table} of the previous version of the dataset.
+\item \code{response}: An object of class \code{\link[httr:response]{httr::response()}} from the POST request.
+}
 }
 \description{
-This function uses a web POST request to replace an existing dataset on a
+This function uses a web POST request to upload new data to a dataset on a
 SurveyCTO server. The function is in beta, so use with caution.
 }
 \examples{
 \dontrun{
 auth = scto_auth('scto_auth.txt')
-res = scto_write(auth, data, 'my_dataset', 'My Dataset')
+r = scto_write(auth, data, 'my_dataset', 'My Dataset')
 }
 
 }
