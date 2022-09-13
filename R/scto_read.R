@@ -29,7 +29,8 @@
 #' scto_data = scto_read(auth, 'my_form', 'form')
 #' }
 #'
-#' @seealso [scto_auth()], [scto_get_attachments()], [scto_write()]
+#' @seealso [scto_auth()], [scto_meta()], [scto_get_attachments()],
+#'   [scto_write()]
 #'
 #' @export
 scto_read = function(
@@ -122,3 +123,34 @@ scto_read = function(
       scto_data[[col]], format = datetime_format))}
 
   return(scto_data)}
+
+
+#' Access SurveyCTO metadata
+#'
+#' This function reads metadata from SurveyCTO related to forms, datasets,
+#' groups, and publishing information.
+#'
+#' @param auth [scto_auth()] object.
+#'
+#' @return A list.
+#'
+#' @examples
+#' \dontrun{
+#' auth = scto_auth('scto_auth.txt')
+#' metadata = scto_meta(auth)
+#' }
+#'
+#' @seealso [scto_auth()], [scto_read()], [scto_write()]
+#'
+#' @export
+scto_meta = function(auth) {
+  url = glue(
+    'https://{auth$servername}.surveycto.com/console/forms-groups-datasets/get')
+
+  r = content(
+    GET(url,
+        set_cookies(JSESSIONID = auth$session_id),
+        add_headers('x-csrf-token' = auth$csrf_token)),
+    as = 'parsed')
+
+  return(r)}

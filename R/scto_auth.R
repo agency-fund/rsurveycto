@@ -22,7 +22,8 @@
 #' auth = scto_auth('my_server', 'my_user', 'my_pw', auth_file = NULL)
 #' }
 #'
-#' @seealso [scto_read()], [scto_get_attachments()], [scto_write()]
+#' @seealso [scto_read()], [scto_meta()], [scto_get_attachments()],
+#'   [scto_write()]
 #'
 #' @export
 scto_auth = function(
@@ -48,8 +49,10 @@ scto_auth = function(
     httpauth = 1,
     userpwd = glue('{username}:{password}'))
 
-  csrf_token = get_csrf_token(servername, username, password)
+  session_auth = get_session_auth(servername, username, password)
 
-  auth = list(servername = servername, handle = handle, csrf_token = csrf_token)
+  auth = list(servername = servername, handle = handle,
+              csrf_token = session_auth$csrf_token,
+              session_id = session_auth$session_id)
   class(auth) = 'scto_auth'
   return(auth)}

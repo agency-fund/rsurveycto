@@ -1,5 +1,8 @@
+# rsurveycto 0.0.7
+* Added `scto_meta()` function to fetch SurveyCTO metadata.
+
 # rsurveycto 0.0.6
-* Added arguments `append` and `fill` to `scto_write()`.
+* Added more options to `scto_write()`.
 
 # rsurveycto 0.0.5
 * Removed default output directory per CRAN requirements.
