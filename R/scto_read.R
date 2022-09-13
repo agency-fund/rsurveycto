@@ -106,7 +106,9 @@ scto_read = function(
     message(glue('Response content:\n{content}'))
     stop(glue('Non-200 response: {status}'))}
 
-  scto_data = if (type == 'form') {
+  scto_data = if (content == '') {
+    data.table()
+  } else if (type == 'form') {
     data.table(jsonlite::fromJSON(content, flatten = TRUE))
   } else {
     fread(text = content, na.strings = '')}
