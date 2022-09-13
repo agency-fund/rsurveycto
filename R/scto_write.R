@@ -16,7 +16,8 @@
 #' res = scto_write(auth, data, 'my_dataset', 'My Dataset')
 #' }
 #'
-#' @seealso [scto_auth()], [scto_read()], [scto_get_attachments()]
+#' @seealso [scto_auth()], [scto_meta()], [scto_read()],
+#'   [scto_get_attachments()]
 #'
 #' @export
 scto_write = function(auth, data, dataset_id, dataset_title) {

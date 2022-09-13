@@ -29,7 +29,8 @@
 #' scto_data = scto_read(auth, 'my_form', 'form')
 #' }
 #'
-#' @seealso [scto_auth()], [scto_get_attachments()], [scto_write()]
+#' @seealso [scto_auth()], [scto_meta()], [scto_get_attachments()],
+#'   [scto_write()]
 #'
 #' @export
 scto_read = function(
@@ -121,30 +122,33 @@ scto_read = function(
 
   return(scto_data)}
 
-#' Access SurveyCTO meta data
+
+#' Access SurveyCTO metadata
 #'
-#' This function reads meta-data from SurveyCTO, specifically a list of
-#' forms, datasets, groups and publishing information.
+#' This function reads metadata from SurveyCTO related to forms, datasets,
+#' groups, and publishing information.
 #'
 #' @param auth [scto_auth()] object.
 #'
-#' @return A list containing SurveyCTO server metadata
+#' @return A list.
 #'
 #' @examples
 #' \dontrun{
 #' auth = scto_auth('scto_auth.txt')
-#' scto_data = scto_meta(auth)
+#' metadata = scto_meta(auth)
 #' }
 #'
 #' @seealso [scto_auth()], [scto_read()], [scto_write()]
 #'
 #' @export
 scto_meta = function(auth) {
-  forms_url <- glue("https://{auth$servername}.surveycto.com/console/forms-groups-datasets/get")
+  url = glue(
+    'https://{auth$servername}.surveycto.com/console/forms-groups-datasets/get')
 
-  forms_json <- content(
-    GET(forms_url,
+  r = content(
+    GET(url,
         set_cookies(JSESSIONID = auth$session_id),
-        add_headers("x-csrf-token" = auth$csrf_token)))
+        add_headers('x-csrf-token' = auth$csrf_token)),
+    as = 'parsed')
 
-  return(forms_json)}
+  return(r)}

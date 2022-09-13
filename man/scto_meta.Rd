@@ -2,7 +2,7 @@
 % Please edit documentation in R/scto_read.R
 \name{scto_meta}
 \alias{scto_meta}
-\title{Access SurveyCTO meta data}
+\title{Access SurveyCTO metadata}
 \usage{
 scto_meta(auth)
 }
@@ -10,16 +10,16 @@ scto_meta(auth)
 \item{auth}{\code{\link[=scto_auth]{scto_auth()}} object.}
 }
 \value{
-A list containing SurveyCTO server metadata
+A list.
 }
 \description{
-This function reads meta-data from SurveyCTO, specifically a list of
-forms, datasets, groups and publishing information.
+This function reads metadata from SurveyCTO related to forms, datasets,
+groups, and publishing information.
 }
 \examples{
 \dontrun{
 auth = scto_auth('scto_auth.txt')
-scto_data = scto_meta(auth)
+metadata = scto_meta(auth)
 }
 
 }

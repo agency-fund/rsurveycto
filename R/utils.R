@@ -26,7 +26,7 @@ get_session_auth = function(servername, username, password) {
       ' Please check that server is running.'))}
 
   scto_cookies = cookies(login_res)
-  session_id = scto_cookies$value[scto_cookies$name == "JSESSIONID"]
+  session_id = scto_cookies$value[scto_cookies$name == 'JSESSIONID']
 
   return(list(csrf_token = csrf_token, session_id = session_id))}
 

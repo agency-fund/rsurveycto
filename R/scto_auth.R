@@ -22,7 +22,8 @@
 #' auth = scto_auth('my_server', 'my_user', 'my_pw', auth_file = NULL)
 #' }
 #'
-#' @seealso [scto_read()], [scto_get_attachments()], [scto_write()]
+#' @seealso [scto_read()], [scto_meta()], [scto_get_attachments()],
+#'   [scto_write()]
 #'
 #' @export
 scto_auth = function(

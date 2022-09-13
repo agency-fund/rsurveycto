@@ -1,12 +1,12 @@
-test_that('get_csrf_token ok', {
+test_that('get_session_auth ok', {
   skip_on_cran()
-  csrf_token = get_csrf_token(auth_args[1L], auth_args[2L], auth_args[3L])
-  expect_string(csrf_token)
+  sess = get_session_auth(auth_args[1L], auth_args[2L], auth_args[3L])
+  expect_type(sess, 'list')
 })
 
-test_that('get_csrf_token not ok', {
+test_that('get_session_auth not ok', {
   skip_on_cran()
-  expect_error(get_csrf_token('1', 'nobody@a.io', 'password'))
+  expect_error(get_session_auth('1', 'nobody@a.io', 'password'))
 })
 
 test_that('drop_empties', {
