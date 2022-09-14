@@ -1,3 +1,6 @@
+# rsurveycto 0.0.8
+* Added check for valid username and password.
+
 # rsurveycto 0.0.7
 * Added `scto_meta()` function to fetch SurveyCTO metadata.
 

@@ -38,7 +38,9 @@ scto_auth = function(
     assert_file_exists(auth_file)
     auth_char = readLines(auth_file, warn = FALSE)
     if (!test_character(auth_char, any.missing = FALSE, len = 3L)) {
-      stop('auth_file must have exactly three lines: servername, username, and password.')}
+      stop(paste(
+        'auth_file must have exactly three lines:',
+        'servername, username, and password.'))}
     servername = auth_char[1L]
     username = auth_char[2L]
     password = auth_char[3L]}
@@ -55,4 +57,6 @@ scto_auth = function(
               csrf_token = session_auth$csrf_token,
               session_id = session_auth$session_id)
   class(auth) = 'scto_auth'
+
+  m = scto_meta(auth) # check for valid username and password
   return(auth)}
