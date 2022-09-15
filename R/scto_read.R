@@ -147,10 +147,11 @@ scto_meta = function(auth) {
   url = glue(
     'https://{auth$servername}.surveycto.com/console/forms-groups-datasets/get')
 
-  r = content(
-    GET(url,
-        set_cookies(JSESSIONID = auth$session_id),
-        add_headers('x-csrf-token' = auth$csrf_token)),
-    as = 'parsed')
+  res = GET(url, set_cookies(JSESSIONID = auth$session_id),
+            add_headers('x-csrf-token' = auth$csrf_token))
 
-  return(r)}
+  if (res$status_code != 200L) {
+    stop(glue('Invalid username or password for ',
+              'SurveyCTO server `{auth$servername}`.'))}
+  m = content(res, as = 'parsed')
+  return(m)}

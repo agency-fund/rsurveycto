@@ -11,7 +11,7 @@ get_session_auth = function(servername, username, password) {
   csrf_token = headers(index_res)$`x-csrf-token`
 
   if (is.null(csrf_token)) {
-    stop(glue('Unable to log in to SurveyCTO server `{servername}`.',
+    stop(glue('Unable to access SurveyCTO server `{servername}`.',
               ' Please check that server is running.'))}
 
   login_url = glue(
