@@ -39,7 +39,6 @@ scto_read = function(
     convert_datetime = c(
       'CompletionDate', 'SubmissionDate', 'starttime', 'endtime'),
     datetime_format = '%b %e, %Y %I:%M:%S %p') {
-    # , refresh = TRUE, cache_dir = 'scto_data') {
 
   assert_class(auth, 'scto_auth')
   assert_string(id)
@@ -58,48 +57,27 @@ scto_read = function(
     if (!is.null(private_key)) assert_file_exists(private_key)}
 
   assert_logical(drop_empty_cols, any.missing = FALSE, len = 1L)
-
   assert_character(convert_datetime, any.missing = FALSE, null.ok = TRUE)
   assert_string(datetime_format)
-
-  # assert_logical(refresh, any.missing = FALSE, len = 1L)
-  # assert_string(cache_dir)
-  # assert_path_for_output(cache_dir, overwrite = TRUE)
-
-  # fs::dir_create(cache_dir, recurse = TRUE)
-  # local_file = fs::path(
-  #   cache_dir, glue('{id}_{type}_{auth$servername}_{start_date}.qs'))
-
-  # if (fs::file_exists(local_file) && !refresh) {
-  #   scto_data = qs::qread(local_file)
-  #   if (drop_empty_cols) drop_empties(scto_data)
-  #   return(scto_data)}
-
-  base_url = glue('https://{auth$servername}.surveycto.com/api/v2')
 
   suf = if (type == 'form') {
     glue('forms/data/wide/json/{id}?date={start_date}&r={review_status}')
   } else {
     glue('datasets/data/csv/{id}')}
-  request_url = glue('{base_url}/{suf}')
+  request_url = glue('https://{auth$servername}.surveycto.com/api/v2/{suf}')
 
-  res = if (type == 'form' && !is.null(private_key)) {
-    POST(request_url, body = list(private_key = httr::upload_file(private_key)))
-  } else {
-    curl::curl_fetch_memory(request_url, handle = auth$handle)}
+  res = get_resource(type, private_key, request_url, auth)
+
+  if (res$status_code == 409L) { # rejected due to parallel requests
+    n_retry = 2
+    while (n_retry > 0) {
+      message('Waiting for a parallel request to finish...')
+      Sys.sleep(3)
+      res = get_resource(type, private_key, request_url, auth)
+      n_retry = if (res$status_code == 200L) 0 else n_retry - 1}}
 
   status = res$status_code
   content = rawToChar(res$content)
-
-  #   if (status == 417L) {
-  #     x = regexpr('[0-9]+', content)
-  #     wt = as.numeric(substr(content, x, x + attr(x, 'match.length') - 1L))
-  #     message(glue('Waiting {wt} seconds for SurveyCTO to hand over the data...'))
-  #     Sys.sleep(wt + 5)
-  #
-  #     res = curl::curl_fetch_memory(request_url, handle = auth$handle)
-  #     status = res$status_code
-  #     content = rawToChar(res$content)}
 
   if (status == 500L) {
     stop(glue('A {type} named `{id}` on `{auth$server}` does not exist.'))
@@ -114,7 +92,6 @@ scto_read = function(
   } else {
     fread(text = content, na.strings = '')}
 
-  # qs::qsave(scto_data, local_file)
   if (drop_empty_cols) drop_empties(scto_data)
 
   cols = intersect(colnames(scto_data), convert_datetime)

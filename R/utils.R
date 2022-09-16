@@ -30,6 +30,14 @@ get_session_auth = function(servername, username, password) {
   return(list(csrf_token = csrf_token, session_id = session_id))}
 
 
+get_resource = function(type, private_key, request_url, auth) {
+  res = if (type == 'form' && !is.null(private_key)) {
+    POST(request_url, body = list(private_key = httr::upload_file(private_key)))
+  } else {
+    curl::curl_fetch_memory(request_url, handle = auth$handle)}
+  return(res)}
+
+
 is_empty = function(x) {
   i = is.na(x)
   if (is.character(x)) i = i | x == ''
