@@ -69,9 +69,9 @@ scto_read = function(
   res = get_resource(type, private_key, request_url, auth)
 
   if (res$status_code == 409L) { # rejected due to parallel requests
+    message('Waiting for a parallel request to finish...')
     n_retry = 2
     while (n_retry > 0) {
-      message('Waiting for a parallel request to finish...')
       Sys.sleep(3)
       res = get_resource(type, private_key, request_url, auth)
       n_retry = if (res$status_code == 200L) 0 else n_retry - 1}}
