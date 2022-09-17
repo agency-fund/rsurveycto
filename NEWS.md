@@ -1,3 +1,6 @@
+# rsurveycto 0.0.9
+* Added handling of parallel requests.
+
 # rsurveycto 0.0.8
 * Added check for valid username and password.
 
