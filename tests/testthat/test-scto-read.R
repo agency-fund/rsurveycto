@@ -34,3 +34,10 @@ test_that('scto_read form encrypted key', {
   d = scto_read(auth, 'hh_example_encrypted', private_key = private_key)
   expect_data_table(d, ncols = 20L)
 })
+
+test_that('scto_read_all ok', {
+  skip_on_cran()
+  db = scto_read_all(auth)
+  expect_list(db, min.len = 1L)
+})
+
