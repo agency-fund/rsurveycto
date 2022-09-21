@@ -1,3 +1,7 @@
+# rsurveycto 0.1.0
+* `scto_read()` no longer requires user to provide argument `type`.
+* Added `scto_read_all()` and `scto_catalog()` functions to read all datasets and forms.
+
 # rsurveycto 0.0.9
 * Added handling of parallel requests.
 

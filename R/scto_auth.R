@@ -1,3 +1,28 @@
+get_session_auth = function(servername, username, password) {
+  index_url = glue('https://{servername}.surveycto.com/index.html')
+  index_res = GET(index_url)
+  csrf_token = headers(index_res)$`x-csrf-token`
+
+  if (is.null(csrf_token)) {
+    stop(glue('Unable to access SurveyCTO server `{servername}`.',
+              ' Please check that server is running.'))}
+
+  login_url = glue(
+    'https://{servername}.surveycto.com/login?spring-security-redirect=%2F')
+  login_res = POST(
+    login_url,
+    body = list(
+      username = username,
+      password = password,
+      csrf_token = csrf_token),
+    encode = 'form')
+
+  scto_cookies = cookies(login_res)
+  session_id = scto_cookies$value[scto_cookies$name == 'JSESSIONID']
+
+  return(list(csrf_token = csrf_token, session_id = session_id))}
+
+
 #' Get a SurveyCTO authentication session object
 #'
 #' Authenticates with SurveyCTO and fetches corresponding credentials.

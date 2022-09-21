@@ -1,9 +1,9 @@
 if (identical(Sys.getenv('NOT_CRAN'), 'true')) { # !on_cran()
   auth = scto_auth(auth_file = auth_file)
-  d = scto_read(auth, 'hh_listing_example_1', 'form')
+  d = scto_read(auth, 'hh_listing_example_1')
   d = d[(.N - 2):.N]
   d_enc = scto_read(
-    auth, 'hh_example_encrypted', 'form', private_key = private_key)}
+    auth, 'hh_example_encrypted', private_key = private_key)}
 
 test_that('scto_get_attachments ok', {
   skip_on_cran()
