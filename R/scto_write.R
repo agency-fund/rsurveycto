@@ -43,8 +43,9 @@ scto_write = function(
   if (append) {
     assert_flag(fill)
     if (!fill && !setequal(colnames(data), colnames(data_old))) {
-      stop(glue('If `fill` is FALSE, column names of `data` must match',
-                 ' those of the `{dataset_id}` dataset.'))}}
+      scto_abort(paste(
+        'If `fill` is FALSE, column names of `data` must match',
+        'those of the dataset `{.dataset {dataset_id}}`.'))}}
 
   # TODO: potential function arguments that need to be tested/validated before
   # turning into actual function arguments.
@@ -61,6 +62,8 @@ scto_write = function(
     'datasets/{dataset_id}/upload?csrf_token={auth$csrf_token}')
 
   # data upload
+  scto_bullets(c(v = 'Writing dataset `{.dataset {dataset_id}}`.'))
+
   upload_res = POST(
     upload_url,
     body = list(

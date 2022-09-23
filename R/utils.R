@@ -5,6 +5,54 @@
 NULL
 
 
+#' Suppress or permit messages from rsurveycto
+#'
+#' By default, rsurveycto prints messages to the console. To suppress them, set
+#' the `rsurveycto_quiet` option to `TRUE` or use this function.
+#'
+#' @param quiet A logical indicating whether to suppress messages, or `NULL`.
+#'
+#' @return If `quiet` is `NULL`, the current value of the `rsurveycto_quiet`
+#'   option. Otherwise, the previous value of the `rsurveycto_quiet` option
+#'   invisibly.
+#'
+#' @examples
+#' options(rsurveycto_quiet = TRUE)
+#' scto_quiet()
+#' scto_quiet(FALSE)
+#'
+#' @export
+scto_quiet = function(quiet = NULL) {
+  assert_flag(quiet, null.ok = TRUE)
+  quiet_old = getOption('rsurveycto_quiet')
+  if (is.null(quiet)) return(quiet_old)
+  options(rsurveycto_quiet = quiet)
+  invisible(quiet_old)}
+
+
+scto_theme = function() {
+  list(
+    span.server = list(color = '#a6d854'),
+    span.id = list(color = '#fc8d62'),
+    span.dataset = list(color = '#66c2a5'), # 'cyan'
+    span.form = list(color = '#8da0cb'), # 'yellow'
+    span.filename = list(color = '#e78ac3'))}
+
+
+scto_bullets = function(text, .envir = parent.frame()) {
+  if (isTRUE(scto_quiet()) || identical(Sys.getenv('TESTTHAT'), 'true')) {
+    return(invisible())}
+
+  cli::cli_div(theme = scto_theme())
+  cli::cli_bullets(text, .envir = .envir)}
+
+
+scto_abort = function(message, ..., .envir = parent.frame()) {
+  call = rlang::caller_env()
+  cli::cli_div(theme = scto_theme())
+  cli::cli_abort(message = message, ..., .envir = .envir, call = call)}
+
+
 is_empty = function(x) {
   i = is.na(x)
   if (is.character(x)) i = i | x == ''

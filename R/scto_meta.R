@@ -26,8 +26,11 @@ scto_meta = function(auth) {
             add_headers('x-csrf-token' = auth$csrf_token))
 
   if (res$status_code != 200L) {
-    stop(glue('Invalid username or password for ',
-              'SurveyCTO server `{auth$servername}`.'))}
+    scto_abort(
+      'Invalid username or password for server `{.server {auth$servername}}`.')}
+
+  scto_bullets(
+    c(v = 'Reading metadata for server `{.server {auth$servername}}`.'))
   m = content(res, as = 'parsed')
   return(m)}
 

@@ -4,8 +4,9 @@ get_session_auth = function(servername, username, password) {
   csrf_token = headers(index_res)$`x-csrf-token`
 
   if (is.null(csrf_token)) {
-    stop(glue('Unable to access SurveyCTO server `{servername}`.',
-              ' Please check that server is running.'))}
+    scto_abort(paste(
+      'Unable to access server {.server `{servername}`}.',
+      'Please check that server is running.'))}
 
   login_url = glue(
     'https://{servername}.surveycto.com/login?spring-security-redirect=%2F')
@@ -63,8 +64,8 @@ scto_auth = function(
     assert_file_exists(auth_file)
     auth_char = readLines(auth_file, warn = FALSE)
     if (!test_character(auth_char, any.missing = FALSE, len = 3L)) {
-      stop(paste(
-        'auth_file must have exactly three lines:',
+      scto_abort(paste(
+        '`auth_file` "{auth_file}" must have exactly three lines:',
         'servername, username, and password.'))}
     servername = auth_char[1L]
     username = auth_char[2L]

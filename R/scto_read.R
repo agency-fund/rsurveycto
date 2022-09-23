@@ -49,17 +49,17 @@ scto_read = function(
   id_now = id
   type = catalog[id_now == id]$type
 
-  if (type == 'form') {
+  if (length(type) == 0L) {
+    scto_abort(paste(
+      'No form or dataset with ID {.id `{id}`} exists',
+      'on the server {.server `{auth$servername}`}.'))
+  } else if (type == 'form') {
     scto_data = scto_read_form(
       auth, id, start_date, review_status, private_key, drop_empty_cols,
       convert_datetime, datetime_format)
-  } else if (type == 'dataset') {
-    scto_data = scto_read_dataset(
-      auth, id, drop_empty_cols, convert_datetime, datetime_format)
   } else {
-    stop(glue(
-      'No form or dataset with ID `{id}` exists',
-      ' on the server `{auth$servername}`.'))}
+    scto_data = scto_read_dataset(
+      auth, id, drop_empty_cols, convert_datetime, datetime_format)}
 
   return(scto_data)}
 

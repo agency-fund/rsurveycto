@@ -18,7 +18,7 @@ get_resource = function(auth, type, request_url, private_key) {
 get_resource_retry = function(auth, type, request_url, private_key) {
   res = get_resource(auth, type, request_url, private_key)
   if (res$status_code == 409L) { # rejected due to parallel requests
-    message('Waiting for a parallel request to finish...')
+    cli::cli_alert_info('Waiting for a parallel request to finish.')
     n_retry = 2
     while (n_retry > 0) {
       Sys.sleep(3)
@@ -36,8 +36,8 @@ get_scto_data = function(
   content = rawToChar(res$content)
 
   if (status != 200L) {
-    message(glue('Response content:\n{content}'))
-    stop(glue('Non-200 response: {status}'))}
+    cli::cli_alert_info('Response content:\n{content}')
+    cli::cli_abort('Non-200 response: {status}')}
 
   scto_data = if (content == '') {
     data.table()
@@ -75,6 +75,7 @@ scto_read_form = function(
     'https://{auth$servername}.surveycto.com/api/v2/forms/',
     'data/wide/json/{id}?date={start_date}&r={review_status}')
 
+  scto_bullets(c(v = 'Reading form `{.form {id}}`.'))
   scto_data = get_scto_data(
     auth, 'form', request_url, drop_empty_cols, convert_datetime,
     datetime_format, private_key)
@@ -85,6 +86,8 @@ scto_read_dataset = function(
     auth, id, drop_empty_cols, convert_datetime, datetime_format) {
   request_url = glue(
     'https://{auth$servername}.surveycto.com/api/v2/datasets/data/csv/{id}')
+
+  scto_bullets(c(v = 'Reading dataset `{.dataset {id}}`.'))
   scto_data = get_scto_data(
     auth, 'dataset', request_url, drop_empty_cols, convert_datetime,
     datetime_format)

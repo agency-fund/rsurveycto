@@ -20,11 +20,13 @@ Roxygen: list(markdown = TRUE)
 Depends: R (>= 4.1)
 Imports:
   checkmate (>= 2.1.0),
+  cli (>= 3.4.0),
   curl (>= 4.3.2),
   data.table (>= 1.14.2),
   glue (>= 1.6.2),
   httr (>= 1.4.3),
   jsonlite (>= 1.8.0),
+  rlang (>= 1.0.5),
   withr (>= 2.5.0)
 Suggests:
   knitr,
