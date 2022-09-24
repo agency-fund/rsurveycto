@@ -31,12 +31,13 @@ scto_quiet = function(quiet = NULL) {
 
 
 scto_theme = function() {
+  # Okabe-Ito colors
   list(
-    span.server = list(color = '#a6d854'),
-    span.id = list(color = '#fc8d62'),
-    span.dataset = list(color = '#66c2a5'), # 'cyan'
-    span.form = list(color = '#8da0cb'), # 'yellow'
-    span.filename = list(color = '#e78ac3'))}
+    span.server = list(color = '#E69F00'), # orange
+    span.id = list(color = '#D55E00'), # vermillion
+    span.dataset = list(color = '#56B4E9'), # skyblue
+    span.form = list(color = '#009E73'), # bluishgreen
+    span.filename = list(color = '#CC79A7'))} # reddishpurple
 
 
 scto_bullets = function(text, .envir = parent.frame()) {
