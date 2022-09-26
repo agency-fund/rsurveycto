@@ -39,12 +39,17 @@ scto_write = function(
 
   # check that dataset exists
   data_old = scto_read(auth, dataset_id, drop_empty_cols = FALSE)
+  if (attr(data_old, 'scto_type') != 'dataset') {
+    scto_abort(paste(
+      'ID `{.id {dataset_id}}` on the server `{.server {auth$servername}}`',
+      'corresponds to a form, not a dataset.'))}
 
   if (append) {
     assert_flag(fill)
     if (!fill && !setequal(colnames(data), colnames(data_old))) {
-      stop(glue('If `fill` is FALSE, column names of `data` must match',
-                 ' those of the `{dataset_id}` dataset.'))}}
+      scto_abort(paste(
+        'If `fill` is FALSE, column names of `data` must match',
+        'those of the dataset `{.dataset {dataset_id}}`.'))}}
 
   # TODO: potential function arguments that need to be tested/validated before
   # turning into actual function arguments.
@@ -61,6 +66,8 @@ scto_write = function(
     'datasets/{dataset_id}/upload?csrf_token={auth$csrf_token}')
 
   # data upload
+  scto_bullets(c(v = 'Writing dataset `{.dataset {dataset_id}}`.'))
+
   upload_res = POST(
     upload_url,
     body = list(

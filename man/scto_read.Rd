@@ -2,12 +2,22 @@
 % Please edit documentation in R/scto_read.R
 \name{scto_read}
 \alias{scto_read}
+\alias{scto_read_all}
 \title{Access SurveyCTO data using the API}
 \usage{
 scto_read(
   auth,
   id,
-  type = c("dataset", "form"),
+  start_date = "1900-01-01",
+  review_status = "approved",
+  private_key = NULL,
+  drop_empty_cols = TRUE,
+  convert_datetime = c("CompletionDate", "SubmissionDate", "starttime", "endtime"),
+  datetime_format = "\%b \%e, \%Y \%I:\%M:\%S \%p"
+)
+
+scto_read_all(
+  auth,
   start_date = "1900-01-01",
   review_status = "approved",
   private_key = NULL,
@@ -20,8 +30,6 @@ scto_read(
 \item{auth}{\code{\link[=scto_auth]{scto_auth()}} object.}
 
 \item{id}{String indicating ID of the dataset or form.}
-
-\item{type}{String indicating whether \code{id} corresponds to a dataset or form.}
 
 \item{start_date}{Date-time or something coercible to a date-time
 indicating the earliest date-time for which to fetch data. Only used for
@@ -45,15 +53,18 @@ any columns to datetimes.}
 See \code{\link[=strptime]{strptime()}}.}
 }
 \value{
-A \code{data.table}.
+\code{scto_read()} returns a \code{data.table}. \code{scto_read_all()} returns a
+named list of \code{data.table}s, one for each form and dataset, along with a
+\code{data.table} named ".catalog" from \code{scto_catalog()}.
 }
 \description{
-This function reads data from SurveyCTO using the API.
+These functions read data from a SurveyCTO server using the API.
 }
 \examples{
 \dontrun{
 auth = scto_auth('scto_auth.txt')
-scto_data = scto_read(auth, 'my_form', 'form')
+scto_data = scto_read(auth, 'my_form')
+scto_db = scto_read_all(auth)
 }
 
 }

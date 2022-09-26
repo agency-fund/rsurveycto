@@ -11,3 +11,9 @@ test_that('scto_meta ok', {
   expect_type(meta, 'list')
   expect_named(meta, nms)
 })
+
+test_that('scto_catalog ok', {
+  skip_on_cran()
+  catalog = scto_catalog(auth)
+  expect_data_table(catalog)
+})

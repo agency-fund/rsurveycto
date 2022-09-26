@@ -5,37 +5,53 @@
 NULL
 
 
-get_session_auth = function(servername, username, password) {
-  index_url = glue('https://{servername}.surveycto.com/index.html')
-  index_res = GET(index_url)
-  csrf_token = headers(index_res)$`x-csrf-token`
+#' Suppress or permit messages from rsurveycto
+#'
+#' By default, rsurveycto prints messages to the console. To suppress them, set
+#' the `rsurveycto_quiet` option to `TRUE` or use this function.
+#'
+#' @param quiet A logical indicating whether to suppress messages, or `NULL`.
+#'
+#' @return If `quiet` is `NULL`, the current value of the `rsurveycto_quiet`
+#'   option. Otherwise, the previous value of the `rsurveycto_quiet` option
+#'   invisibly.
+#'
+#' @examples
+#' options(rsurveycto_quiet = TRUE)
+#' scto_quiet()
+#' scto_quiet(FALSE)
+#'
+#' @export
+scto_quiet = function(quiet = NULL) {
+  assert_flag(quiet, null.ok = TRUE)
+  quiet_old = getOption('rsurveycto_quiet')
+  if (is.null(quiet)) return(quiet_old)
+  options(rsurveycto_quiet = quiet)
+  invisible(quiet_old)}
 
-  if (is.null(csrf_token)) {
-    stop(glue('Unable to access SurveyCTO server `{servername}`.',
-              ' Please check that server is running.'))}
 
-  login_url = glue(
-    'https://{servername}.surveycto.com/login?spring-security-redirect=%2F')
-  login_res = POST(
-    login_url,
-    body = list(
-      username = username,
-      password = password,
-      csrf_token = csrf_token),
-    encode = 'form')
-
-  scto_cookies = cookies(login_res)
-  session_id = scto_cookies$value[scto_cookies$name == 'JSESSIONID']
-
-  return(list(csrf_token = csrf_token, session_id = session_id))}
+scto_theme = function() {
+  # Okabe-Ito colors
+  list(
+    span.server = list(color = '#E69F00'), # orange
+    span.id = list(color = '#D55E00'), # vermillion
+    span.dataset = list(color = '#56B4E9'), # skyblue
+    span.form = list(color = '#009E73'), # bluishgreen
+    span.filename = list(color = '#CC79A7'))} # reddishpurple
 
 
-get_resource = function(type, private_key, request_url, auth) {
-  res = if (type == 'form' && !is.null(private_key)) {
-    POST(request_url, body = list(private_key = httr::upload_file(private_key)))
-  } else {
-    curl::curl_fetch_memory(request_url, handle = auth$handle)}
-  return(res)}
+scto_bullets = function(text, .envir = parent.frame()) {
+  if (isTRUE(scto_quiet()) || identical(Sys.getenv('TESTTHAT'), 'true')) {
+    return(invisible())}
+
+  cli::cli_div(theme = scto_theme())
+  cli::cli_bullets(text, .envir = .envir)}
+
+
+scto_abort = function(message, ..., .envir = parent.frame()) {
+  call = rlang::caller_env()
+  cli::cli_div(theme = scto_theme())
+  cli::cli_abort(message = message, ..., .envir = .envir, call = call)}
 
 
 is_empty = function(x) {

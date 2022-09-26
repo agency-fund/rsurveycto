@@ -59,6 +59,7 @@ scto_get_attachments = function(
   if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
 
   for (i in seq_along(urls)) {
+    scto_bullets(c(v = 'Downloading `{.filename {filenames[i]}}`.'))
     path = file.path(output_dir, filenames[i])
     if (is.null(private_key)) {
       res = curl::curl_download(urls[i], path, handle = auth$handle)

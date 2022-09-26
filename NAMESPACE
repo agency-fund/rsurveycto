@@ -2,9 +2,12 @@
 
 export(drop_empties)
 export(scto_auth)
+export(scto_catalog)
 export(scto_get_attachments)
 export(scto_meta)
+export(scto_quiet)
 export(scto_read)
+export(scto_read_all)
 export(scto_write)
 import(checkmate)
 importFrom(data.table,":=")
