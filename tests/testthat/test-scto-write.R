@@ -48,5 +48,5 @@ test_that('scto_write fill', {
   d2 = scto_read(auth, dataset_id)
 
   d3 = rbind(d0, d1, fill = TRUE)
-  expect_identical(d2, d3)
+  expect_identical(d2, d3, ignore_attr = 'scto_type')
 })
