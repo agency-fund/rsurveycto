@@ -1,11 +1,10 @@
 if (identical(Sys.getenv('NOT_CRAN'), 'true')) { # !on_cran()
-  auth = scto_auth(auth_file = auth_file)}
+  auth = scto_auth(auth_file = auth_file)
+  dataset_id = 'wallahs'
+  dataset_title = 'Wallahs'
+  d0 = scto_read(auth, dataset_id)}
 
 set.seed(as.integer(Sys.time()))
-
-dataset_id = 'wallahs'
-dataset_title = 'Wallahs'
-d0 = scto_read(auth, dataset_id)
 
 test_that('scto_write no exist', {
   skip_on_cran()
