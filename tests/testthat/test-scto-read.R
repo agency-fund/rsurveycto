@@ -40,4 +40,3 @@ test_that('scto_read_all ok', {
   db = scto_read_all(auth)
   expect_list(db, min.len = 1L)
 })
-
