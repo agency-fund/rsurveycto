@@ -52,7 +52,7 @@ scto_read = function(
   if (length(type) == 0L) {
     scto_abort(paste(
       'No form or dataset with ID `{.id {id}}` exists',
-      'on the server {.server `{auth$servername}`}.'))
+      'on the server `{.server {auth$servername}}`.'))
   } else if (type == 'form') {
     scto_data = scto_read_form(
       auth, id, start_date, review_status, private_key, drop_empty_cols,

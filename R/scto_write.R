@@ -39,6 +39,10 @@ scto_write = function(
 
   # check that dataset exists
   data_old = scto_read(auth, dataset_id, drop_empty_cols = FALSE)
+  if (attr(data_old, 'scto_type') != 'dataset') {
+    scto_abort(paste(
+      'ID `{.id {dataset_id}}` on the server `{.server {auth$servername}}`',
+      'corresponds to a form, not a dataset.'))}
 
   if (append) {
     assert_flag(fill)
