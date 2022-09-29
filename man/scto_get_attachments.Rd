@@ -2,7 +2,7 @@
 % Please edit documentation in R/scto_get_attachments.R
 \name{scto_get_attachments}
 \alias{scto_get_attachments}
-\title{Download file attachments from a SurveyCTO form}
+\title{Download file attachments from a SurveyCTO server}
 \usage{
 scto_get_attachments(
   auth,
@@ -31,7 +31,7 @@ A character vector of file names of the same length as \code{urls}, with
 \code{NA} for missing or invalid URLs.
 }
 \description{
-This function downloads files in bulk.
+This function can download encrypted and unencrypted files attached to forms.
 }
 \examples{
 \dontrun{

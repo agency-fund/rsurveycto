@@ -2,7 +2,7 @@
 % Please edit documentation in R/scto_write.R
 \name{scto_write}
 \alias{scto_write}
-\title{Upload data to SurveyCTO}
+\title{Write data to a SurveyCTO server}
 \usage{
 scto_write(
   auth,
@@ -37,8 +37,8 @@ A list with elements:
 }
 }
 \description{
-This function uses a web POST request to upload new data to a dataset on a
-SurveyCTO server. The function is in beta, so use with caution.
+This function updates an existing dataset using a web POST request, as
+uploading data is not officially supported by the SurveyCTO API.
 }
 \examples{
 \dontrun{

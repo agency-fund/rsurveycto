@@ -1,6 +1,6 @@
-#' Access SurveyCTO data using the API
+#' Read data from a SurveyCTO server
 #'
-#' These functions read data from a SurveyCTO server using the API.
+#' These functions can read both datasets and forms.
 #'
 #' @param auth [scto_auth()] object.
 #' @param id String indicating ID of the dataset or form.

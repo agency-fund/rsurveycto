@@ -1,5 +1,7 @@
 # rsurveycto 0.1.1
 * Added argument `validate` to `scto_auth()` for debugging.
+* Added column `title` to output of `scto_catalog()`.
+* Updated documentation.
 
 # rsurveycto 0.1.0
 * `scto_read()` no longer requires user to provide argument `type`.

@@ -3,7 +3,7 @@
 \name{scto_read}
 \alias{scto_read}
 \alias{scto_read_all}
-\title{Access SurveyCTO data using the API}
+\title{Read data from a SurveyCTO server}
 \usage{
 scto_read(
   auth,
@@ -58,7 +58,7 @@ named list of \code{data.table}s, one for each form and dataset, along with a
 \code{data.table} named ".catalog" from \code{scto_catalog()}.
 }
 \description{
-These functions read data from a SurveyCTO server using the API.
+These functions can read both datasets and forms.
 }
 \examples{
 \dontrun{

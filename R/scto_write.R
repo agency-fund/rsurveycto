@@ -1,7 +1,7 @@
-#' Upload data to SurveyCTO
+#' Write data to a SurveyCTO server
 #'
-#' This function uses a web POST request to upload new data to a dataset on a
-#' SurveyCTO server. The function is in beta, so use with caution.
+#' This function updates an existing dataset using a web POST request, as
+#' uploading data is not officially supported by the SurveyCTO API.
 #'
 #' @param auth [scto_auth()] object.
 #' @param data `data.frame` to upload.

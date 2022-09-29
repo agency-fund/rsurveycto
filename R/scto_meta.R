@@ -1,4 +1,4 @@
-#' Access SurveyCTO metadata
+#' Read metadata from a SurveyCTO server
 #'
 #' These functions read metadata from a SurveyCTO server.
 #'
@@ -6,7 +6,7 @@
 #'
 #' @return `scto_meta()` returns a nested list of metadata related to forms,
 #'   datasets, groups, and publishing information. `scto_catalog()` returns a
-#'   `data.table` with columns `type` ("form" or "dataset") and `id`.
+#'   `data.table` with columns `type` ("form" or "dataset"), `id`, and `title`.
 #'
 #' @examples
 #' \dontrun{
@@ -40,10 +40,12 @@ scto_meta = function(auth) {
 scto_catalog = function(auth) {
   m = scto_meta(auth)
   # surveycto enforces uniqueness of IDs across forms and datasets
-  ids = list(form = sapply(m$forms, function(x) x$id),
-             dataset = sapply(m$datasets, function(x) x$id))
-  d = lapply(ids, function(x) {
-    if (length(x) > 0) data.table(id = x) else data.table()})
-  d = data.table::rbindlist(d, use.names = TRUE, idcol = 'type')
+  types = c('datasets', 'forms')
+  func = function(x) x[c('id', 'title')]
+  d = cbind(
+    data.table(type = rep(
+      substr(types, 1, nchar(types) - 1), times = lengths(m[types]))),
+    rbindlist(
+      lapply(types, function(type) rbindlist(lapply(m[[type]], func)))))
   data.table::setkey(d)
   return(d)}

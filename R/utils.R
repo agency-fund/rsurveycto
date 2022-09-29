@@ -1,5 +1,5 @@
 #' @import checkmate
-#' @importFrom data.table data.table := set fread fwrite
+#' @importFrom data.table data.table := set fread fwrite rbindlist
 #' @importFrom glue glue
 #' @importFrom httr GET POST content add_headers headers cookies set_cookies
 NULL

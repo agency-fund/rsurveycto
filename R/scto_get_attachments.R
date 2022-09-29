@@ -1,6 +1,6 @@
-#' Download file attachments from a SurveyCTO form
+#' Download file attachments from a SurveyCTO server
 #'
-#' This function downloads files in bulk.
+#' This function can download encrypted and unencrypted files attached to forms.
 #'
 #' @param auth [scto_auth()] object.
 #' @param urls Character vector of API URLs for file attachments. Will typically
