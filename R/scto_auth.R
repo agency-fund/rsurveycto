@@ -24,24 +24,26 @@ get_session_auth = function(servername, username, password) {
   return(list(csrf_token = csrf_token, session_id = session_id))}
 
 
-#' Get a SurveyCTO authentication session object
+#' Authenticate with a SurveyCTO server
 #'
-#' Authenticates with SurveyCTO and fetches corresponding credentials.
+#' SurveyCTO's API supports basic authentication using a username and password.
+#' Make sure the user is assigned a role with permission to download data
+#' ("data manager" or greater) and "Allow server API access" is enabled.
 #'
-#' @param auth_file String indicating path to file containing authorization
-#'   information, which should have servername on the first line, username on
-#'   the second, and password on the third. If `auth_file` is not `NULL`, other
-#'   arguments are ignored. If `auth_file` is `NULL`, other arguments must be
-#'   provided.
+#' @param auth_file String indicating path to a text file containing the
+#'   server name on the first line, username on the second, and password on the
+#'   third. Other arguments are only used if `auth_file` is `NULL`.
 #' @param servername String indicating name of the SurveyCTO server.
 #' @param username String indicating username for the SurveyCTO account.
 #' @param password String indicating password for the SurveyCTO account.
+#' @param validate Logical indicating whether to validate credentials by calling
+#'   [scto_meta()]. Should only be set to `FALSE` for debugging.
 #'
 #' @return `scto_auth` object for an authenticated SurveyCTO session.
 #'
 #' @examples
 #' \dontrun{
-#' # preferred approach, avoids storing any credentials in code
+#' # preferred approach
 #' auth = scto_auth('scto_auth.txt')
 #'
 #' # alternate approach
@@ -53,7 +55,8 @@ get_session_auth = function(servername, username, password) {
 #'
 #' @export
 scto_auth = function(
-    auth_file = NULL, servername = NULL, username = NULL, password = NULL) {
+    auth_file = NULL, servername = NULL, username = NULL, password = NULL,
+    validate = TRUE) {
 
   if (is.null(auth_file)) {
     assert_string(servername)
@@ -71,6 +74,8 @@ scto_auth = function(
     username = auth_char[2L]
     password = auth_char[3L]}
 
+  assert_flag(validate)
+
   handle = curl::new_handle()
   curl::handle_setopt(
     handle = handle,
@@ -84,5 +89,5 @@ scto_auth = function(
               session_id = session_auth$session_id)
   class(auth) = 'scto_auth'
 
-  m = scto_meta(auth) # check for valid username and password
+  if (validate) m = scto_meta(auth)
   return(auth)}

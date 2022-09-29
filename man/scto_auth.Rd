@@ -2,37 +2,41 @@
 % Please edit documentation in R/scto_auth.R
 \name{scto_auth}
 \alias{scto_auth}
-\title{Get a SurveyCTO authentication session object}
+\title{Authenticate with a SurveyCTO server}
 \usage{
 scto_auth(
   auth_file = NULL,
   servername = NULL,
   username = NULL,
-  password = NULL
+  password = NULL,
+  validate = TRUE
 )
 }
 \arguments{
-\item{auth_file}{String indicating path to file containing authorization
-information, which should have servername on the first line, username on
-the second, and password on the third. If \code{auth_file} is not \code{NULL}, other
-arguments are ignored. If \code{auth_file} is \code{NULL}, other arguments must be
-provided.}
+\item{auth_file}{String indicating path to a text file containing the
+server name on the first line, username on the second, and password on the
+third. Other arguments are only used if \code{auth_file} is \code{NULL}.}
 
 \item{servername}{String indicating name of the SurveyCTO server.}
 
 \item{username}{String indicating username for the SurveyCTO account.}
 
 \item{password}{String indicating password for the SurveyCTO account.}
+
+\item{validate}{Logical indicating whether to validate credentials by calling
+\code{\link[=scto_meta]{scto_meta()}}. Should only be set to \code{FALSE} for debugging.}
 }
 \value{
 \code{scto_auth} object for an authenticated SurveyCTO session.
 }
 \description{
-Authenticates with SurveyCTO and fetches corresponding credentials.
+SurveyCTO's API supports basic authentication using a username and password.
+Make sure the user is assigned a role with permission to download data
+("data manager" or greater) and "Allow server API access" is enabled.
 }
 \examples{
 \dontrun{
-# preferred approach, avoids storing any credentials in code
+# preferred approach
 auth = scto_auth('scto_auth.txt')
 
 # alternate approach

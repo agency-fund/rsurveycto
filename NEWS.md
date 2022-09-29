@@ -1,3 +1,6 @@
+# rsurveycto 0.1.1
+* Added argument `validate` to `scto_auth()` for debugging.
+
 # rsurveycto 0.1.0
 * `scto_read()` no longer requires user to provide argument `type`.
 * Added `scto_read_all()` and `scto_catalog()` functions to read all datasets and forms.
