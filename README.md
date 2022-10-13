@@ -1,7 +1,7 @@
 # rsurveycto
 
-[![R-CMD-check](https://github.com/youth-impact/rsurveycto/workflows/R-CMD-check/badge.svg)](https://github.com/youth-impact/rsurveycto/actions)
-[![codecov](https://codecov.io/gh/youth-impact/rsurveycto/branch/main/graph/badge.svg)](https://codecov.io/gh/youth-impact/rsurveycto)
+[![R-CMD-check](https://github.com/agency-fund/rsurveycto/workflows/R-CMD-check/badge.svg)](https://github.com/agency-fund/rsurveycto/actions)
+[![codecov](https://codecov.io/gh/agency-fund/rsurveycto/branch/main/graph/badge.svg)](https://codecov.io/gh/agency-fund/rsurveycto)
 [![CRAN Status](https://www.r-pkg.org/badges/version/rsurveycto)](https://cran.r-project.org/package=rsurveycto)
 
 ## Overview
@@ -21,7 +21,7 @@ Install the development version:
 ```r
 if (!requireNamespace('remotes', quietly = TRUE))
   install.packages('remotes')
-remotes::install_github('youth-impact/rsurveycto')
+remotes::install_github('agency-fund/rsurveycto')
 ```
 
 ## Usage
@@ -43,4 +43,4 @@ cases = scto_read(auth, 'cases')
 catalog = scto_catalog(auth)
 ```
 
-For more details, see the [reference documentation](https://youth-impact.github.io/rsurveycto/reference/index.html).
+For more details, see the [reference documentation](https://agency-fund.github.io/rsurveycto/reference/index.html).

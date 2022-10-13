@@ -11,7 +11,7 @@ Description: 'SurveyCTO' is a platform for mobile data collection in offline set
   to read datasets and forms from a 'SurveyCTO' server into R as 'data.table's
   and to download file attachments. The package also has limited support to
   write datasets to a server.
-URL: https://youth-impact.github.io/rsurveycto/, https://github.com/youth-impact/rsurveycto
+URL: https://agency-fund.github.io/rsurveycto/, https://github.com/agency-fund/rsurveycto
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

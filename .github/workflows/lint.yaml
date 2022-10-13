@@ -30,29 +30,29 @@ jobs:
           repository = '${{ github.event.repository.name }}'
           branch = system("echo ${BRANCH_NAME}", intern = TRUE)
 
-          source('https://raw.githubusercontent.com/youth-impact/rsurveycto/main/.github/custom-lint.R')
+          source('https://raw.githubusercontent.com/agency-fund/rsurveycto/main/.github/custom-lint.R')
 
           lfDt = getLintDt(lintsFound, repository, branch)
           issueStr = getFormattedIssueStr(lfDt)
 
           library('gh')
           issuesGet = gh(
-            glue('GET /repos/youth-impact/{repository}/issues'),
+            glue('GET /repos/agency-fund/{repository}/issues'),
             labels = 'lint')
 
           if (length(issuesGet) > 0) {
             issuesPatch = gh(
-              glue('PATCH /repos/youth-impact/{repository}/issues/{issuesGet[[1L]]$number}'),
+              glue('PATCH /repos/agency-fund/{repository}/issues/{issuesGet[[1L]]$number}'),
               state = 'closed')}
 
           if (nrow(lfDt) > 0) {
             issuesPost = gh(
-              glue('POST /repos/youth-impact/{repository}/issues'),
+              glue('POST /repos/agency-fund/{repository}/issues'),
               title = 'lintr found issues with code',
               body = issueStr)
 
             labelsPost = gh(
-              glue('POST /repos/youth-impact/{repository}/issues/{issuesPost$number}/labels'),
+              glue('POST /repos/agency-fund/{repository}/issues/{issuesPost$number}/labels'),
               'lint')}
 
         shell: Rscript {0}
