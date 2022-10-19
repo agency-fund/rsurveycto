@@ -81,4 +81,4 @@ drop_empties = function(d) {
   if (nrow(d) == 0) return(d)
   idx = sapply(d, is_empty)
   cols = colnames(d)[which(idx)]
-  d[, c(cols) := NULL][]}
+  d[, c(cols) := NULL]}

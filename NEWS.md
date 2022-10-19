@@ -1,3 +1,6 @@
+# rsurveycto 0.1.2
+* Fixed `drop_empties()` to return result invisibly.
+
 # rsurveycto 0.1.1
 * Added argument `validate` to `scto_auth()` for debugging.
 * Added column `title` to output of `scto_catalog()`.
