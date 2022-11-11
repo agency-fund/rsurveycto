@@ -1,10 +1,10 @@
 Package: rsurveycto
 Type: Package
 Title: Interact with Data on 'SurveyCTO'
-Version: 0.1.2
+Version: 0.1.3
 Authors@R: c(
-  person('Jake', 'Hughey', , 'jakejhughey@gmail.com', c('aut', 'cre')),
-  person('Robert', 'On', , 'roberton@gmail.com', 'aut'))
+  person('Jake', 'Hughey', , 'jake@agency.fund', c('aut', 'cre')),
+  person('Robert', 'On', , 'robert@agency.fund', 'aut'))
 Description: 'SurveyCTO' is a platform for mobile data collection in offline settings.
   The 'rsurveycto' R package uses the 'SurveyCTO' REST API
   <https://docs.surveycto.com/05-exporting-and-publishing-data/05-api-access/01.api-access.html>

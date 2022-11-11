@@ -1,4 +1,4 @@
-#' Download file attachments from a SurveyCTO server
+#' Fetch file attachments from a SurveyCTO server
 #'
 #' This function can download encrypted and unencrypted files attached to forms.
 #'

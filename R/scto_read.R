@@ -61,7 +61,7 @@ scto_read = function(
     scto_data = scto_read_dataset(
       auth, id, drop_empty_cols, convert_datetime, datetime_format)}
 
-  return(scto_data)}
+  return(scto_data[])}
 
 
 #' @rdname scto_read

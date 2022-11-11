@@ -6,7 +6,8 @@
 #'
 #' @return `scto_meta()` returns a nested list of metadata related to forms,
 #'   datasets, groups, and publishing information. `scto_catalog()` returns a
-#'   `data.table` with columns `type` ("form" or "dataset"), `id`, and `title`.
+#'   `data.table` with columns `type` ("form" or "dataset"), `id`, `title`, and
+#'   version.
 #'
 #' @examples
 #' \dontrun{
@@ -19,6 +20,7 @@
 #'
 #' @export
 scto_meta = function(auth) {
+  assert_class(auth, 'scto_auth')
   url = glue(
     'https://{auth$servername}.surveycto.com/console/forms-groups-datasets/get')
 
@@ -41,11 +43,13 @@ scto_catalog = function(auth) {
   m = scto_meta(auth)
   # surveycto enforces uniqueness of IDs across forms and datasets
   types = c('datasets', 'forms')
-  func = function(x) x[c('id', 'title')]
+  func = function(x) x[c('id', 'title', 'version')]
   d = cbind(
     data.table(type = rep(
       substr(types, 1, nchar(types) - 1), times = lengths(m[types]))),
     rbindlist(
       lapply(types, function(type) rbindlist(lapply(m[[type]], func)))))
+  # form versions come back as string, too big for int, so make numeric
+  set(d, j = 'version', value = as.numeric(d$version))
   data.table::setkey(d)
   return(d)}

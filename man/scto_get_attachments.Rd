@@ -2,7 +2,7 @@
 % Please edit documentation in R/scto_get_attachments.R
 \name{scto_get_attachments}
 \alias{scto_get_attachments}
-\title{Download file attachments from a SurveyCTO server}
+\title{Fetch file attachments from a SurveyCTO server}
 \usage{
 scto_get_attachments(
   auth,
