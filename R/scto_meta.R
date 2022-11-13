@@ -16,7 +16,8 @@
 #' catalog = scto_catalog(auth)
 #' }
 #'
-#' @seealso [scto_auth()], [scto_read()], [scto_write()]
+#' @seealso [scto_auth()], [scto_read()], [scto_get_form_definitions()],
+#'   [scto_write()]
 #'
 #' @export
 scto_meta = function(auth) {
