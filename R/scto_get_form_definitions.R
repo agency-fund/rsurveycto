@@ -42,6 +42,8 @@ scto_get_form_definitions = function(auth, form_ids = NULL) {
 get_form_def = function(auth, id) {
   request_url = glue(
     'https://{auth$servername}.surveycto.com/forms/{id}/design')
+
+  scto_bullets(c(v = 'Fetching definition for form `{.form {id}}`.'))
   res = GET(request_url, add_headers('x-csrf-token' = auth$csrf_token))
   status = res$status_code
   content = rawToChar(res$content)
