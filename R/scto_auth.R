@@ -71,7 +71,8 @@ scto_auth = function(
     if (!test_character(auth_char, any.missing = FALSE, len = 3L)) {
       scto_abort(paste(
         '`auth_file` "{auth_file}" must have exactly three lines:',
-        'servername, username, and password.'))}
+        'servername, username, and password.'))
+    }
     servername = auth_char[1L]
     username = auth_char[2L]
     password = auth_char[3L]
@@ -92,6 +93,6 @@ scto_auth = function(
               session_id = session_auth$session_id)
   class(auth) = 'scto_auth'
 
-  if (validate) m = scto_meta(auth)
+  if (validate) invisible(scto_meta(auth))
   return(auth)
 }

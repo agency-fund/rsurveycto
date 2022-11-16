@@ -77,7 +77,7 @@ scto_read = function(
 
   r = lapply(seq_len(nrow(catalog_now)), function(i) {
     id = catalog_now$id[i]
-    scto_data = if (catalog_now$type[i] == 'form') {
+    if (catalog_now$type[i] == 'form') {
       scto_read_form(
         auth, id, start_date, review_status, private_key, drop_empty_cols,
         convert_datetime, datetime_format)

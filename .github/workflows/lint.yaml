@@ -43,7 +43,8 @@ jobs:
           if (length(issuesGet) > 0) {
             issuesPatch = gh(
               glue('PATCH /repos/agency-fund/{repository}/issues/{issuesGet[[1L]]$number}'),
-              state = 'closed')}
+              state = 'closed')
+          }
 
           if (nrow(lfDt) > 0) {
             issuesPost = gh(
@@ -53,6 +54,7 @@ jobs:
 
             labelsPost = gh(
               glue('POST /repos/agency-fund/{repository}/issues/{issuesPost$number}/labels'),
-              'lint')}
+              'lint')
+          }
 
         shell: Rscript {0}

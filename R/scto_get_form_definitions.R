@@ -61,7 +61,7 @@ get_form_def = function(auth, id) {
     cli::cli_abort('Non-200 response: {status}')
   }
 
-  d = jsonlite::fromJSON(rawToChar(res$content))
+  d = jsonlite::fromJSON(content)
   idx = which(sapply(d, function(x) inherits(x, 'matrix')))
   for (i in idx) {
     cols = d[[i]][1, ]
