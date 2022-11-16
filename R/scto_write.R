@@ -42,14 +42,17 @@ scto_write = function(
   if (attr(data_old, 'scto_type') != 'dataset') {
     scto_abort(paste(
       'ID `{.id {dataset_id}}` on the server `{.server {auth$servername}}`',
-      'corresponds to a form, not a dataset.'))}
+      'corresponds to a form, not a dataset.'))
+  }
 
   if (append) {
     assert_flag(fill)
     if (!fill && !setequal(colnames(data), colnames(data_old))) {
       scto_abort(paste(
         'If `fill` is FALSE, column names of `data` must match',
-        'those of the dataset `{.dataset {dataset_id}}`.'))}}
+        'those of the dataset `{.dataset {dataset_id}}`.'))
+    }
+  }
 
   # TODO: potential function arguments that need to be tested/validated before
   # turning into actual function arguments.
@@ -79,4 +82,5 @@ scto_write = function(
       dataset_file = httr::upload_file(path)))
 
   r = list(data_old = data_old, response = upload_res)
-  return(r)}
+  return(r)
+}

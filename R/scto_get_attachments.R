@@ -67,7 +67,10 @@ scto_get_attachments = function(
     } else {
       res = POST(
         urls[i], body = list(private_key = httr::upload_file(private_key)))
-      writeBin(res$content, path)}}
+      writeBin(res$content, path)
+    }
+  }
 
   r[idx] = filenames
-  return(r)}
+  return(r)
+}

@@ -4,15 +4,18 @@ assert_read_args = function(
   assert_flag(drop_empty_cols)
   assert_character(convert_datetime, any.missing = FALSE, null.ok = TRUE)
   assert_string(datetime_format)
-  invisible()}
+  invisible()
+}
 
 
 get_resource = function(auth, type, request_url, private_key) {
   res = if (type == 'form' && !is.null(private_key)) {
     POST(request_url, body = list(private_key = httr::upload_file(private_key)))
   } else {
-    curl::curl_fetch_memory(request_url, handle = auth$handle)}
-  return(res)}
+    curl::curl_fetch_memory(request_url, handle = auth$handle)
+  }
+  return(res)
+}
 
 
 get_resource_retry = function(auth, type, request_url, private_key) {
@@ -23,8 +26,11 @@ get_resource_retry = function(auth, type, request_url, private_key) {
     while (n_retry > 0) {
       Sys.sleep(3)
       res = get_resource(auth, type, request_url, private_key)
-      n_retry = if (res$status_code == 200L) 0 else n_retry - 1}}
-  return(res)}
+      n_retry = if (res$status_code == 200L) 0 else n_retry - 1
+    }
+  }
+  return(res)
+}
 
 
 get_scto_data = function(
@@ -37,14 +43,16 @@ get_scto_data = function(
 
   if (status != 200L) {
     cli::cli_alert_info('Response content:\n{content}')
-    scto_abort('Non-200 response: {status}')}
+    scto_abort('Non-200 response: {status}')
+  }
 
   scto_data = if (content == '') {
     data.table()
   } else if (type == 'form') {
     data.table(jsonlite::fromJSON(content, flatten = TRUE))
   } else {
-    fread(text = content, na.strings = '')}
+    fread(text = content, na.strings = '')
+  }
   data.table::setattr(scto_data, 'scto_type', type)
 
   if (drop_empty_cols) drop_empties(scto_data)
@@ -52,9 +60,11 @@ get_scto_data = function(
   cols = intersect(colnames(scto_data), convert_datetime)
   for (col in cols) {
     set(scto_data, j = col, value = as.POSIXct(
-      scto_data[[col]], format = datetime_format))}
+      scto_data[[col]], format = datetime_format))
+  }
 
-  return(scto_data[])}
+  return(scto_data[])
+}
 
 
 scto_read_form = function(
@@ -69,7 +79,8 @@ scto_read_form = function(
   scto_data = get_scto_data(
     auth, 'form', request_url, drop_empty_cols, convert_datetime,
     datetime_format, private_key)
-  return(scto_data)}
+  return(scto_data)
+}
 
 
 scto_read_dataset = function(
@@ -82,4 +93,5 @@ scto_read_dataset = function(
   scto_data = get_scto_data(
     auth, 'dataset', request_url, drop_empty_cols, convert_datetime,
     datetime_format)
-  return(scto_data)}
+  return(scto_data)
+}

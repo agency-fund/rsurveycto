@@ -6,7 +6,8 @@ get_session_auth = function(servername, username, password) {
   if (is.null(csrf_token)) {
     scto_abort(paste(
       'Unable to access server {.server `{servername}`}.',
-      'Please check that server is running.'))}
+      'Please check that server is running.'))
+  }
 
   login_url = glue(
     'https://{servername}.surveycto.com/login?spring-security-redirect=%2F')
@@ -21,7 +22,8 @@ get_session_auth = function(servername, username, password) {
   scto_cookies = cookies(login_res)
   session_id = scto_cookies$value[scto_cookies$name == 'JSESSIONID']
 
-  return(list(csrf_token = csrf_token, session_id = session_id))}
+  return(list(csrf_token = csrf_token, session_id = session_id))
+}
 
 
 #' Authenticate with a SurveyCTO server
@@ -72,7 +74,8 @@ scto_auth = function(
         'servername, username, and password.'))}
     servername = auth_char[1L]
     username = auth_char[2L]
-    password = auth_char[3L]}
+    password = auth_char[3L]
+  }
 
   assert_flag(validate)
 
@@ -90,4 +93,5 @@ scto_auth = function(
   class(auth) = 'scto_auth'
 
   if (validate) m = scto_meta(auth)
-  return(auth)}
+  return(auth)
+}

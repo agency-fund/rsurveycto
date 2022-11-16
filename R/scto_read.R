@@ -70,7 +70,8 @@ scto_read = function(
     # backticks aren't exactly right, but let's see if anyone notices
     scto_abort(paste(
       'No form(s) or dataset(s) with ID(s) `{.id {ids_bad}}` exist(s)',
-      'on the server `{.server {auth$servername}}`.'))}
+      'on the server `{.server {auth$servername}}`.'))
+  }
 
   catalog_now = if (is.null(ids)) catalog else catalog[catalog$id %in% ids]
 
@@ -82,7 +83,9 @@ scto_read = function(
         convert_datetime, datetime_format)
     } else {
       scto_read_dataset(
-        auth, id, drop_empty_cols, convert_datetime, datetime_format)}})
+        auth, id, drop_empty_cols, convert_datetime, datetime_format)
+    }
+  })
 
   if (length(r) == 1L && simplify) {
     r = r[[1L]]
@@ -90,4 +93,5 @@ scto_read = function(
     names(r) = catalog_now$id
     r$.catalog = catalog # surveycto prohibits "." in IDs, so we're safe
   }
-  return(r)}
+  return(r)
+}
