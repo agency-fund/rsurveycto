@@ -6,29 +6,34 @@
 #' @param auth [scto_auth()] object.
 #' @param form_ids Character vector indicating IDs of the forms. `NULL`
 #'   indicates all forms.
+#' @param simplify Logical indicating whether to return the definition for one
+#'   form as a simple list instead of a named, nested list.
 #'
-#' @return A named list of lists containing the definition for each form.
+#' @return If `simplify` is `TRUE` and getting one form definition, a list.
+#'   Otherwise a named list of lists containing the definition for each form.
 #'
 #' @examples
 #' \dontrun{
 #' auth = scto_auth('scto_auth.txt')
-#' scto_defs = scto_get_form_definitions(auth, 'my_form')
+#' scto_def = scto_get_form_definitions(auth, 'my_form')
+#' scto_defs = scto_get_form_definitions(auth)
 #' }
 #'
 #' @seealso [scto_auth()], [scto_meta()], [scto_read()],
 #'   [scto_get_attachments()], [scto_write()]
 #'
 #' @export
-scto_get_form_definitions = function(auth, form_ids = NULL) {
+scto_get_form_definitions = function(auth, form_ids = NULL, simplify = TRUE) {
   catalog = scto_catalog(auth)
-  ids = catalog[catalog$type == 'form']$id
   assert_character(form_ids, any.missing = FALSE, unique = TRUE, null.ok = TRUE)
+  assert_flag(simplify)
+  ids = catalog[catalog$type == 'form']$id
 
   if (!is.null(form_ids) && !(all(form_ids %in% ids))) {
-    bad_forms = form_ids[!(form_ids %in% ids)]
+    ids_bad = form_ids[!(form_ids %in% ids)]
     # backticks aren't exactly right, but let's see if anyone notices
     scto_abort(paste(
-      'No form(s) with ID(s) `{.id {bad_forms}}` exist(s)',
+      'No form(s) with ID(s) `{.id {ids_bad}}` exist(s)',
       'on the server `{.server {auth$servername}}`.'))}
 
   if (is.null(form_ids)) form_ids = ids
@@ -36,6 +41,7 @@ scto_get_form_definitions = function(auth, form_ids = NULL) {
   # works even if no forms
   r = lapply(form_ids, function(id) get_form_def(auth, id))
   names(r) = form_ids
+  if (length(r) == 1L && simplify) r = r[[1L]]
   return(r)}
 
 

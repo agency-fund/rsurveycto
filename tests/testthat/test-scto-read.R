@@ -35,8 +35,15 @@ test_that('scto_read form encrypted key', {
   expect_data_table(d, ncols = 20L)
 })
 
-test_that('scto_read_all ok', {
+test_that('scto_read not simplify', {
   skip_on_cran()
-  db = scto_read_all(auth)
+  db = scto_read(auth, 'enumerators', simplify = FALSE)
+  expect_list(db, min.len = 1L)
+  lapply(db, function(d) expect_data_table(d))
+})
+
+test_that('scto_read all', {
+  skip_on_cran()
+  db = scto_read(auth)
   expect_list(db, min.len = 1L)
 })

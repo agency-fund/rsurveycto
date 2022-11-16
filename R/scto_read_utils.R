@@ -54,23 +54,12 @@ get_scto_data = function(
     set(scto_data, j = col, value = as.POSIXct(
       scto_data[[col]], format = datetime_format))}
 
-  return(scto_data)}
+  return(scto_data[])}
 
 
 scto_read_form = function(
     auth, id, start_date, review_status, private_key, drop_empty_cols,
     convert_datetime, datetime_format) {
-
-  start_date = as.POSIXct(start_date)
-  assert_posixct(start_date, any.missing = FALSE, len = 1L)
-  start_date = max(1, as.numeric(start_date))
-
-  review_status = match.arg(
-    review_status, c('approved', 'pending', 'rejected'), several.ok = TRUE)
-  review_status = paste(review_status, collapse = ',')
-
-  assert_string(private_key, null.ok = TRUE)
-  if (!is.null(private_key)) assert_file_exists(private_key)
 
   request_url = glue(
     'https://{auth$servername}.surveycto.com/api/v2/forms/',
@@ -85,6 +74,7 @@ scto_read_form = function(
 
 scto_read_dataset = function(
     auth, id, drop_empty_cols, convert_datetime, datetime_format) {
+
   request_url = glue(
     'https://{auth$servername}.surveycto.com/api/v2/datasets/data/csv/{id}')
 

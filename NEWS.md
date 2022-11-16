@@ -1,3 +1,7 @@
+# rsurveycto 0.1.4
+* Enabled `scto_read()` to read from one, multiple, or all forms and datasets.
+* Added `simplify` argument to `scto_read()` and `scto_get_form_definitions()`.
+
 # rsurveycto 0.1.3
 * Fixed `scto_read()` to not return result invisibly.
 * Added column `version` to output of `scto_catalog()`.

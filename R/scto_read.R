@@ -1,9 +1,10 @@
 #' Read data from a SurveyCTO server
 #'
-#' These functions can read both datasets and forms.
+#' This function can read both datasets and forms.
 #'
 #' @param auth [scto_auth()] object.
-#' @param id String indicating ID of the dataset or form.
+#' @param ids Character vector indicating IDs of the datasets and/or forms.
+#'   `NULL` indicates all datasets and forms.
 #' @param start_date Date-time or something coercible to a date-time
 #'   indicating the earliest date-time for which to fetch data. Only used for
 #'   forms.
@@ -19,16 +20,19 @@
 #'   any columns to datetimes.
 #' @param datetime_format String indicating format of datetimes from SurveyCTO.
 #'   See [strptime()].
+#' @param simplify Logical indicating whether to return only a `data.table`
+#'   instead of a list of `data.table`s if reading one form or dataset.
 #'
-#' @return `scto_read()` returns a `data.table`. `scto_read_all()` returns a
-#'   named list of `data.table`s, one for each form and dataset, along with a
-#'   `data.table` named ".catalog" from `scto_catalog()`.
+#' @return If `simplify` is `TRUE` and reading one form or dataset, a
+#'   `data.table`. Otherwise a named list of `data.table`s, one for each form
+#'   and dataset, along with a `data.table` named ".catalog" from
+#'   `scto_catalog()`.
 #'
 #' @examples
 #' \dontrun{
 #' auth = scto_auth('scto_auth.txt')
 #' scto_data = scto_read(auth, 'my_form')
-#' scto_db = scto_read_all(auth)
+#' scto_db = scto_read(auth)
 #' }
 #'
 #' @seealso [scto_auth()], [scto_meta()], [scto_get_form_definitions()],
@@ -36,49 +40,43 @@
 #'
 #' @export
 scto_read = function(
-    auth, id, start_date = '1900-01-01', review_status = 'approved',
+    auth, ids = NULL, start_date = '1900-01-01', review_status = 'approved',
     private_key = NULL, drop_empty_cols = TRUE,
     convert_datetime = c(
       'CompletionDate', 'SubmissionDate', 'starttime', 'endtime'),
-    datetime_format = '%b %e, %Y %I:%M:%S %p') {
-
-  assert_string(id)
-  assert_read_args(auth, drop_empty_cols, convert_datetime, datetime_format)
+    datetime_format = '%b %e, %Y %I:%M:%S %p', simplify = TRUE) {
 
   catalog = scto_catalog(auth)
-  id_now = id
-  type = catalog[id_now == id]$type
+  assert_character(ids, any.missing = FALSE, unique = TRUE, null.ok = TRUE)
 
-  if (length(type) == 0L) {
+  start_date = as.POSIXct(start_date)
+  assert_posixct(start_date, any.missing = FALSE, len = 1L)
+  start_date = max(1, as.numeric(start_date))
+
+  review_status = match.arg(
+    review_status, c('approved', 'pending', 'rejected'), several.ok = TRUE)
+  review_status = paste(review_status, collapse = ',')
+
+  assert_string(private_key, null.ok = TRUE)
+  if (!is.null(private_key)) assert_file_exists(private_key)
+
+  assert_flag(drop_empty_cols)
+  assert_character(convert_datetime, any.missing = FALSE, null.ok = TRUE)
+  assert_string(datetime_format)
+  assert_flag(simplify)
+
+  if (!is.null(ids) && !(all(ids %in% catalog$id))) {
+    ids_bad = ids[!(ids %in% catalog$id)]
+    # backticks aren't exactly right, but let's see if anyone notices
     scto_abort(paste(
-      'No form or dataset with ID `{.id {id}}` exists',
-      'on the server `{.server {auth$servername}}`.'))
-  } else if (type == 'form') {
-    scto_data = scto_read_form(
-      auth, id, start_date, review_status, private_key, drop_empty_cols,
-      convert_datetime, datetime_format)
-  } else {
-    scto_data = scto_read_dataset(
-      auth, id, drop_empty_cols, convert_datetime, datetime_format)}
+      'No form(s) or dataset(s) with ID(s) `{.id {ids_bad}}` exist(s)',
+      'on the server `{.server {auth$servername}}`.'))}
 
-  return(scto_data[])}
+  catalog_now = if (is.null(ids)) catalog else catalog[catalog$id %in% ids]
 
-
-#' @rdname scto_read
-#' @export
-scto_read_all = function(
-    auth, start_date = '1900-01-01', review_status = 'approved',
-    private_key = NULL, drop_empty_cols = TRUE,
-    convert_datetime = c(
-      'CompletionDate', 'SubmissionDate', 'starttime', 'endtime'),
-    datetime_format = '%b %e, %Y %I:%M:%S %p') {
-
-  assert_read_args(auth, drop_empty_cols, convert_datetime, datetime_format)
-  catalog = scto_catalog(auth)
-
-  r = lapply(seq_len(nrow(catalog)), function(i) {
-    id = catalog$id[i]
-    scto_data = if (catalog$type[i] == 'form') {
+  r = lapply(seq_len(nrow(catalog_now)), function(i) {
+    id = catalog_now$id[i]
+    scto_data = if (catalog_now$type[i] == 'form') {
       scto_read_form(
         auth, id, start_date, review_status, private_key, drop_empty_cols,
         convert_datetime, datetime_format)
@@ -86,6 +84,10 @@ scto_read_all = function(
       scto_read_dataset(
         auth, id, drop_empty_cols, convert_datetime, datetime_format)}})
 
-  names(r) = catalog$id
-  r$.catalog = catalog # surveycto prohibits "." in IDs, so we're safe
+  if (length(r) == 1L && simplify) {
+    r = r[[1L]]
+  } else {
+    names(r) = catalog_now$id
+    r$.catalog = catalog # surveycto prohibits "." in IDs, so we're safe
+  }
   return(r)}
