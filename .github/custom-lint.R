@@ -120,7 +120,8 @@ newDefaults = linters_with_defaults(
   cyclocomp_linter = NULL,
   double_quotes_linter = Linter(doubleQuotesLinter),
   line_length_linter(120),
-  single_quotes_linter = NULL)
+  single_quotes_linter = NULL,
+  object_usage_linter = NULL)
 
 lintsFound = lint_dir(
   linters = newDefaults, pattern = rex('.', or(one_of('Rr'), 'Rmd'), end))
