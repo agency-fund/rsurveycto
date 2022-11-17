@@ -27,7 +27,8 @@ scto_quiet = function(quiet = NULL) {
   quiet_old = getOption('rsurveycto_quiet')
   if (is.null(quiet)) return(quiet_old)
   options(rsurveycto_quiet = quiet)
-  invisible(quiet_old)}
+  invisible(quiet_old)
+}
 
 
 scto_theme = function() {
@@ -37,27 +38,32 @@ scto_theme = function() {
     span.id = list(color = '#D55E00'), # vermillion
     span.dataset = list(color = '#56B4E9'), # skyblue
     span.form = list(color = '#009E73'), # bluishgreen
-    span.filename = list(color = '#CC79A7'))} # reddishpurple
+    span.filename = list(color = '#CC79A7')) # reddishpurple
+}
 
 
 scto_bullets = function(text, .envir = parent.frame()) {
   if (isTRUE(scto_quiet()) || identical(Sys.getenv('TESTTHAT'), 'true')) {
-    return(invisible())}
+    return(invisible())
+  }
 
   cli::cli_div(theme = scto_theme())
-  cli::cli_bullets(text, .envir = .envir)}
+  cli::cli_bullets(text, .envir = .envir)
+}
 
 
 scto_abort = function(message, ..., .envir = parent.frame()) {
   call = rlang::caller_env()
   cli::cli_div(theme = scto_theme())
-  cli::cli_abort(message = message, ..., .envir = .envir, call = call)}
+  cli::cli_abort(message = message, ..., .envir = .envir, call = call)
+}
 
 
 is_empty = function(x) {
   i = is.na(x)
   if (is.character(x)) i = i | x == ''
-  return(all(i))}
+  return(all(i))
+}
 
 
 #' Drop empty columns from a data.table
@@ -81,4 +87,5 @@ drop_empties = function(d) {
   if (nrow(d) == 0) return(d)
   idx = sapply(d, is_empty)
   cols = colnames(d)[which(idx)]
-  d[, c(cols) := NULL]}
+  d[, c(cols) := NULL]
+}

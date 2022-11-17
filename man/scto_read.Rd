@@ -2,34 +2,25 @@
 % Please edit documentation in R/scto_read.R
 \name{scto_read}
 \alias{scto_read}
-\alias{scto_read_all}
 \title{Read data from a SurveyCTO server}
 \usage{
 scto_read(
   auth,
-  id,
+  ids = NULL,
   start_date = "1900-01-01",
   review_status = "approved",
   private_key = NULL,
   drop_empty_cols = TRUE,
   convert_datetime = c("CompletionDate", "SubmissionDate", "starttime", "endtime"),
-  datetime_format = "\%b \%e, \%Y \%I:\%M:\%S \%p"
-)
-
-scto_read_all(
-  auth,
-  start_date = "1900-01-01",
-  review_status = "approved",
-  private_key = NULL,
-  drop_empty_cols = TRUE,
-  convert_datetime = c("CompletionDate", "SubmissionDate", "starttime", "endtime"),
-  datetime_format = "\%b \%e, \%Y \%I:\%M:\%S \%p"
+  datetime_format = "\%b \%e, \%Y \%I:\%M:\%S \%p",
+  simplify = TRUE
 )
 }
 \arguments{
 \item{auth}{\code{\link[=scto_auth]{scto_auth()}} object.}
 
-\item{id}{String indicating ID of the dataset or form.}
+\item{ids}{Character vector indicating IDs of the datasets and/or forms.
+\code{NULL} indicates all datasets and forms.}
 
 \item{start_date}{Date-time or something coercible to a date-time
 indicating the earliest date-time for which to fetch data. Only used for
@@ -51,20 +42,24 @@ any columns to datetimes.}
 
 \item{datetime_format}{String indicating format of datetimes from SurveyCTO.
 See \code{\link[=strptime]{strptime()}}.}
+
+\item{simplify}{Logical indicating whether to return only a \code{data.table}
+instead of a list of \code{data.table}s if reading one form or dataset.}
 }
 \value{
-\code{scto_read()} returns a \code{data.table}. \code{scto_read_all()} returns a
-named list of \code{data.table}s, one for each form and dataset, along with a
-\code{data.table} named ".catalog" from \code{scto_catalog()}.
+If \code{simplify} is \code{TRUE} and reading one form or dataset, a
+\code{data.table}. Otherwise a named list of \code{data.table}s, one for each form
+and dataset, along with a \code{data.table} named ".catalog" from
+\code{scto_catalog()}.
 }
 \description{
-These functions can read both datasets and forms.
+This function can read both datasets and forms.
 }
 \examples{
 \dontrun{
 auth = scto_auth('scto_auth.txt')
 scto_data = scto_read(auth, 'my_form')
-scto_db = scto_read_all(auth)
+scto_db = scto_read(auth)
 }
 
 }

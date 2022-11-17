@@ -44,17 +44,18 @@ scto_get_attachments = function(
   if (!any(idx)) return(r)
 
   urls = urls[idx]
-  x = strsplit(urls, '/')
   filenames = basename(urls) # depends on SurveyCTO making filenames unique
 
   # devtools said these longer filenames were non-portable
+  # x = strsplit(urls, '/')
   # filenames = paste0(sapply(x, `[[`, 9L), '__', sapply(x, `[[`, 11L))
   # filenames = sub('^uuid:', '', filenames)
 
   coll = makeAssertCollection()
   for (filename in filenames) {
     assert_path_for_output(
-      file.path(output_dir, filename), overwrite = overwrite, add = coll)}
+      file.path(output_dir, filename), overwrite = overwrite, add = coll)
+  }
   reportAssertions(coll)
 
   if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
@@ -67,7 +68,10 @@ scto_get_attachments = function(
     } else {
       res = POST(
         urls[i], body = list(private_key = httr::upload_file(private_key)))
-      writeBin(res$content, path)}}
+      writeBin(res$content, path)
+    }
+  }
 
   r[idx] = filenames
-  return(r)}
+  return(r)
+}

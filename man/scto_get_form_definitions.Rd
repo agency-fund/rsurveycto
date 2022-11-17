@@ -4,16 +4,20 @@
 \alias{scto_get_form_definitions}
 \title{Fetch form definitions from a SurveyCTO server}
 \usage{
-scto_get_form_definitions(auth, form_ids = NULL)
+scto_get_form_definitions(auth, form_ids = NULL, simplify = TRUE)
 }
 \arguments{
 \item{auth}{\code{\link[=scto_auth]{scto_auth()}} object.}
 
 \item{form_ids}{Character vector indicating IDs of the forms. \code{NULL}
 indicates all forms.}
+
+\item{simplify}{Logical indicating whether to return the definition for one
+form as a simple list instead of a named, nested list.}
 }
 \value{
-A named list of lists containing the definition for each form.
+If \code{simplify} is \code{TRUE} and getting one form definition, a list.
+Otherwise a named list of lists containing the definition for each form.
 }
 \description{
 This function fetches spreadsheet form definitions corresponding to the xlsx
@@ -22,7 +26,8 @@ files downloadable in the Design tab of the SurveyCTO console.
 \examples{
 \dontrun{
 auth = scto_auth('scto_auth.txt')
-scto_defs = scto_get_form_definitions(auth, 'my_form')
+scto_def = scto_get_form_definitions(auth, 'my_form')
+scto_defs = scto_get_form_definitions(auth)
 }
 
 }

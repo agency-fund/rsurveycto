@@ -30,12 +30,14 @@ scto_meta = function(auth) {
 
   if (res$status_code != 200L) {
     scto_abort(
-      'Invalid username or password for server `{.server {auth$servername}}`.')}
+      'Invalid username or password for server `{.server {auth$servername}}`.')
+  }
 
   scto_bullets(
     c(v = 'Reading metadata for server `{.server {auth$servername}}`.'))
   m = content(res, as = 'parsed')
-  return(m)}
+  return(m)
+}
 
 
 #' @rdname scto_meta
@@ -53,4 +55,5 @@ scto_catalog = function(auth) {
   # form versions come back as string, too big for int, so make numeric
   set(d, j = 'version', value = as.numeric(d$version))
   data.table::setkey(d)
-  return(d)}
+  return(d)
+}

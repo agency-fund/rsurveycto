@@ -24,7 +24,10 @@ doubleQuotesLinter = function(sourceFile) {
           type = 'style',
           message = 'Only use single-quotes.',
           line = line,
-          ranges = list(c(col1, col2)))})})}
+          ranges = list(c(col1, col2)))
+      })
+    })
+}
 
 
 getLintIgnore = function(path = 'lint_ignore.csv') {
@@ -33,18 +36,22 @@ getLintIgnore = function(path = 'lint_ignore.csv') {
   } else {
     data.table(
       filename = as.character(), line_number = as.integer(),
-      message = as.character(), line = as.character())}
-  return(lintIgnore)}
+      message = as.character(), line = as.character())
+  }
+  return(lintIgnore)
+}
 
 
 getLintDt = function(lintsFound, repository = NULL, branch = NULL) {
   if (is.null(repository)) {
     dirIndexes = gregexpr('/', getwd())[[1L]]
-    repository = substr(getwd(), dirIndexes[length(dirIndexes)] + 1L, nchar(getwd()))}
+    repository = substr(getwd(), dirIndexes[length(dirIndexes)] + 1L, nchar(getwd()))
+  }
 
   if (is.null(branch)) branch = 'main'
 
-  lfDt = unique(as.data.table(lintsFound), by = c('filename', 'line_number', 'message'))
+  lfDt = unique(
+    as.data.table(lintsFound), by = c('filename', 'line_number', 'message'))
 
   lfDt[, lint_link := sprintf(
     'https://github.com/hugheylab/%s/blob/%s/%s#L%s',
@@ -55,14 +62,16 @@ getLintDt = function(lintsFound, repository = NULL, branch = NULL) {
   lintIgnore = getLintIgnore()
   lintIgnoreNotFound = lintIgnore[!lfDt, on = colnames(lintIgnore)]
   if (nrow(lintIgnoreNotFound) > 0) {
-    warning('lint_ignore.csv contains lines not found in the current code.')}
+    warning('lint_ignore.csv contains lines not found in the current code.')
+  }
   lfDt = lfDt[!lintIgnore, on = colnames(lintIgnore)]
 
   newlineEsc = ' \r\n'
   lfDt[, format_line := sprintf(
     '%s. %s line %s: %s (%s) %s    ```r %s    %s  %s    ```',
     .I, filename, line_number, message, lint_link, newlineEsc, newlineEsc, line, newlineEsc)]
-  return(lfDt)}
+  return(lfDt)
+}
 
 
 getFormattedIssueStr = function(lfDt) {
@@ -90,15 +99,19 @@ getFormattedIssueStr = function(lfDt) {
 
     issueStr = sprintf(
       '%s%sWarning, lint_ignore.csv contains lines not found in the current code: %s%s',
-      issueStr, newlineEsc, newlineEsc, notFoundStr)}
+      issueStr, newlineEsc, newlineEsc, notFoundStr)
+  }
 
-  return(issueStr)}
+  return(issueStr)
+}
 
 ########################################
 
 if (!exists('repository')) {
   dirIndexes = gregexpr('/', getwd())[[1]]
-  repository = substr(getwd(), dirIndexes[length(dirIndexes)] + 1, nchar(getwd()))}
+  repository = substr(getwd(), dirIndexes[length(dirIndexes)] + 1, nchar(getwd()))
+}
+
 if (!exists('branch')) branch = 'main'
 
 newDefaults = linters_with_defaults(
@@ -107,9 +120,7 @@ newDefaults = linters_with_defaults(
   cyclocomp_linter = NULL,
   double_quotes_linter = Linter(doubleQuotesLinter),
   line_length_linter(120),
-  brace_linter = NULL,
-  single_quotes_linter = NULL,
-  object_usage_linter = NULL)
+  single_quotes_linter = NULL)
 
 lintsFound = lint_dir(
   linters = newDefaults, pattern = rex('.', or(one_of('Rr'), 'Rmd'), end))
