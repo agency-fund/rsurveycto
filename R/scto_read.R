@@ -31,8 +31,8 @@
 #' scto_db = scto_read_all(auth)
 #' }
 #'
-#' @seealso [scto_auth()], [scto_meta()], [scto_get_attachments()],
-#'   [scto_write()]
+#' @seealso [scto_auth()], [scto_meta()], [scto_get_form_definitions()],
+#'   [scto_get_attachments()], [scto_write()]
 #'
 #' @export
 scto_read = function(
@@ -61,7 +61,7 @@ scto_read = function(
     scto_data = scto_read_dataset(
       auth, id, drop_empty_cols, convert_datetime, datetime_format)}
 
-  return(scto_data)}
+  return(scto_data[])}
 
 
 #' @rdname scto_read

@@ -2,7 +2,7 @@
 % Please edit documentation in R/scto_get_attachments.R
 \name{scto_get_attachments}
 \alias{scto_get_attachments}
-\title{Download file attachments from a SurveyCTO server}
+\title{Fetch file attachments from a SurveyCTO server}
 \usage{
 scto_get_attachments(
   auth,
@@ -42,5 +42,6 @@ filenames = scto_get_attachments(auth, scto_data[['my_attachment']])
 
 }
 \seealso{
-\code{\link[=scto_auth]{scto_auth()}}, \code{\link[=scto_read]{scto_read()}}, \code{\link[=scto_write]{scto_write()}}
+\code{\link[=scto_auth]{scto_auth()}}, \code{\link[=scto_read]{scto_read()}}, \code{\link[=scto_get_form_definitions]{scto_get_form_definitions()}},
+\code{\link[=scto_write]{scto_write()}}
 }

@@ -1,3 +1,8 @@
+# rsurveycto 0.1.3
+* Fixed `scto_read()` to not return result invisibly.
+* Added column `version` to output of `scto_catalog()`.
+* Added `scto_get_form_definitions()` to do just that.
+
 # rsurveycto 0.1.2
 * Fixed `drop_empties()` to return result invisibly.
 

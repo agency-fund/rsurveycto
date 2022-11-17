@@ -15,7 +15,8 @@ scto_catalog(auth)
 \value{
 \code{scto_meta()} returns a nested list of metadata related to forms,
 datasets, groups, and publishing information. \code{scto_catalog()} returns a
-\code{data.table} with columns \code{type} ("form" or "dataset"), \code{id}, and \code{title}.
+\code{data.table} with columns \code{type} ("form" or "dataset"), \code{id}, \code{title}, and
+version.
 }
 \description{
 These functions read metadata from a SurveyCTO server.
@@ -29,5 +30,6 @@ catalog = scto_catalog(auth)
 
 }
 \seealso{
-\code{\link[=scto_auth]{scto_auth()}}, \code{\link[=scto_read]{scto_read()}}, \code{\link[=scto_write]{scto_write()}}
+\code{\link[=scto_auth]{scto_auth()}}, \code{\link[=scto_read]{scto_read()}}, \code{\link[=scto_get_form_definitions]{scto_get_form_definitions()}},
+\code{\link[=scto_write]{scto_write()}}
 }

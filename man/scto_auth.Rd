@@ -45,6 +45,6 @@ auth = scto_auth('my_server', 'my_user', 'my_pw', auth_file = NULL)
 
 }
 \seealso{
-\code{\link[=scto_read]{scto_read()}}, \code{\link[=scto_meta]{scto_meta()}}, \code{\link[=scto_get_attachments]{scto_get_attachments()}},
-\code{\link[=scto_write]{scto_write()}}
+\code{\link[=scto_read]{scto_read()}}, \code{\link[=scto_meta]{scto_meta()}}, \code{\link[=scto_get_form_definitions]{scto_get_form_definitions()}},
+\code{\link[=scto_get_attachments]{scto_get_attachments()}}, \code{\link[=scto_write]{scto_write()}}
 }
