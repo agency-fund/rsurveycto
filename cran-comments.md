@@ -6,7 +6,15 @@
 
 ### R-hub
 
-  0 errors ✓ | 0 warnings ✓ | 1 note x
+  0 errors ✓ | 0 warnings ✓ | 2 notes x
+
+❯ checking CRAN incoming feasibility ... NOTE
+  Maintainer: 'Jake Hughey <jake@agency.fund>'
+  
+  New maintainer:
+    Jake Hughey <jake@agency.fund>
+  Old maintainer(s):
+    Jake Hughey <jakejhughey@gmail.com>
 
 ❯ checking for detritus in the temp directory ... NOTE
   Found the following files/directories:
@@ -14,10 +22,12 @@
 
 ## Changes from current CRAN release
 
-* Fixed `drop_empties()` to return result invisibly.
-* Added argument `validate` to `scto_auth()` for debugging.
-* Added column `title` to output of `scto_catalog()`.
-* Updated documentation.
+* Changed maintainer email address.
+* Enabled `scto_read()` to read from one, multiple, or all forms and datasets.
+* Added `simplify` argument to `scto_read()` and `scto_get_form_definitions()`.
+* Fixed `scto_read()` to not return result invisibly.
+* Added column `version` to output of `scto_catalog()`.
+* Added `scto_get_form_definitions()` to do just that.
 
 ## Additional information
 
