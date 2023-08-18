@@ -1,3 +1,6 @@
+# rsurveycto 0.1.5
+* Fixed linting issues.
+
 # rsurveycto 0.1.4
 * Enabled `scto_read()` to read from one, multiple, or all forms and datasets.
 * Added `simplify` argument to `scto_read()` and `scto_get_form_definitions()`.

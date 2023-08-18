@@ -71,6 +71,7 @@ scto_read = function(
     scto_abort(paste(
       'No form(s) or dataset(s) with ID(s) `{.id {ids_bad}}` exist(s)',
       'on the server `{.server {auth$servername}}`.'))
+    ids_bad # for lintr
   }
 
   catalog_now = if (is.null(ids)) catalog else catalog[catalog$id %in% ids]

@@ -9,7 +9,7 @@ set.seed(as.integer(Sys.time()))
 
 test_that('scto_write no exist', {
   skip_on_cran()
-  # skip_if(Sys.getenv('GITHUB_JOB') == 'R-CMD-check') # avoid concurrent changes
+  skip_if(Sys.getenv('GITHUB_JOB') == 'R-CMD-check') # avoid concurrent changes
   expect_error(scto_write(auth, 'rhinos'))
 })
 
@@ -31,7 +31,7 @@ test_that('scto_write no append', {
 
 test_that('scto_write no fill', {
   skip_on_cran()
-  # skip_if(Sys.getenv('GITHUB_JOB') == 'R-CMD-check') # avoid concurrent changes
+  skip_if(Sys.getenv('GITHUB_JOB') == 'R-CMD-check') # avoid concurrent changes
   d1 = copy(d0)
   d1[, tree := NULL]
   expect_error(scto_write(auth, d1, dataset_id, append = TRUE, fill = FALSE))

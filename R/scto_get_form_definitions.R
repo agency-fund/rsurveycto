@@ -35,6 +35,7 @@ scto_get_form_definitions = function(auth, form_ids = NULL, simplify = TRUE) {
     scto_abort(paste(
       'No form(s) with ID(s) `{.id {ids_bad}}` exist(s)',
       'on the server `{.server {auth$servername}}`.'))
+    ids_bad # for lintr
   }
 
   if (is.null(form_ids)) form_ids = ids

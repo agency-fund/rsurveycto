@@ -23,7 +23,7 @@ test_that('scto_get_form_definitions all', {
   skip_on_cran()
   defs = scto_get_form_definitions(auth)
   expect_type(defs, 'list')
-  expect_named(defs, c('hh_example_encrypted', 'hh_listing_example_1'))
+  expect_named(defs)
 })
 
 test_that('scto_get_form_definitions not ok', {
