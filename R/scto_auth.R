@@ -21,8 +21,8 @@ get_session_auth = function(servername, username, password) {
 
   scto_cookies = cookies(login_res)
   session_id = scto_cookies$value[scto_cookies$name == 'JSESSIONID']
-
-  return(list(csrf_token = csrf_token, session_id = session_id))
+  session_auth = list(csrf_token = csrf_token, session_id = session_id)
+  session_auth
 }
 
 
@@ -94,5 +94,5 @@ scto_auth = function(
   class(auth) = 'scto_auth'
 
   if (validate) invisible(scto_meta(auth))
-  return(auth)
+  auth
 }

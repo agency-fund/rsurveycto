@@ -73,5 +73,5 @@ scto_get_attachments = function(
   }
 
   r[idx] = filenames
-  return(r)
+  r
 }

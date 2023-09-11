@@ -53,7 +53,7 @@ and dataset, along with a \code{data.table} named ".catalog" from
 \code{scto_catalog()}.
 }
 \description{
-This function can read both datasets and forms.
+This function can read datasets and forms.
 }
 \examples{
 \dontrun{

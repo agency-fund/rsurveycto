@@ -82,5 +82,5 @@ scto_write = function(
       dataset_file = httr::upload_file(path)))
 
   r = list(data_old = data_old, response = upload_res)
-  return(r)
+  r
 }

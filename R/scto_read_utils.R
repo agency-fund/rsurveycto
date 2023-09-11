@@ -14,7 +14,7 @@ get_resource = function(auth, type, request_url, private_key) {
   } else {
     curl::curl_fetch_memory(request_url, handle = auth$handle)
   }
-  return(res)
+  res
 }
 
 
@@ -29,7 +29,7 @@ get_resource_retry = function(auth, type, request_url, private_key) {
       n_retry = if (res$status_code == 200L) 0 else n_retry - 1
     }
   }
-  return(res)
+  res
 }
 
 
@@ -63,7 +63,7 @@ get_scto_data = function(
       scto_data[[col]], format = datetime_format))
   }
 
-  return(scto_data[])
+  scto_data[]
 }
 
 
@@ -76,10 +76,9 @@ scto_read_form = function(
     'data/wide/json/{id}?date={start_date}&r={review_status}')
 
   scto_bullets(c(v = 'Reading form `{.form {id}}`.'))
-  scto_data = get_scto_data(
+  get_scto_data(
     auth, 'form', request_url, drop_empty_cols, convert_datetime,
     datetime_format, private_key)
-  return(scto_data)
 }
 
 
@@ -90,8 +89,7 @@ scto_read_dataset = function(
     'https://{auth$servername}.surveycto.com/api/v2/datasets/data/csv/{id}')
 
   scto_bullets(c(v = 'Reading dataset `{.dataset {id}}`.'))
-  scto_data = get_scto_data(
+  get_scto_data(
     auth, 'dataset', request_url, drop_empty_cols, convert_datetime,
     datetime_format)
-  return(scto_data)
 }

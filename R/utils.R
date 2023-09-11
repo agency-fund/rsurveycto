@@ -1,5 +1,5 @@
 #' @import checkmate
-#' @importFrom data.table data.table := set fread fwrite rbindlist
+#' @importFrom data.table data.table := set fread fwrite rbindlist setnames
 #' @importFrom glue glue
 #' @importFrom httr GET POST content add_headers headers cookies set_cookies
 NULL
@@ -62,7 +62,7 @@ scto_abort = function(message, ..., .envir = parent.frame()) {
 is_empty = function(x) {
   i = is.na(x)
   if (is.character(x)) i = i | x == ''
-  return(all(i))
+  all(i)
 }
 
 

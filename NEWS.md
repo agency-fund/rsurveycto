@@ -1,3 +1,6 @@
+# rsurveycto 0.1.6
+* Added parsing of groups.
+
 # rsurveycto 0.1.5
 * Fixed linting issues.
 
