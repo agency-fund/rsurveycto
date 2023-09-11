@@ -60,6 +60,6 @@ scto_catalog = function(auth) {
   g = rbindlist(lapply(m$groups, \(x) x[c('id', 'title')]))
   setnames(g, group_cols)
   d = merge(d, g, by = group_cols[1L], sort = FALSE)
-  data.table::setcolorder(d, group_cols, after = ncol(d))
+  data.table::setcolorder(d, 2:5)
   data.table::setkey(d)
 }
