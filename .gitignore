@@ -7,3 +7,4 @@ inst/doc
 scto_auth.txt
 scto_data
 *.pem
+data-raw
