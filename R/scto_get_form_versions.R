@@ -63,7 +63,7 @@ get_form_def_excel = function(auth, url, ver) {
   sheets = c('survey', 'choices', 'settings')
   r = sapply(sheets, \(sheet) {
     # XML definition from API comes as strings anyway
-    d = setDT(readxl::read_excel(path, sheet, col_types = 'text'))
+    setDT(readxl::read_excel(path, sheet, col_types = 'text'))
     # d[, (colnames(d)) := lapply(.SD, as.character)]
   })
   r
@@ -92,8 +92,8 @@ scto_rbind_form_definitions = function(form_versions) {
   assert_data_table(form_versions)
   cols = c('survey', 'choices', 'settings')
   assert_names(colnames(form_versions), must.include = cols)
-  . = form_id = form_version = x = `_form_id` = `_form_version` = `_row_num` =
-    NULL
+  . = form_id = form_version = x = `_form_id` = `_form_version` = # nolint
+    `_row_num` = NULL # nolint
   r = list()
   for (col in cols) {
     r[[col]] = form_versions[
