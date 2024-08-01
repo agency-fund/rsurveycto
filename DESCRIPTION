@@ -19,7 +19,7 @@ RoxygenNote: 7.3.2
 Roxygen: list(markdown = TRUE)
 Depends: R (>= 4.1)
 Imports:
-  checkmate (>= 2.3.1),
+  checkmate (>= 2.3.2),
   cli (>= 3.6.3),
   curl (>= 5.2.1),
   data.table (>= 1.15.4),
@@ -28,7 +28,7 @@ Imports:
   jsonlite (>= 1.8.8),
   readxl (>= 1.4.3),
   rlang (>= 1.1.4),
-  withr (>= 3.0.0)
+  withr (>= 3.0.1)
 Suggests:
   knitr,
   rmarkdown,

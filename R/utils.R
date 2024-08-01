@@ -5,6 +5,23 @@
 NULL
 
 
+assert_form_ids = function(auth, form_ids) {
+  catalog = scto_catalog(auth)
+  ids = catalog[catalog$type == 'form']$id
+
+  if (!is.null(form_ids) && !(all(form_ids %in% ids))) {
+    ids_bad = form_ids[!(form_ids %in% ids)]
+    # backticks aren't exactly right, but let's see if anyone notices
+    scto_abort(paste(
+      'No form(s) with ID(s) `{.id {ids_bad}}` exist(s)',
+      'on the server `{.server {auth$servername}}`.'))
+    ids_bad # for lintr
+  }
+  if (is.null(form_ids)) form_ids = ids
+  form_ids
+}
+
+
 get_api_response = function(auth, request_url) {
   res = GET(request_url, add_headers('x-csrf-token' = auth$csrf_token))
   status = res$status_code

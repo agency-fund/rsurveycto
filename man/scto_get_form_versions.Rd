@@ -4,17 +4,18 @@
 \alias{scto_get_form_versions}
 \title{Fetch form versions from a SurveyCTO server}
 \usage{
-scto_get_form_versions(auth, form_id, definitions = TRUE)
+scto_get_form_versions(auth, form_ids = NULL, get_defs = !is.null(form_ids))
 }
 \arguments{
 \item{auth}{\code{\link[=scto_auth]{scto_auth()}} object.}
 
-\item{form_id}{String indicating the form ID.}
+\item{form_ids}{Character vector indicating the form IDs. \code{NULL} indicates
+all forms.}
 
-\item{definitions}{Logical indicating whether to fetch form definitions.}
+\item{get_defs}{Logical indicating whether to fetch form definitions.}
 }
 \value{
-A \code{data.table} with one row per version.
+A \code{data.table} with one row per version per form.
 }
 \description{
 This function fetches a form's version history.

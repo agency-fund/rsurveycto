@@ -36,8 +36,8 @@ This function can download encrypted and unencrypted files attached to forms.
 \examples{
 \dontrun{
 auth = scto_auth('scto_auth.txt')
-scto_data = scto_read(auth, 'my_form', 'form')
-filenames = scto_get_attachments(auth, scto_data[['my_attachment']])
+form_data = scto_read(auth, 'my_form', 'form')
+filenames = scto_get_attachments(auth, form_data[['my_attachment']], '.')
 }
 
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/scto_get_form_definitions.R
 \name{scto_get_form_definitions}
 \alias{scto_get_form_definitions}
-\title{Fetch form definitions from a SurveyCTO server}
+\title{Fetch deployed form definitions from a SurveyCTO server}
 \usage{
 scto_get_form_definitions(auth, form_ids = NULL, simplify = TRUE)
 }
@@ -20,14 +20,14 @@ If \code{simplify} is \code{TRUE} and getting one form definition, a list.
 Otherwise a named list of lists containing the definition for each form.
 }
 \description{
-This function fetches spreadsheet form definitions corresponding to the xlsx
+This function fetches deployed form definitions corresponding to the xlsx
 files downloadable in the Design tab of the SurveyCTO console.
 }
 \examples{
 \dontrun{
 auth = scto_auth('scto_auth.txt')
-scto_def = scto_get_form_definitions(auth, 'my_form')
-scto_defs = scto_get_form_definitions(auth)
+form_def = scto_get_form_definitions(auth, 'my_form')
+form_defs = scto_get_form_definitions(auth)
 }
 
 }

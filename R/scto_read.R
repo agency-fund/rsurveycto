@@ -31,8 +31,8 @@
 #' @examples
 #' \dontrun{
 #' auth = scto_auth('scto_auth.txt')
-#' scto_data = scto_read(auth, 'my_form')
-#' scto_db = scto_read(auth)
+#' form_data = scto_read(auth, 'my_form')
+#' all_data = scto_read(auth)
 #' }
 #'
 #' @export

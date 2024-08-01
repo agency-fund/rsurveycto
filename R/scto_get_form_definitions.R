@@ -1,6 +1,6 @@
-#' Fetch form definitions from a SurveyCTO server
+#' Fetch deployed form definitions from a SurveyCTO server
 #'
-#' This function fetches spreadsheet form definitions corresponding to the xlsx
+#' This function fetches deployed form definitions corresponding to the xlsx
 #' files downloadable in the Design tab of the SurveyCTO console.
 #'
 #' @param auth [scto_auth()] object.
@@ -15,27 +15,15 @@
 #' @examples
 #' \dontrun{
 #' auth = scto_auth('scto_auth.txt')
-#' scto_def = scto_get_form_definitions(auth, 'my_form')
-#' scto_defs = scto_get_form_definitions(auth)
+#' form_def = scto_get_form_definitions(auth, 'my_form')
+#' form_defs = scto_get_form_definitions(auth)
 #' }
 #'
 #' @export
 scto_get_form_definitions = function(auth, form_ids = NULL, simplify = TRUE) {
-  catalog = scto_catalog(auth)
   assert_character(form_ids, any.missing = FALSE, unique = TRUE, null.ok = TRUE)
   assert_flag(simplify)
-  ids = catalog[catalog$type == 'form']$id
-
-  if (!is.null(form_ids) && !(all(form_ids %in% ids))) {
-    ids_bad = form_ids[!(form_ids %in% ids)]
-    # backticks aren't exactly right, but let's see if anyone notices
-    scto_abort(paste(
-      'No form(s) with ID(s) `{.id {ids_bad}}` exist(s)',
-      'on the server `{.server {auth$servername}}`.'))
-    ids_bad # for lintr
-  }
-
-  if (is.null(form_ids)) form_ids = ids
+  form_ids = assert_form_ids(auth, form_ids)
 
   # works even if no forms
   r = lapply(form_ids, \(id) get_form_def(auth, id))
@@ -52,13 +40,16 @@ get_form_def = function(auth, id) {
   scto_bullets(c(v = 'Fetching definition for form `{.form {id}}`.'))
   content = get_api_response(auth, request_url)
 
-  d = jsonlite::fromJSON(content)
-  idx = which(sapply(d, \(x) inherits(x, 'matrix')))
+  r = jsonlite::fromJSON(content)
+  idx = which(sapply(r, \(x) inherits(x, 'matrix')))
   for (i in idx) {
-    cols = d[[i]][1, ]
-    d[[i]] = as.data.table(d[[i]][-1, , drop = FALSE])
-    setnames(d[[i]], cols)
+    cols = r[[i]][1L, ]
+    r[[i]] = as.data.table(r[[i]][-1L, , drop = FALSE])
+    setnames(r[[i]], cols)
+    for (j in colnames(r[[i]])) {
+      set(r[[i]], i = which(r[[i]][[j]] == ''), j = j, value = NA_character_)
+    }
   }
-  names(d) = sub('RowsAndColumns$', '', names(d))
-  d
+  names(r) = sub('RowsAndColumns$', '', names(r))
+  r
 }
