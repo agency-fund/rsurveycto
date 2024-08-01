@@ -4,8 +4,8 @@
 #' files downloadable in the Design tab of the SurveyCTO console.
 #'
 #' @param auth [scto_auth()] object.
-#' @param form_ids Character vector indicating IDs of the forms. `NULL`
-#'   indicates all forms.
+#' @param form_ids Character vector indicating the form IDs. `NULL` indicates
+#'   all forms.
 #' @param simplify Logical indicating whether to return the definition for one
 #'   form as a simple list instead of a named, nested list.
 #'
@@ -18,9 +18,6 @@
 #' scto_def = scto_get_form_definitions(auth, 'my_form')
 #' scto_defs = scto_get_form_definitions(auth)
 #' }
-#'
-#' @seealso [scto_auth()], [scto_meta()], [scto_read()],
-#'   [scto_get_attachments()], [scto_write()]
 #'
 #' @export
 scto_get_form_definitions = function(auth, form_ids = NULL, simplify = TRUE) {
@@ -53,21 +50,14 @@ get_form_def = function(auth, id) {
     'https://{auth$servername}.surveycto.com/forms/{id}/design')
 
   scto_bullets(c(v = 'Fetching definition for form `{.form {id}}`.'))
-  res = GET(request_url, add_headers('x-csrf-token' = auth$csrf_token))
-  status = res$status_code
-  content = rawToChar(res$content)
-
-  if (status != 200L) {
-    cli::cli_alert_info('Response content:\n{content}')
-    cli::cli_abort('Non-200 response: {status}')
-  }
+  content = get_api_response(auth, request_url)
 
   d = jsonlite::fromJSON(content)
   idx = which(sapply(d, \(x) inherits(x, 'matrix')))
   for (i in idx) {
     cols = d[[i]][1, ]
-    d[[i]] = data.table::as.data.table(d[[i]][-1, , drop = FALSE])
-    data.table::setnames(d[[i]], cols)
+    d[[i]] = as.data.table(d[[i]][-1, , drop = FALSE])
+    setnames(d[[i]], cols)
   }
   names(d) = sub('RowsAndColumns$', '', names(d))
   d

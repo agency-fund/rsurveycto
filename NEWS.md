@@ -1,3 +1,6 @@
+# rsurveycto 0.2.0
+* Added fetching of previous form versions and their definitions.
+
 # rsurveycto 0.1.6
 * Added parsing of groups.
 

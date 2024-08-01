@@ -35,9 +35,6 @@
 #' scto_db = scto_read(auth)
 #' }
 #'
-#' @seealso [scto_auth()], [scto_meta()], [scto_get_form_definitions()],
-#'   [scto_get_attachments()], [scto_write()]
-#'
 #' @export
 scto_read = function(
     auth, ids = NULL, start_date = '1900-01-01', review_status = 'approved',

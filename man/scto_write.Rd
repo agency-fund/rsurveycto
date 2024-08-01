@@ -47,7 +47,3 @@ r = scto_write(auth, data, 'my_dataset', 'My Dataset')
 }
 
 }
-\seealso{
-\code{\link[=scto_auth]{scto_auth()}}, \code{\link[=scto_meta]{scto_meta()}}, \code{\link[=scto_read]{scto_read()}},
-\code{\link[=scto_get_form_definitions]{scto_get_form_definitions()}}, \code{\link[=scto_get_attachments]{scto_get_attachments()}}
-}

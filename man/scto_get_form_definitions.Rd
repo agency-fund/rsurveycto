@@ -9,8 +9,8 @@ scto_get_form_definitions(auth, form_ids = NULL, simplify = TRUE)
 \arguments{
 \item{auth}{\code{\link[=scto_auth]{scto_auth()}} object.}
 
-\item{form_ids}{Character vector indicating IDs of the forms. \code{NULL}
-indicates all forms.}
+\item{form_ids}{Character vector indicating the form IDs. \code{NULL} indicates
+all forms.}
 
 \item{simplify}{Logical indicating whether to return the definition for one
 form as a simple list instead of a named, nested list.}
@@ -30,8 +30,4 @@ scto_def = scto_get_form_definitions(auth, 'my_form')
 scto_defs = scto_get_form_definitions(auth)
 }
 
-}
-\seealso{
-\code{\link[=scto_auth]{scto_auth()}}, \code{\link[=scto_meta]{scto_meta()}}, \code{\link[=scto_read]{scto_read()}},
-\code{\link[=scto_get_attachments]{scto_get_attachments()}}, \code{\link[=scto_write]{scto_write()}}
 }

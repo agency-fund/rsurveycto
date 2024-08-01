@@ -21,9 +21,6 @@
 #' filenames = scto_get_attachments(auth, scto_data[['my_attachment']])
 #' }
 #'
-#' @seealso [scto_auth()], [scto_read()], [scto_get_form_definitions()],
-#'   [scto_write()]
-#'
 #' @export
 scto_get_attachments = function(
     auth, urls, output_dir, private_key = NULL, overwrite = TRUE) {

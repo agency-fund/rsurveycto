@@ -29,7 +29,3 @@ catalog = scto_catalog(auth)
 }
 
 }
-\seealso{
-\code{\link[=scto_auth]{scto_auth()}}, \code{\link[=scto_read]{scto_read()}}, \code{\link[=scto_get_form_definitions]{scto_get_form_definitions()}},
-\code{\link[=scto_write]{scto_write()}}
-}

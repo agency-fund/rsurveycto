@@ -16,9 +16,6 @@
 #' catalog = scto_catalog(auth)
 #' }
 #'
-#' @seealso [scto_auth()], [scto_read()], [scto_get_form_definitions()],
-#'   [scto_write()]
-#'
 #' @export
 scto_meta = function(auth) {
   assert_class(auth, 'scto_auth')
@@ -35,7 +32,7 @@ scto_meta = function(auth) {
 
   scto_bullets(
     c(v = 'Reading metadata for server `{.server {auth$servername}}`.'))
-  m = content(res, as = 'parsed')
+  m = content(res, 'parsed')
   m
 }
 
@@ -53,13 +50,14 @@ scto_catalog = function(auth) {
     rbindlist(
       lapply(types, \(type) rbindlist(lapply(m[[type]], func)))))
   # form versions come back as string, too big for int, so make numeric
-  set(d, j = 'version', value = as.numeric(d$version))
+  # 2024-08-01: unclear why I thought numeric was preferable
+  # set(d, j = 'version', value = as.numeric(d$version))
   setnames(d, 'groupId', 'group_id')
 
   group_cols = c('group_id', 'group_title')
   g = rbindlist(lapply(m$groups, \(x) x[c('id', 'title')]))
   setnames(g, group_cols)
   d = merge(d, g, by = group_cols[1L], sort = FALSE)
-  data.table::setcolorder(d, 2:5)
-  data.table::setkey(d)
+  setcolorder(d, 2:5)
+  setkey(d)
 }

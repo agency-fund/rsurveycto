@@ -63,7 +63,3 @@ scto_db = scto_read(auth)
 }
 
 }
-\seealso{
-\code{\link[=scto_auth]{scto_auth()}}, \code{\link[=scto_meta]{scto_meta()}}, \code{\link[=scto_get_form_definitions]{scto_get_form_definitions()}},
-\code{\link[=scto_get_attachments]{scto_get_attachments()}}, \code{\link[=scto_write]{scto_write()}}
-}

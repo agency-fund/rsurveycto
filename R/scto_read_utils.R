@@ -53,7 +53,7 @@ get_scto_data = function(
   } else {
     fread(text = content, na.strings = '')
   }
-  data.table::setattr(scto_data, 'scto_type', type)
+  setattr(scto_data, 'scto_type', type)
 
   if (drop_empty_cols) drop_empties(scto_data)
 
