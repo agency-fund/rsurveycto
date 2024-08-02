@@ -2,9 +2,9 @@
 % Please edit documentation in R/scto_get_form_definitions.R
 \name{scto_get_form_definitions}
 \alias{scto_get_form_definitions}
-\title{Fetch deployed form definitions from a SurveyCTO server}
+\title{Fetch form definitions from a SurveyCTO server}
 \usage{
-scto_get_form_definitions(auth, form_ids = NULL, simplify = TRUE)
+scto_get_form_definitions(auth, form_ids = NULL, deployed_only = FALSE)
 }
 \arguments{
 \item{auth}{\code{\link[=scto_auth]{scto_auth()}} object.}
@@ -12,22 +12,24 @@ scto_get_form_definitions(auth, form_ids = NULL, simplify = TRUE)
 \item{form_ids}{Character vector indicating the form IDs. \code{NULL} indicates
 all forms.}
 
-\item{simplify}{Logical indicating whether to return the definition for one
-form as a simple list instead of a named, nested list.}
+\item{deployed_only}{Logical indicating whether to fetch definitions for all
+versions of each form, or only for the deployed version.}
 }
 \value{
-If \code{simplify} is \code{TRUE} and getting one form definition, a list.
-Otherwise a named list of lists containing the definition for each form.
+A \code{data.table} with one row per form (and per version, if
+\code{deployed_only} is \code{FALSE}). Definitions are returned as nested
+\code{data.table}s, which can be unnested using
+\code{\link[=scto_unnest_form_definitions]{scto_unnest_form_definitions()}}.
 }
 \description{
-This function fetches definitions for currently deployed forms. For previous
-form versions and their definitions, please see \code{\link[=scto_get_form_versions]{scto_get_form_versions()}}.
+This function fetches definitions for deployed and previous versions of one
+or more forms.
 }
 \examples{
 \dontrun{
 auth = scto_auth('scto_auth.txt')
-form_def = scto_get_form_definitions(auth, 'my_form')
-form_defs = scto_get_form_definitions(auth)
+form_defs = scto_get_form_definitions(auth, 'my_form')
+form_defs_unnest = scto_unnest_form_definitions(form_defs)
 }
 
 }

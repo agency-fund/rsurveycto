@@ -1,5 +1,5 @@
 # rsurveycto 0.2.0
-* Added fetching of previous form versions and their definitions.
+* Added fetching of previous (and deployed) form versions and their definitions. Breaking changes to `scto_get_form_definitions()`.
 
 # rsurveycto 0.1.6
 * Added parsing of groups.
