@@ -10,9 +10,9 @@ test_that('scto_get_form_versions one', {
   expect_names(names(vers), must.include = nms)
 })
 
-test_that('scto_get_form_versions one no get_defs', {
+test_that('scto_get_form_versions one get_defs false', {
   skip_on_cran()
-  vers = scto_get_form_versions(auth, 'hh_listing_example_1', FALSE)
+  vers = scto_get_form_versions(auth, 'hh_listing_example_1', get_defs = FALSE)
   expect_data_table(vers)
   expect_names(names(vers), disjunct.from = nms)
 })
@@ -29,10 +29,18 @@ test_that('scto_get_form_definitions not ok', {
   expect_error(scto_get_form_versions(auth, 'flux_capacitors'))
 })
 
-test_that('scto_rbind_form_definitions', {
+test_that('scto_unnest_form_definitions', {
   skip_on_cran()
   vers = scto_get_form_versions(auth, 'hh_listing_example_1')
-  defs = scto_rbind_form_definitions(vers)
+  defs = scto_unnest_form_definitions(vers)
+  expect_data_table(defs)
+  expect_names(names(defs), permutation.of = c('form_id', nms))
+})
+
+test_that('scto_unnest_form_definitions by_form_id false', {
+  skip_on_cran()
+  vers = scto_get_form_versions(auth, 'hh_listing_example_1')
+  defs = scto_unnest_form_definitions(vers, by_form_id = FALSE)
   expect_list(defs)
   expect_names(names(defs), permutation.of = nms)
 })

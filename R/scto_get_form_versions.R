@@ -7,12 +7,15 @@
 #'   all forms.
 #' @param get_defs Logical indicating whether to fetch form definitions.
 #'
-#' @return A `data.table` with one row per version per form.
+#' @return A `data.table` with one row per version per form. Definitions will be
+#'   returned as nested `data.table`s, which can be unnested using
+#'   [scto_unnest_form_definitions()].
 #'
 #' @examples
 #' \dontrun{
 #' auth = scto_auth('scto_auth.txt')
 #' form_versions = scto_get_form_versions(auth, 'my_form')
+#' form_defs = scto_unnest_form_definitions(form_versions)
 #' }
 #'
 #' @export
@@ -64,7 +67,6 @@ get_form_def_excel = function(auth, url, ver) {
   r = sapply(sheets, \(sheet) {
     # XML definition from API comes as strings anyway
     setDT(readxl::read_excel(path, sheet, col_types = 'text'))
-    # d[, (colnames(d)) := lapply(.SD, as.character)]
   })
   r
 }
@@ -76,31 +78,59 @@ get_form_def_excel = function(auth, url, ver) {
 #' form, which can make it easier to map values to labels in a later step.
 #'
 #' @param form_versions `data.table` returned by [scto_get_form_versions()].
+#' @param by_form_id Logical indicating whether to unnest definitions of
+#'   multiple versions of a given form (default), or to unnest definitions of
+#'   all forms together.
 #'
-#' @return A named list of `data.table`s for the survey, choices, and settings
-#'   components of the form definition.
+#' @return If `by_form_id` is `TRUE`, a `data.table` of `data.table`s for the
+#'   survey, choices, and settings components of the form definitions. Otherwise
+#'   a list of `data.table`s.
 #'
 #' @examples
 #' \dontrun{
 #' auth = scto_auth('scto_auth.txt')
 #' form_versions = scto_get_form_versions(auth, 'my_form')
-#' form_defs_rbind = scto_rbind_form_definitions(form_versions)
+#' form_defs = scto_unnest_form_definitions(form_versions)
 #' }
 #'
 #' @export
-scto_rbind_form_definitions = function(form_versions) {
+scto_unnest_form_definitions = function(form_versions, by_form_id = TRUE) {
   assert_data_table(form_versions)
-  cols = c('survey', 'choices', 'settings')
-  assert_names(colnames(form_versions), must.include = cols)
+  assert_flag(by_form_id)
+  form_cols = c('form_id', 'form_version')
+  def_cols = c('survey', 'choices', 'settings')
+  assert_names(colnames(form_versions), must.include = c(form_cols, def_cols))
+
   . = form_id = form_version = x = `_form_id` = `_form_version` = # nolint
     `_row_num` = NULL # nolint
-  r = list()
-  for (col in cols) {
-    r[[col]] = form_versions[
-      , rbindlist(x, use.names = TRUE, fill = TRUE),
-      by = .(`_form_id` = form_id, `_form_version` = form_version),
-      env = list(x = col)]
-    r[[col]][, `_row_num` := seq_len(.N), by = .(`_form_id`, `_form_version`)][]
+
+  # ugly and redundant, but struggled long enough
+  if (isTRUE(by_form_id)) {
+    r = lapply(unique(form_versions$form_id), \(.id) {
+      vers_now = form_versions[form_id == .id]
+      r_now = list()
+      for (j in def_cols) {
+        r_now[[j]] = vers_now[
+          , rbindlist(x, use.names = TRUE, fill = TRUE),
+          by = .(`_form_version` = form_version),
+          env = list(x = j)]
+        r_now[[j]][, `_row_num` := seq_len(.N), by = .(`_form_version`)][]
+      }
+      r_now
+    })
+    names(r) = unique(form_versions$form_id)
+    r = as.data.table(do.call(rbind, r), keep.rownames = 'form_id')
+
+  } else {
+    r = list()
+    for (j in def_cols) {
+      r[[j]] = form_versions[
+        , rbindlist(x, use.names = TRUE, fill = TRUE),
+        by = .(`_form_id` = form_id, `_form_version` = form_version),
+        env = list(x = j)]
+      r[[j]][, `_row_num` := seq_len(.N), by = .(`_form_id`, `_form_version`)][]
+    }
   }
+
   r
 }

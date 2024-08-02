@@ -15,7 +15,9 @@ all forms.}
 \item{get_defs}{Logical indicating whether to fetch form definitions.}
 }
 \value{
-A \code{data.table} with one row per version per form.
+A \code{data.table} with one row per version per form. Definitions will be
+returned as nested \code{data.table}s, which can be unnested using
+\code{\link[=scto_unnest_form_definitions]{scto_unnest_form_definitions()}}.
 }
 \description{
 This function fetches a form's version history.
@@ -24,6 +26,7 @@ This function fetches a form's version history.
 \dontrun{
 auth = scto_auth('scto_auth.txt')
 form_versions = scto_get_form_versions(auth, 'my_form')
+form_defs = scto_unnest_form_definitions(form_versions)
 }
 
 }

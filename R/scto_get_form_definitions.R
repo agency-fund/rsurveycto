@@ -1,7 +1,7 @@
 #' Fetch deployed form definitions from a SurveyCTO server
 #'
-#' This function fetches deployed form definitions corresponding to the xlsx
-#' files downloadable in the Design tab of the SurveyCTO console.
+#' This function fetches definitions for currently deployed forms. For previous
+#' form versions and their definitions, please see [scto_get_form_versions()].
 #'
 #' @param auth [scto_auth()] object.
 #' @param form_ids Character vector indicating the form IDs. `NULL` indicates

@@ -20,8 +20,8 @@ If \code{simplify} is \code{TRUE} and getting one form definition, a list.
 Otherwise a named list of lists containing the definition for each form.
 }
 \description{
-This function fetches deployed form definitions corresponding to the xlsx
-files downloadable in the Design tab of the SurveyCTO console.
+This function fetches definitions for currently deployed forms. For previous
+form versions and their definitions, please see \code{\link[=scto_get_form_versions]{scto_get_form_versions()}}.
 }
 \examples{
 \dontrun{
