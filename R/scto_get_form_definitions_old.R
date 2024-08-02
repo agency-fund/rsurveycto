@@ -21,7 +21,7 @@
 #'
 # #' @export
 # scto_get_form_definitions = function(auth, form_ids = NULL, simplify = TRUE) {
-#   assert_character(form_ids, any.missing = FALSE, unique = TRUE, null.ok = TRUE)
+# assert_character(form_ids, any.missing = FALSE, unique = TRUE, null.ok = TRUE)
 #   assert_flag(simplify)
 #   form_ids = assert_form_ids(auth, form_ids)
 #
