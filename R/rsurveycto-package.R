@@ -1,5 +1,5 @@
 #' @keywords internal
-"_PACKAGE"
+'_PACKAGE'
 
 ## usethis namespace: start
 #' @importFrom lifecycle deprecated
