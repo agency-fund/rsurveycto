@@ -28,7 +28,8 @@ See results for Mac, Windows, and Ubuntu [here]().
 
 ## Changes from current CRAN release
 
-* Added fetching of previous form versions and their definitions.
+* Added fetching of form metadata, including defintions, for previous and deployed versions using `scto_get_form_metadata()`.
+* Added unnesting of form definitions using `scto_unnest_form_definitions()`.
 
 ## Additional information
 

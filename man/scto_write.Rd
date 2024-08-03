@@ -37,6 +37,8 @@ A list with elements:
 }
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 This function updates an existing dataset using a web POST request, as
 uploading data is not officially supported by the SurveyCTO API.
 }

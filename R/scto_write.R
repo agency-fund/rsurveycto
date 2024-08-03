@@ -1,5 +1,8 @@
 #' Write data to a SurveyCTO server
 #'
+#' @description
+#' `r lifecycle::badge('experimental')`
+#'
 #' This function updates an existing dataset using a web POST request, as
 #' uploading data is not officially supported by the SurveyCTO API.
 #'
