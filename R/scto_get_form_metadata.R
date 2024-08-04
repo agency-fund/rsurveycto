@@ -40,7 +40,7 @@ get_form_meta = function(auth, id, deployed_only, get_defs) {
   request_url = glue(
     'https://{auth$servername}.surveycto.com/forms/{id}/files?t={unix_ms}')
 
-  scto_bullets(c(v = 'Fetching metadata for form `{.form {id}}`.'))
+  scto_bullets(c(v = 'Reading metadata for form `{.form {id}}`.'))
   content = get_api_response(auth, request_url)
 
   r = jsonlite::fromJSON(content)
