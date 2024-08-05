@@ -130,12 +130,13 @@ scto_unnest_form_definitions = function(form_metadata, by_form_id = TRUE) {
 }
 
 unnest_form_defs = function(form_metadata, form_versions, def_cols, form_cols) {
-  ..form_cols = .id = `_row_num` = NULL # nolint
+  .id = `_row_num` = NULL # nolint
   r = list()
   for (j in def_cols) {
     r[[j]] = rbindlist(
       form_metadata[[j]], use.names = TRUE, fill = TRUE, idcol = TRUE) |>
-      merge(form_versions[, c('.id', ..form_cols)], by = '.id', sort = FALSE)
+      merge(form_versions[, c('.id', form_cols), with = FALSE],
+            by = '.id', sort = FALSE)
     r[[j]][, `_row_num` := seq_len(.N), by = .id]
     r[[j]][, .id := NULL]
     setcolorder(r[[j]], form_cols)[]
