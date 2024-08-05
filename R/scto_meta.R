@@ -40,7 +40,7 @@ scto_meta = function(auth) {
 #' @export
 scto_catalog = function(auth) {
   # surveycto enforces uniqueness of IDs across forms and datasets
-  created_at = creationDate = form_version = type = NULL
+  created_at = creationDate = form_version = type = NULL # nolint
   m = scto_meta(auth)
 
   dataset_cols = c('id', 'title', 'version', 'groupId', 'casesDataset')
