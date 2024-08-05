@@ -60,7 +60,7 @@ get_scto_data = function(
   cols = intersect(colnames(scto_data), convert_datetime)
   for (col in cols) {
     set(scto_data, j = col, value = as.POSIXct(
-      scto_data[[col]], format = datetime_format))
+      scto_data[[col]], tz = 'UTC', format = datetime_format))
   }
 
   scto_data[]

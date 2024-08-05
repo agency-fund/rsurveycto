@@ -7,7 +7,7 @@
 scto_read(
   auth,
   ids = NULL,
-  start_date = "1900-01-01",
+  start_date = as.POSIXct("1900-01-01", tz = "UTC"),
   review_status = "approved",
   private_key = NULL,
   drop_empty_cols = TRUE,
@@ -23,8 +23,8 @@ scto_read(
 \code{NULL} indicates all datasets and forms.}
 
 \item{start_date}{Date-time or something coercible to a date-time
-indicating the earliest date-time for which to fetch data. Only used for
-forms.}
+indicating the earliest date-time (UTC timezone) for which to fetch data.
+Only used for forms.}
 
 \item{review_status}{String or character vector indicating which submissions
 to fetch. Possible values are "approved", "pending", "rejected", or any
