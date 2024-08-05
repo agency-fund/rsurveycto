@@ -102,40 +102,43 @@ get_form_def_excel = function(auth, url, ver) {
 scto_unnest_form_definitions = function(form_metadata, by_form_id = TRUE) {
   assert_data_table(form_metadata)
   assert_flag(by_form_id)
-  form_cols = c('form_id', 'form_version')
   def_cols = c('survey', 'choices', 'settings')
-  assert_names(colnames(form_metadata), must.include = c(form_cols, def_cols))
+  assert_names(
+    colnames(form_metadata),
+    must.include = c(c('form_id', 'form_version'), def_cols))
 
-  . = form_id = form_version = x = `_form_id` = `_form_version` = # nolint
-    `_row_num` = NULL # nolint
+  . = form_id = form_version = NULL # nolint
 
-  # ugly and redundant, but struggled long enough
+  form_versions = form_metadata[
+    , .(.id = seq_len(.N), `_form_id` = form_id,
+        `_form_version` = form_version)]
+
   if (isTRUE(by_form_id)) {
-    r = lapply(unique(form_metadata$form_id), \(.id) {
-      meta_now = form_metadata[form_id == .id]
-      r_now = list()
-      for (j in def_cols) {
-        r_now[[j]] = meta_now[
-          , rbindlist(x, use.names = TRUE, fill = TRUE),
-          by = .(`_form_version` = form_version),
-          env = list(x = j)]
-        r_now[[j]][, `_row_num` := seq_len(.N), by = .(`_form_version`)][]
-      }
-      r_now
+    r = lapply(unique(form_metadata$form_id), \(form_id_now) {
+      form_metadata_now = form_metadata[form_id == form_id_now]
+      unnest_form_defs(
+        form_metadata_now, form_versions, def_cols, '_form_version')
     })
     names(r) = unique(form_metadata$form_id)
     r = as.data.table(do.call(rbind, r), keep.rownames = 'form_id')
 
   } else {
-    r = list()
-    for (j in def_cols) {
-      r[[j]] = form_metadata[
-        , rbindlist(x, use.names = TRUE, fill = TRUE),
-        by = .(`_form_id` = form_id, `_form_version` = form_version),
-        env = list(x = j)]
-      r[[j]][, `_row_num` := seq_len(.N), by = .(`_form_id`, `_form_version`)][]
-    }
+    r = unnest_form_defs(
+      form_metadata, form_versions, def_cols, c('_form_id', '_form_version'))
   }
+  r
+}
 
+unnest_form_defs = function(form_metadata, form_versions, def_cols, form_cols) {
+  ..form_cols = .id = `_row_num` = NULL # nolint
+  r = list()
+  for (j in def_cols) {
+    r[[j]] = rbindlist(
+      form_metadata[[j]], use.names = TRUE, fill = TRUE, idcol = TRUE) |>
+      merge(form_versions[, c('.id', ..form_cols)], by = '.id', sort = FALSE)
+    r[[j]][, `_row_num` := seq_len(.N), by = .id]
+    r[[j]][, .id := NULL]
+    setcolorder(r[[j]], form_cols)[]
+  }
   r
 }
