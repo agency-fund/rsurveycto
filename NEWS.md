@@ -1,6 +1,7 @@
 # rsurveycto 0.2.0
 * Added fetching of form metadata, including defintions, for previous and deployed versions using `scto_get_form_metadata()`.
 * Added unnesting of form definitions using `scto_unnest_form_definitions()`.
+* Added information provided by `scto_catalog()`.
 
 # rsurveycto 0.1.6
 * Added parsing of groups.

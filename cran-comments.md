@@ -30,6 +30,7 @@ See results for Mac, Windows, and Ubuntu [here]().
 
 * Added fetching of form metadata, including defintions, for previous and deployed versions using `scto_get_form_metadata()`.
 * Added unnesting of form definitions using `scto_unnest_form_definitions()`.
+* Added information provided by `scto_catalog()`.
 
 ## Additional information
 

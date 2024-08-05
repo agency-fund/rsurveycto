@@ -6,8 +6,7 @@
 #'
 #' @return `scto_meta()` returns a nested list of metadata related to forms,
 #'   datasets, groups, and publishing information. `scto_catalog()` returns a
-#'   `data.table` with columns `type` ("form" or "dataset"), `id`, `title`,
-#'   `version`, `group_id`, and `group_title`.
+#'   `data.table` with one row per form or dataset.
 #'
 #' @examples
 #' \dontrun{
@@ -40,24 +39,30 @@ scto_meta = function(auth) {
 #' @rdname scto_meta
 #' @export
 scto_catalog = function(auth) {
-  m = scto_meta(auth)
   # surveycto enforces uniqueness of IDs across forms and datasets
-  types = c('datasets', 'forms')
-  func = \(x) x[c('id', 'title', 'version', 'groupId')]
-  d = cbind(
-    data.table(type = rep(
-      substr(types, 1, nchar(types) - 1), times = lengths(m[types]))),
-    rbindlist(
-      lapply(types, \(type) rbindlist(lapply(m[[type]], func)))))
-  # form versions come back as string, too big for int, so make numeric
-  # 2024-08-01: unclear why I thought numeric was preferable
-  # set(d, j = 'version', value = as.numeric(d$version))
-  setnames(d, 'groupId', 'group_id')
+  created_at = creationDate = form_version = type = NULL
+  m = scto_meta(auth)
 
-  group_cols = c('group_id', 'group_title')
+  dataset_cols = c('id', 'title', 'version', 'groupId', 'casesDataset')
+  datasets = rbindlist(
+    lapply(m$datasets, \(x) x[dataset_cols]), use.names = TRUE, fill = TRUE)
+  setnames(datasets, c('version', 'groupId', 'casesDataset'),
+           c('dataset_version', 'group_id', 'is_cases_dataset'))
+
+  form_cols = c('id', 'title', 'version', 'groupId', 'creationDate')
+  forms = rbindlist(
+    lapply(m$forms, \(x) x[form_cols]), use.names = TRUE, fill = TRUE)
+  forms[, created_at := as.POSIXct(creationDate / 1000, tz = 'UTC')]
+  forms[, creationDate := NULL]
+  setnames(forms, c('version', 'groupId'), c('form_version', 'group_id'))
+
+  d = rbind(forms, datasets, use.names = TRUE, fill = TRUE)
+  d[, type := fifelse(is.na(form_version), 'dataset', 'form')]
+
   g = rbindlist(lapply(m$groups, \(x) x[c('id', 'title')]))
-  setnames(g, group_cols)
-  d = merge(d, g, by = group_cols[1L], sort = FALSE)
-  setcolorder(d, 2:5)
-  setkey(d)
+  setnames(g, c('group_id', 'group_title'))
+  d = merge(d, g, by = 'group_id', sort = FALSE)
+  setcolorder(
+    d, c('id', 'title', 'type', 'created_at', 'form_version', 'dataset_version',
+         'is_cases_dataset', 'group_id', 'group_title'))
 }
