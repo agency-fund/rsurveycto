@@ -43,7 +43,8 @@ scto_catalog = function(auth) {
   created_at = creationDate = form_version = type = NULL # nolint
   m = scto_meta(auth)
 
-  dataset_cols = c('id', 'title', 'version', 'groupId', 'casesDataset')
+  dataset_cols = c(
+    'id', 'title', 'version', 'groupId', 'casesDataset', 'discriminator')
   datasets = rbindlist(
     lapply(m$datasets, \(x) x[dataset_cols]), use.names = TRUE, fill = TRUE)
   setnames(datasets, c('version', 'groupId', 'casesDataset'),
@@ -64,5 +65,5 @@ scto_catalog = function(auth) {
   d = merge(d, g, by = 'group_id', sort = FALSE)
   setcolorder(
     d, c('id', 'title', 'type', 'created_at', 'form_version', 'dataset_version',
-         'is_cases_dataset', 'group_id', 'group_title'))
+         'is_cases_dataset', 'discriminator', 'group_id', 'group_title'))
 }
