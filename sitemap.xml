@@ -1,48 +1,21 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://agency-fund.github.io/rsurveycto/404.html</loc>
-  </url>
-  <url>
-    <loc>https://agency-fund.github.io/rsurveycto/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://agency-fund.github.io/rsurveycto/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://agency-fund.github.io/rsurveycto/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://agency-fund.github.io/rsurveycto/index.html</loc>
-  </url>
-  <url>
-    <loc>https://agency-fund.github.io/rsurveycto/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://agency-fund.github.io/rsurveycto/reference/drop_empties.html</loc>
-  </url>
-  <url>
-    <loc>https://agency-fund.github.io/rsurveycto/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://agency-fund.github.io/rsurveycto/reference/scto_auth.html</loc>
-  </url>
-  <url>
-    <loc>https://agency-fund.github.io/rsurveycto/reference/scto_get_attachments.html</loc>
-  </url>
-  <url>
-    <loc>https://agency-fund.github.io/rsurveycto/reference/scto_get_form_definitions.html</loc>
-  </url>
-  <url>
-    <loc>https://agency-fund.github.io/rsurveycto/reference/scto_meta.html</loc>
-  </url>
-  <url>
-    <loc>https://agency-fund.github.io/rsurveycto/reference/scto_quiet.html</loc>
-  </url>
-  <url>
-    <loc>https://agency-fund.github.io/rsurveycto/reference/scto_read.html</loc>
-  </url>
-  <url>
-    <loc>https://agency-fund.github.io/rsurveycto/reference/scto_write.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://agency-fund.github.io/rsurveycto/404.html</loc></url>
+<url><loc>https://agency-fund.github.io/rsurveycto/LICENSE-text.html</loc></url>
+<url><loc>https://agency-fund.github.io/rsurveycto/LICENSE.html</loc></url>
+<url><loc>https://agency-fund.github.io/rsurveycto/authors.html</loc></url>
+<url><loc>https://agency-fund.github.io/rsurveycto/index.html</loc></url>
+<url><loc>https://agency-fund.github.io/rsurveycto/news/index.html</loc></url>
+<url><loc>https://agency-fund.github.io/rsurveycto/reference/drop_empties.html</loc></url>
+<url><loc>https://agency-fund.github.io/rsurveycto/reference/index.html</loc></url>
+<url><loc>https://agency-fund.github.io/rsurveycto/reference/rsurveycto-package.html</loc></url>
+<url><loc>https://agency-fund.github.io/rsurveycto/reference/scto_auth.html</loc></url>
+<url><loc>https://agency-fund.github.io/rsurveycto/reference/scto_get_attachments.html</loc></url>
+<url><loc>https://agency-fund.github.io/rsurveycto/reference/scto_get_form_definitions.html</loc></url>
+<url><loc>https://agency-fund.github.io/rsurveycto/reference/scto_get_form_metadata.html</loc></url>
+<url><loc>https://agency-fund.github.io/rsurveycto/reference/scto_meta.html</loc></url>
+<url><loc>https://agency-fund.github.io/rsurveycto/reference/scto_quiet.html</loc></url>
+<url><loc>https://agency-fund.github.io/rsurveycto/reference/scto_read.html</loc></url>
+<url><loc>https://agency-fund.github.io/rsurveycto/reference/scto_unnest_form_definitions.html</loc></url>
+<url><loc>https://agency-fund.github.io/rsurveycto/reference/scto_write.html</loc></url>
 </urlset>
+
