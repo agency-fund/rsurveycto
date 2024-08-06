@@ -22,9 +22,9 @@ get_resource_retry = function(auth, type, request_url, private_key) {
   res = get_resource(auth, type, request_url, private_key)
   if (res$status_code == 409L) { # rejected due to parallel requests
     cli::cli_alert_info('Waiting for a parallel request to finish.')
-    n_retry = 2
+    n_retry = 10
     while (n_retry > 0) {
-      Sys.sleep(3)
+      Sys.sleep(2)
       res = get_resource(auth, type, request_url, private_key)
       n_retry = if (res$status_code == 200L) 0 else n_retry - 1
     }
@@ -53,14 +53,14 @@ get_scto_data = function(
   } else {
     fread(text = content, na.strings = '')
   }
-  data.table::setattr(scto_data, 'scto_type', type)
+  setattr(scto_data, 'scto_type', type)
 
   if (drop_empty_cols) drop_empties(scto_data)
 
   cols = intersect(colnames(scto_data), convert_datetime)
   for (col in cols) {
     set(scto_data, j = col, value = as.POSIXct(
-      scto_data[[col]], format = datetime_format))
+      scto_data[[col]], tz = 'UTC', format = datetime_format))
   }
 
   scto_data[]

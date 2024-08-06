@@ -1,11 +1,15 @@
-#' Fetch form definitions from a SurveyCTO server
+#' Fetch deployed form definitions from a SurveyCTO server
 #'
-#' This function fetches spreadsheet form definitions corresponding to the xlsx
-#' files downloadable in the Design tab of the SurveyCTO console.
+#' @description
+#' `r lifecycle::badge('superseded')`
+#'
+#' This function fetches definitions for currently deployed forms. It has been
+#' superseded in favor of [scto_get_form_metadata()], which fetches metadata,
+#' including defintions, for deployed and previous versions of forms.
 #'
 #' @param auth [scto_auth()] object.
-#' @param form_ids Character vector indicating IDs of the forms. `NULL`
-#'   indicates all forms.
+#' @param form_ids Character vector indicating the form IDs. `NULL` indicates
+#'   all forms.
 #' @param simplify Logical indicating whether to return the definition for one
 #'   form as a simple list instead of a named, nested list.
 #'
@@ -15,30 +19,15 @@
 #' @examples
 #' \dontrun{
 #' auth = scto_auth('scto_auth.txt')
-#' scto_def = scto_get_form_definitions(auth, 'my_form')
-#' scto_defs = scto_get_form_definitions(auth)
+#' form_def = scto_get_form_definitions(auth, 'my_form')
+#' form_defs = scto_get_form_definitions(auth)
 #' }
-#'
-#' @seealso [scto_auth()], [scto_meta()], [scto_read()],
-#'   [scto_get_attachments()], [scto_write()]
 #'
 #' @export
 scto_get_form_definitions = function(auth, form_ids = NULL, simplify = TRUE) {
-  catalog = scto_catalog(auth)
-  assert_character(form_ids, any.missing = FALSE, unique = TRUE, null.ok = TRUE)
+assert_character(form_ids, any.missing = FALSE, unique = TRUE, null.ok = TRUE)
   assert_flag(simplify)
-  ids = catalog[catalog$type == 'form']$id
-
-  if (!is.null(form_ids) && !(all(form_ids %in% ids))) {
-    ids_bad = form_ids[!(form_ids %in% ids)]
-    # backticks aren't exactly right, but let's see if anyone notices
-    scto_abort(paste(
-      'No form(s) with ID(s) `{.id {ids_bad}}` exist(s)',
-      'on the server `{.server {auth$servername}}`.'))
-    ids_bad # for lintr
-  }
-
-  if (is.null(form_ids)) form_ids = ids
+  form_ids = assert_form_ids(auth, form_ids)
 
   # works even if no forms
   r = lapply(form_ids, \(id) get_form_def(auth, id))
@@ -53,22 +42,18 @@ get_form_def = function(auth, id) {
     'https://{auth$servername}.surveycto.com/forms/{id}/design')
 
   scto_bullets(c(v = 'Fetching definition for form `{.form {id}}`.'))
-  res = GET(request_url, add_headers('x-csrf-token' = auth$csrf_token))
-  status = res$status_code
-  content = rawToChar(res$content)
+  content = get_api_response(auth, request_url)
 
-  if (status != 200L) {
-    cli::cli_alert_info('Response content:\n{content}')
-    cli::cli_abort('Non-200 response: {status}')
-  }
-
-  d = jsonlite::fromJSON(content)
-  idx = which(sapply(d, \(x) inherits(x, 'matrix')))
+  r = jsonlite::fromJSON(content)
+  idx = which(sapply(r, \(x) inherits(x, 'matrix')))
   for (i in idx) {
-    cols = d[[i]][1, ]
-    d[[i]] = data.table::as.data.table(d[[i]][-1, , drop = FALSE])
-    data.table::setnames(d[[i]], cols)
+    cols = r[[i]][1L, ]
+    r[[i]] = as.data.table(r[[i]][-1L, , drop = FALSE])
+    setnames(r[[i]], cols)
+    for (j in colnames(r[[i]])) {
+      set(r[[i]], i = which(r[[i]][[j]] == ''), j = j, value = NA_character_)
+    }
   }
-  names(d) = sub('RowsAndColumns$', '', names(d))
-  d
+  names(r) = sub('RowsAndColumns$', '', names(r))
+  r
 }

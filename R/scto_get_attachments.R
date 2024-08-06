@@ -17,12 +17,9 @@
 #' @examples
 #' \dontrun{
 #' auth = scto_auth('scto_auth.txt')
-#' scto_data = scto_read(auth, 'my_form', 'form')
-#' filenames = scto_get_attachments(auth, scto_data[['my_attachment']])
+#' form_data = scto_read(auth, 'my_form', 'form')
+#' filenames = scto_get_attachments(auth, form_data[['my_attachment']], '.')
 #' }
-#'
-#' @seealso [scto_auth()], [scto_read()], [scto_get_form_definitions()],
-#'   [scto_write()]
 #'
 #' @export
 scto_get_attachments = function(

@@ -7,7 +7,7 @@
 scto_read(
   auth,
   ids = NULL,
-  start_date = "1900-01-01",
+  start_date = as.POSIXct("1900-01-01", tz = "UTC"),
   review_status = "approved",
   private_key = NULL,
   drop_empty_cols = TRUE,
@@ -23,8 +23,10 @@ scto_read(
 \code{NULL} indicates all datasets and forms.}
 
 \item{start_date}{Date-time or something coercible to a date-time
-indicating the earliest date-time for which to fetch data. Only used for
-forms.}
+indicating the earliest date-time (UTC timezone) for which to fetch data.
+Only used for forms. Use with caution, because fields that are deleted
+prior to \code{start_date} will not show up, even if submissions prior to
+\code{start_date} have data for those fields.}
 
 \item{review_status}{String or character vector indicating which submissions
 to fetch. Possible values are "approved", "pending", "rejected", or any
@@ -58,12 +60,8 @@ This function can read datasets and forms.
 \examples{
 \dontrun{
 auth = scto_auth('scto_auth.txt')
-scto_data = scto_read(auth, 'my_form')
-scto_db = scto_read(auth)
+form_data = scto_read(auth, 'my_form')
+all_data = scto_read(auth)
 }
 
-}
-\seealso{
-\code{\link[=scto_auth]{scto_auth()}}, \code{\link[=scto_meta]{scto_meta()}}, \code{\link[=scto_get_form_definitions]{scto_get_form_definitions()}},
-\code{\link[=scto_get_attachments]{scto_get_attachments()}}, \code{\link[=scto_write]{scto_write()}}
 }

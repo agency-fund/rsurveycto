@@ -52,9 +52,6 @@ get_session_auth = function(servername, username, password) {
 #' auth = scto_auth('my_server', 'my_user', 'my_pw', auth_file = NULL)
 #' }
 #'
-#' @seealso [scto_read()], [scto_meta()], [scto_get_form_definitions()],
-#'   [scto_get_attachments()], [scto_write()]
-#'
 #' @export
 scto_auth = function(
     auth_file = NULL, servername = NULL, username = NULL, password = NULL,

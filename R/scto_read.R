@@ -6,8 +6,10 @@
 #' @param ids Character vector indicating IDs of the datasets and/or forms.
 #'   `NULL` indicates all datasets and forms.
 #' @param start_date Date-time or something coercible to a date-time
-#'   indicating the earliest date-time for which to fetch data. Only used for
-#'   forms.
+#'   indicating the earliest date-time (UTC timezone) for which to fetch data.
+#'   Only used for forms. Use with caution, because fields that are deleted
+#'   prior to `start_date` will not show up, even if submissions prior to
+#'   `start_date` have data for those fields.
 #' @param review_status String or character vector indicating which submissions
 #'   to fetch. Possible values are "approved", "pending", "rejected", or any
 #'   combination of the three. Only used for forms.
@@ -31,17 +33,14 @@
 #' @examples
 #' \dontrun{
 #' auth = scto_auth('scto_auth.txt')
-#' scto_data = scto_read(auth, 'my_form')
-#' scto_db = scto_read(auth)
+#' form_data = scto_read(auth, 'my_form')
+#' all_data = scto_read(auth)
 #' }
-#'
-#' @seealso [scto_auth()], [scto_meta()], [scto_get_form_definitions()],
-#'   [scto_get_attachments()], [scto_write()]
 #'
 #' @export
 scto_read = function(
-    auth, ids = NULL, start_date = '1900-01-01', review_status = 'approved',
-    private_key = NULL, drop_empty_cols = TRUE,
+    auth, ids = NULL, start_date = as.POSIXct('1900-01-01', tz = 'UTC'),
+    review_status = 'approved', private_key = NULL, drop_empty_cols = TRUE,
     convert_datetime = c(
       'CompletionDate', 'SubmissionDate', 'starttime', 'endtime'),
     datetime_format = '%b %e, %Y %I:%M:%S %p', simplify = TRUE) {
@@ -49,7 +48,7 @@ scto_read = function(
   catalog = scto_catalog(auth)
   assert_character(ids, any.missing = FALSE, unique = TRUE, null.ok = TRUE)
 
-  start_date = as.POSIXct(start_date)
+  start_date = as.POSIXct(start_date, tz = 'UTC')
   assert_posixct(start_date, any.missing = FALSE, len = 1L)
   start_date = max(1, as.numeric(start_date))
 

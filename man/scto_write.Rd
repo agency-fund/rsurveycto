@@ -37,6 +37,8 @@ A list with elements:
 }
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 This function updates an existing dataset using a web POST request, as
 uploading data is not officially supported by the SurveyCTO API.
 }
@@ -46,8 +48,4 @@ auth = scto_auth('scto_auth.txt')
 r = scto_write(auth, data, 'my_dataset', 'My Dataset')
 }
 
-}
-\seealso{
-\code{\link[=scto_auth]{scto_auth()}}, \code{\link[=scto_meta]{scto_meta()}}, \code{\link[=scto_read]{scto_read()}},
-\code{\link[=scto_get_form_definitions]{scto_get_form_definitions()}}, \code{\link[=scto_get_attachments]{scto_get_attachments()}}
 }

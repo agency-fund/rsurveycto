@@ -2,15 +2,15 @@
 % Please edit documentation in R/scto_get_form_definitions.R
 \name{scto_get_form_definitions}
 \alias{scto_get_form_definitions}
-\title{Fetch form definitions from a SurveyCTO server}
+\title{Fetch deployed form definitions from a SurveyCTO server}
 \usage{
 scto_get_form_definitions(auth, form_ids = NULL, simplify = TRUE)
 }
 \arguments{
 \item{auth}{\code{\link[=scto_auth]{scto_auth()}} object.}
 
-\item{form_ids}{Character vector indicating IDs of the forms. \code{NULL}
-indicates all forms.}
+\item{form_ids}{Character vector indicating the form IDs. \code{NULL} indicates
+all forms.}
 
 \item{simplify}{Logical indicating whether to return the definition for one
 form as a simple list instead of a named, nested list.}
@@ -20,18 +20,17 @@ If \code{simplify} is \code{TRUE} and getting one form definition, a list.
 Otherwise a named list of lists containing the definition for each form.
 }
 \description{
-This function fetches spreadsheet form definitions corresponding to the xlsx
-files downloadable in the Design tab of the SurveyCTO console.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#superseded}{\figure{lifecycle-superseded.svg}{options: alt='[Superseded]'}}}{\strong{[Superseded]}}
+
+This function fetches definitions for currently deployed forms. It has been
+superseded in favor of \code{\link[=scto_get_form_metadata]{scto_get_form_metadata()}}, which fetches metadata,
+including defintions, for deployed and previous versions of forms.
 }
 \examples{
 \dontrun{
 auth = scto_auth('scto_auth.txt')
-scto_def = scto_get_form_definitions(auth, 'my_form')
-scto_defs = scto_get_form_definitions(auth)
+form_def = scto_get_form_definitions(auth, 'my_form')
+form_defs = scto_get_form_definitions(auth)
 }
 
-}
-\seealso{
-\code{\link[=scto_auth]{scto_auth()}}, \code{\link[=scto_meta]{scto_meta()}}, \code{\link[=scto_read]{scto_read()}},
-\code{\link[=scto_get_attachments]{scto_get_attachments()}}, \code{\link[=scto_write]{scto_write()}}
 }
