@@ -24,7 +24,9 @@ scto_read(
 
 \item{start_date}{Date-time or something coercible to a date-time
 indicating the earliest date-time (UTC timezone) for which to fetch data.
-Only used for forms.}
+Only used for forms. Use with caution, because fields that are deleted
+prior to \code{start_date} will not show up, even if submissions prior to
+\code{start_date} have data for those fields.}
 
 \item{review_status}{String or character vector indicating which submissions
 to fetch. Possible values are "approved", "pending", "rejected", or any

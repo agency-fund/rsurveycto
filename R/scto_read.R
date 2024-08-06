@@ -7,7 +7,9 @@
 #'   `NULL` indicates all datasets and forms.
 #' @param start_date Date-time or something coercible to a date-time
 #'   indicating the earliest date-time (UTC timezone) for which to fetch data.
-#'   Only used for forms.
+#'   Only used for forms. Use with caution, because fields that are deleted
+#'   prior to `start_date` will not show up, even if submissions prior to
+#'   `start_date` have data for those fields.
 #' @param review_status String or character vector indicating which submissions
 #'   to fetch. Possible values are "approved", "pending", "rejected", or any
 #'   combination of the three. Only used for forms.
