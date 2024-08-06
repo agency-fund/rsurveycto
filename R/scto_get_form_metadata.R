@@ -70,8 +70,9 @@ get_form_def_excel = function(auth, url, ver) {
     c(v = 'Fetching definition for form version `{.version {ver}}`.'))
   curl::curl_download(url, path, handle = auth$handle)
   sheets = c('survey', 'choices', 'settings')
+  f = \(...) vctrs::vec_as_names(..., repair = 'unique_quiet')
   r = sapply(sheets, \(sheet) { # strings all the way
-    setDT(readxl::read_excel(path, sheet, col_types = 'text'))
+    setDT(readxl::read_excel(path, sheet, col_types = 'text', .name_repair = f))
   })
   r
 }

@@ -29,6 +29,7 @@ Imports:
   lifecycle (>= 1.0.4),
   readxl (>= 1.4.3),
   rlang (>= 1.1.4),
+  vctrs (>= 0.6.5),
   withr (>= 3.0.1)
 Suggests:
   knitr,

@@ -66,4 +66,5 @@ scto_catalog = function(auth) {
   setcolorder(
     d, c('id', 'title', 'type', 'created_at', 'form_version', 'dataset_version',
          'is_cases_dataset', 'discriminator', 'group_id', 'group_title'))
+  setkey(d)
 }
