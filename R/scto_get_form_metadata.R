@@ -30,7 +30,7 @@ scto_get_form_metadata = function(
   assert_flag(get_defs)
   form_ids = assert_form_ids(auth, form_ids)
   d = lapply(form_ids, \(id) get_form_meta(auth, id, deployed_only, get_defs))
-  d = rbindlist(d)
+  d = rbindlist(d, use.names = TRUE, fill = TRUE)
   d
 }
 
@@ -45,6 +45,8 @@ get_form_meta = function(auth, id, deployed_only, get_defs) {
 
   r = jsonlite::fromJSON(content)
   d = as.data.table(r$deployedGroupFiles$definitionFile)
+  if (nrow(d) == 0L) return(d)
+
   if (!deployed_only) d = rbind(d, as.data.table(r$previousDefinitionFiles))
   set(d, j = 'id', value = NULL)
   set(d, j = 'is_deployed', value = c(1L, rep_len(0L, nrow(d) - 1L)))

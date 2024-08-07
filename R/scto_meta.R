@@ -39,23 +39,47 @@ scto_meta = function(auth) {
 #' @rdname scto_meta
 #' @export
 scto_catalog = function(auth) {
-  # surveycto enforces uniqueness of IDs across forms and datasets
-  created_at = creationDate = form_version = type = NULL # nolint
+  # surveycto enforces uniqueness of ids across forms and datasets
+  created_at = creationDate = last_incoming_data_at = # nolint
+    lastIncomingDataDate = form_version = type = NULL # nolint
   m = scto_meta(auth)
+  common_cols = c('id', 'title', 'version', 'groupId')
 
-  dataset_cols = c(
-    'id', 'title', 'version', 'groupId', 'casesDataset', 'discriminator')
-  datasets = rbindlist(
-    lapply(m$datasets, \(x) x[dataset_cols]), use.names = TRUE, fill = TRUE)
-  setnames(datasets, c('version', 'groupId', 'casesDataset'),
-           c('dataset_version', 'group_id', 'is_cases_dataset'))
+  if (length(m$datasets) > 0L) {
+    dataset_cols = c(common_cols, 'casesDataset', 'discriminator', 'rows')
+    datasets = rbindlist(
+      lapply(m$datasets, \(x) x[dataset_cols]), use.names = TRUE, fill = TRUE)
+    setnames(datasets, c('casesDataset', 'version', 'rows', 'groupId'),
+             c('is_cases_dataset', 'dataset_version', 'num_rows', 'group_id'))
+  } else {
+    datasets = data.table()
+  }
 
-  form_cols = c('id', 'title', 'version', 'groupId', 'creationDate')
-  forms = rbindlist(
-    lapply(m$forms, \(x) x[form_cols]), use.names = TRUE, fill = TRUE)
-  forms[, created_at := as.POSIXct(creationDate / 1000, tz = 'UTC')]
-  forms[, creationDate := NULL]
-  setnames(forms, c('version', 'groupId'), c('form_version', 'group_id'))
+  if (length(m$forms) > 0L) {
+    sub_idx = grepl('SubmissionCount$', names(m$forms[[1L]]))
+    sub_cols = names(m$forms[[1L]])[sub_idx]
+    form_cols = c(
+      common_cols, 'creationDate', 'lastIncomingDataDate', 'encrypted',
+      'deployed', 'reviewWorkflowEnabled', sub_cols)
+
+    forms = rbindlist(
+      lapply(m$forms, \(x) x[form_cols]), use.names = TRUE, fill = TRUE)
+    forms[, created_at := as.POSIXct(creationDate / 1000, tz = 'UTC')]
+    forms[, last_incoming_data_at := as.POSIXct(
+      lastIncomingDataDate / 1000, tz = 'UTC')]
+    forms[, `:=`(creationDate = NULL, lastIncomingDataDate = NULL)]
+
+    old = c(
+      'version', 'groupId', 'encrypted', 'deployed', 'reviewWorkflowEnabled',
+      sub_cols)
+    new = c(
+      'form_version', 'group_id', 'is_encrypted', 'is_deployed',
+      'is_review_workflow_enabled',
+      paste0('num_submissions_', gsub('SubmissionCount', '', sub_cols)))
+    setnames(forms, old, new)
+  } else {
+    forms = data.table()
+  }
 
   d = rbind(forms, datasets, use.names = TRUE, fill = TRUE)
   d[, type := fifelse(is.na(form_version), 'dataset', 'form')]
@@ -63,8 +87,11 @@ scto_catalog = function(auth) {
   g = rbindlist(lapply(m$groups, \(x) x[c('id', 'title')]))
   setnames(g, c('group_id', 'group_title'))
   d = merge(d, g, by = 'group_id', sort = FALSE)
-  setcolorder(
-    d, c('id', 'title', 'type', 'created_at', 'form_version', 'dataset_version',
-         'is_cases_dataset', 'discriminator', 'group_id', 'group_title'))
+  neworder = c(
+    'id', 'title', 'type', 'form_version', 'dataset_version', 'created_at',
+    'last_incoming_data_at', 'is_encrypted', 'is_deployed',
+    'is_review_workflow_enabled', 'is_cases_dataset', 'discriminator',
+    'group_id', 'group_title')
+  setcolorder(d, neworder)
   setkey(d)
 }
