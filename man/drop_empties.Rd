@@ -21,6 +21,3 @@ d = data.table(w = 3:4, x = c('', 'foo'), y = c(NA, NA), z = c(NA, ''))
 drop_empties(d)
 
 }
-\seealso{
-\code{\link[=scto_write]{scto_write()}}
-}

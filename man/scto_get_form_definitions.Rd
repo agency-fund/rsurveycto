@@ -9,7 +9,7 @@ scto_get_form_definitions(auth, form_ids = NULL, simplify = TRUE)
 \arguments{
 \item{auth}{\code{\link[=scto_auth]{scto_auth()}} object.}
 
-\item{form_ids}{Character vector indicating the form IDs. \code{NULL} indicates
+\item{form_ids}{Character vector indicating the form ids. \code{NULL} indicates
 all forms.}
 
 \item{simplify}{Logical indicating whether to return the definition for one

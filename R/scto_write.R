@@ -8,7 +8,7 @@
 #'
 #' @param auth [scto_auth()] object.
 #' @param data `data.frame` to upload.
-#' @param dataset_id String indicating ID of existing dataset.
+#' @param dataset_id String indicating id of existing dataset.
 #' @param dataset_title String indicating title of dataset. Will replace the
 #'   existing title, regardless of `append`.
 #' @param append Logical indicating whether to append or replace the dataset.
@@ -40,9 +40,8 @@ scto_write = function(
   # check that dataset exists
   data_old = scto_read(auth, dataset_id, drop_empty_cols = FALSE)
   if (attr(data_old, 'scto_type') != 'dataset') {
-    scto_abort(paste(
-      'ID `{.id {dataset_id}}` on the server `{.server {auth$servername}}`',
-      'corresponds to a form, not a dataset.'))
+    scto_abort(
+      'The id {.id {dataset_id}} corresponds to a form, not a dataset.')
   }
 
   if (append) {
@@ -50,7 +49,7 @@ scto_write = function(
     if (!fill && !setequal(colnames(data), colnames(data_old))) {
       scto_abort(paste(
         'If `fill` is FALSE, column names of `data` must match',
-        'those of the dataset `{.dataset {dataset_id}}`.'))
+        'those of the dataset {.dataset {dataset_id}}.'))
     }
   }
 
@@ -69,7 +68,7 @@ scto_write = function(
     'datasets/{dataset_id}/upload?csrf_token={auth$csrf_token}')
 
   # data upload
-  scto_bullets(c(v = 'Writing dataset `{.dataset {dataset_id}}`.'))
+  scto_bullets(c(v = 'Writing dataset {.dataset {dataset_id}}.'))
 
   upload_res = POST(
     upload_url,

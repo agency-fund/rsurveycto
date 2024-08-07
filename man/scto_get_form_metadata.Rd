@@ -14,7 +14,7 @@ scto_get_form_metadata(
 \arguments{
 \item{auth}{\code{\link[=scto_auth]{scto_auth()}} object.}
 
-\item{form_ids}{Character vector indicating the form IDs. \code{NULL} indicates
+\item{form_ids}{Character vector indicating the form ids. \code{NULL} indicates
 all forms.}
 
 \item{deployed_only}{Logical indicating whether to fetch metadata for all

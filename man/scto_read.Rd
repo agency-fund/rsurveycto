@@ -19,7 +19,7 @@ scto_read(
 \arguments{
 \item{auth}{\code{\link[=scto_auth]{scto_auth()}} object.}
 
-\item{ids}{Character vector indicating IDs of the datasets and/or forms.
+\item{ids}{Character vector indicating ids of the datasets and/or forms.
 \code{NULL} indicates all datasets and forms.}
 
 \item{start_date}{Date-time or something coercible to a date-time

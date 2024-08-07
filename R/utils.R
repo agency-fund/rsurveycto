@@ -1,4 +1,5 @@
 #' @import checkmate
+#' @import cli
 #' @import data.table
 #' @importFrom glue glue
 #' @importFrom httr GET POST content add_headers headers cookies set_cookies
@@ -11,10 +12,9 @@ assert_form_ids = function(auth, form_ids) {
 
   if (!is.null(form_ids) && !(all(form_ids %in% ids))) {
     ids_bad = form_ids[!(form_ids %in% ids)]
-    # backticks aren't exactly right, but let's see if anyone notices
     scto_abort(paste(
-      'No form(s) with ID(s) `{.id {ids_bad}}` exist(s)',
-      'on the server `{.server {auth$servername}}`.'))
+      '{qty(ids_bad)} Form id{?s} {.id {ids_bad}} {?was/were}',
+      'not found on the server {.server {auth$servername}}.'))
     ids_bad # for lintr
   }
   if (is.null(form_ids)) form_ids = ids
@@ -27,8 +27,8 @@ get_api_response = function(auth, request_url) {
   status = res$status_code
   content = rawToChar(res$content)
   if (status != 200L) {
-    cli::cli_alert_info('Response content:\n{content}')
-    cli::cli_abort('Non-200 response: {status}')
+    cli_alert_info('Response content:\n{content}')
+    cli_abort('Non-200 response: {status}')
   }
   content
 }
@@ -61,30 +61,31 @@ scto_quiet = function(quiet = NULL) {
 
 
 scto_theme = function() {
+  common = list(before = '"', after = '"')
   # Okabe-Ito colors
   list(
-    span.server = list(color = '#E69F00'), # orange
-    span.id = list(color = '#D55E00'), # vermillion
-    span.dataset = list(color = '#56B4E9'), # skyblue
-    span.form = list(color = '#009E73'), # bluishgreen
-    span.version = list(color = '#F5C710'), # amber
-    span.filename = list(color = '#CC79A7')) # reddishpurple
+    span.server = c(color = '#E69F00', common), # orange
+    span.id = c(color = '#D55E00', common), # vermillion
+    span.dataset = c(color = '#56B4E9', common), # skyblue
+    span.form = c(color = '#009E73', common), # bluishgreen
+    span.version = c(color = '#F5C710', common), # amber
+    span.filename = c(color = '#CC79A7', common)) # reddishpurple
 }
+
 
 scto_bullets = function(text, .envir = parent.frame()) {
   if (isTRUE(scto_quiet()) || identical(Sys.getenv('TESTTHAT'), 'true')) {
     return(invisible())
   }
-
-  cli::cli_div(theme = scto_theme())
-  cli::cli_bullets(text, .envir = .envir)
+  cli_div(theme = scto_theme())
+  cli_bullets(text, .envir = .envir)
 }
 
 
 scto_abort = function(message, ..., .envir = parent.frame()) {
   call = rlang::caller_env()
-  cli::cli_div(theme = scto_theme())
-  cli::cli_abort(message = message, ..., .envir = .envir, call = call)
+  cli_div(theme = scto_theme())
+  cli_abort(message = message, ..., .envir = .envir, call = call)
 }
 
 
@@ -107,8 +108,6 @@ is_empty = function(x) {
 #' library('data.table')
 #' d = data.table(w = 3:4, x = c('', 'foo'), y = c(NA, NA), z = c(NA, ''))
 #' drop_empties(d)
-#'
-#' @seealso [scto_write()]
 #'
 #' @export
 drop_empties = function(d) {
