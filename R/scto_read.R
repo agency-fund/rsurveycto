@@ -66,10 +66,9 @@ scto_read = function(
 
   if (!is.null(ids) && !(all(ids %in% catalog$id))) {
     ids_bad = ids[!(ids %in% catalog$id)]
-    # backticks aren't exactly right, but let's see if anyone notices
     scto_abort(paste(
-      '{qty(ids_bad)} No form or dataset with id{?s} `{.id {ids_bad}}`',
-      'exist{?s} on the server `{.server {auth$servername}}`.'))
+      '{qty(ids_bad)} The id{?s} {.id {ids_bad}} {?was/were}',
+      'not found on the server {.server {auth$servername}}.'))
     ids_bad # for lintr
   }
 

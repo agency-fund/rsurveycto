@@ -26,11 +26,11 @@ scto_meta = function(auth) {
 
   if (res$status_code != 200L) {
     scto_abort(
-      'Invalid username or password for server `{.server {auth$servername}}`.')
+      'Invalid username or password for server {.server {auth$servername}}.')
   }
 
   scto_bullets(
-    c(v = 'Reading metadata for server `{.server {auth$servername}}`.'))
+    c(v = 'Reading metadata for server {.server {auth$servername}}.'))
   m = content(res, 'parsed')
   m
 }

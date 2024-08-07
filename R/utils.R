@@ -12,10 +12,9 @@ assert_form_ids = function(auth, form_ids) {
 
   if (!is.null(form_ids) && !(all(form_ids %in% ids))) {
     ids_bad = form_ids[!(form_ids %in% ids)]
-    # backticks aren't exactly right, but let's see if anyone notices
     scto_abort(paste(
-      '{qty(ids_bad)} No form{?s} with ID{?s} `{.id {ids_bad}}`',
-      '{?exists/exist} on the server `{.server {auth$servername}}`.'))
+      '{qty(ids_bad)} Form id{?s} {.id {ids_bad}} {?was/were}',
+      'not found on the server {.server {auth$servername}}.'))
     ids_bad # for lintr
   }
   if (is.null(form_ids)) form_ids = ids
@@ -62,14 +61,15 @@ scto_quiet = function(quiet = NULL) {
 
 
 scto_theme = function() {
+  common = list(before = '"', after = '"')
   # Okabe-Ito colors
   list(
-    span.server = list(color = '#E69F00'), # orange
-    span.id = list(color = '#D55E00'), # vermillion
-    span.dataset = list(color = '#56B4E9'), # skyblue
-    span.form = list(color = '#009E73'), # bluishgreen
-    span.version = list(color = '#F5C710'), # amber
-    span.filename = list(color = '#CC79A7')) # reddishpurple
+    span.server = c(color = '#E69F00', common), # orange
+    span.id = c(color = '#D55E00', common), # vermillion
+    span.dataset = c(color = '#56B4E9', common), # skyblue
+    span.form = c(color = '#009E73', common), # bluishgreen
+    span.version = c(color = '#F5C710', common), # amber
+    span.filename = c(color = '#CC79A7', common)) # reddishpurple
 }
 
 

@@ -40,7 +40,7 @@ get_form_meta = function(auth, id, deployed_only, get_defs) {
   request_url = glue(
     'https://{auth$servername}.surveycto.com/forms/{id}/files?t={unix_ms}')
 
-  scto_bullets(c(v = 'Reading metadata for form `{.form {id}}`.'))
+  scto_bullets(c(v = 'Reading metadata for form {.form {id}}.'))
   content = get_api_response(auth, request_url)
 
   r = jsonlite::fromJSON(content)
@@ -69,7 +69,7 @@ get_form_meta = function(auth, id, deployed_only, get_defs) {
 get_form_def_excel = function(auth, url, ver) {
   path = withr::local_tempfile()
   scto_bullets(
-    c(v = 'Fetching definition for form version `{.version {ver}}`.'))
+    c(v = 'Fetching definition for form version {.version {ver}}.'))
   curl::curl_download(url, path, handle = auth$handle)
 
   sheets = c('survey', 'choices', 'settings')
@@ -115,7 +115,7 @@ scto_unnest_form_definitions = function(form_metadata, by_form_id = TRUE) {
   def_cols = c('survey', 'choices', 'settings')
   assert_names(
     colnames(form_metadata),
-    must.include = c(c('form_id', 'form_version'), def_cols))
+    must.include = c('form_id', 'form_version', def_cols))
 
   . = form_id = form_version = NULL # nolint
 

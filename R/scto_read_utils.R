@@ -75,7 +75,7 @@ scto_read_form = function(
     'https://{auth$servername}.surveycto.com/api/v2/forms/',
     'data/wide/json/{id}?date={start_date}&r={review_status}')
 
-  scto_bullets(c(v = 'Reading form `{.form {id}}`.'))
+  scto_bullets(c(v = 'Reading form {.form {id}}.'))
   get_scto_data(
     auth, 'form', request_url, drop_empty_cols, convert_datetime,
     datetime_format, private_key)
@@ -88,7 +88,7 @@ scto_read_dataset = function(
   request_url = glue(
     'https://{auth$servername}.surveycto.com/api/v2/datasets/data/csv/{id}')
 
-  scto_bullets(c(v = 'Reading dataset `{.dataset {id}}`.'))
+  scto_bullets(c(v = 'Reading dataset {.dataset {id}}.'))
   get_scto_data(
     auth, 'dataset', request_url, drop_empty_cols, convert_datetime,
     datetime_format)

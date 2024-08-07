@@ -41,7 +41,7 @@ get_form_def = function(auth, id) {
   request_url = glue(
     'https://{auth$servername}.surveycto.com/forms/{id}/design')
 
-  scto_bullets(c(v = 'Fetching definition for form `{.form {id}}`.'))
+  scto_bullets(c(v = 'Fetching definition for form {.form {id}}.'))
   content = get_api_response(auth, request_url)
 
   r = jsonlite::fromJSON(content)
