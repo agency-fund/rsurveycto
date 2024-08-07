@@ -18,7 +18,7 @@ scto_write(
 
 \item{data}{\code{data.frame} to upload.}
 
-\item{dataset_id}{String indicating ID of existing dataset.}
+\item{dataset_id}{String indicating id of existing dataset.}
 
 \item{dataset_title}{String indicating title of dataset. Will replace the
 existing title, regardless of \code{append}.}

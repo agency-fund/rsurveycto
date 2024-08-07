@@ -8,7 +8,7 @@
 #' including defintions, for deployed and previous versions of forms.
 #'
 #' @param auth [scto_auth()] object.
-#' @param form_ids Character vector indicating the form IDs. `NULL` indicates
+#' @param form_ids Character vector indicating the form ids. `NULL` indicates
 #'   all forms.
 #' @param simplify Logical indicating whether to return the definition for one
 #'   form as a simple list instead of a named, nested list.

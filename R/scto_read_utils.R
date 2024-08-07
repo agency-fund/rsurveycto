@@ -24,7 +24,7 @@ get_resource_retry = function(auth, type, request_url, private_key) {
     cli::cli_alert_info('Waiting for a parallel request to finish.')
     n_retry = 10
     while (n_retry > 0) {
-      Sys.sleep(2)
+      Sys.sleep(3)
       res = get_resource(auth, type, request_url, private_key)
       n_retry = if (res$status_code == 200L) 0 else n_retry - 1
     }

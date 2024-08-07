@@ -4,7 +4,7 @@
 #' previous versions of one or more forms.
 #'
 #' @param auth [scto_auth()] object.
-#' @param form_ids Character vector indicating the form IDs. `NULL` indicates
+#' @param form_ids Character vector indicating the form ids. `NULL` indicates
 #'   all forms.
 #' @param deployed_only Logical indicating whether to fetch metadata for all
 #'   versions of each form, or only for the deployed version.
@@ -71,10 +71,17 @@ get_form_def_excel = function(auth, url, ver) {
   scto_bullets(
     c(v = 'Fetching definition for form version `{.version {ver}}`.'))
   curl::curl_download(url, path, handle = auth$handle)
+
   sheets = c('survey', 'choices', 'settings')
   f = \(...) vctrs::vec_as_names(..., repair = 'unique_quiet')
-  r = sapply(sheets, \(sheet) { # strings all the way
-    setDT(readxl::read_excel(path, sheet, col_types = 'text', .name_repair = f))
+
+  r = sapply(sheets, \(sheet) {
+    # strings all the way, but col_types = 'text' gave "1.0" instead of "1"
+    d = readxl::read_excel(path, sheet, guess_max = 1e4, .name_repair = f)
+    setDT(d)
+    cols = colnames(d)[!sapply(d, is.character)]
+    for (j in cols) set(d, j = j, value = as.character(d[[j]]))
+    d
   })
   r
 }
@@ -131,6 +138,7 @@ scto_unnest_form_definitions = function(form_metadata, by_form_id = TRUE) {
   }
   r
 }
+
 
 unnest_form_defs = function(form_metadata, form_versions, def_cols, form_cols) {
   .id = `_row_num` = NULL # nolint

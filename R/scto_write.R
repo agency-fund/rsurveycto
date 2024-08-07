@@ -8,7 +8,7 @@
 #'
 #' @param auth [scto_auth()] object.
 #' @param data `data.frame` to upload.
-#' @param dataset_id String indicating ID of existing dataset.
+#' @param dataset_id String indicating id of existing dataset.
 #' @param dataset_title String indicating title of dataset. Will replace the
 #'   existing title, regardless of `append`.
 #' @param append Logical indicating whether to append or replace the dataset.

@@ -3,7 +3,7 @@
 #' This function can read datasets and forms.
 #'
 #' @param auth [scto_auth()] object.
-#' @param ids Character vector indicating IDs of the datasets and/or forms.
+#' @param ids Character vector indicating ids of the datasets and/or forms.
 #'   `NULL` indicates all datasets and forms.
 #' @param start_date Date-time or something coercible to a date-time
 #'   indicating the earliest date-time (UTC timezone) for which to fetch data.
@@ -68,8 +68,8 @@ scto_read = function(
     ids_bad = ids[!(ids %in% catalog$id)]
     # backticks aren't exactly right, but let's see if anyone notices
     scto_abort(paste(
-      'No form(s) or dataset(s) with ID(s) `{.id {ids_bad}}` exist(s)',
-      'on the server `{.server {auth$servername}}`.'))
+      '{qty(ids_bad)} No form or dataset with id{?s} `{.id {ids_bad}}`',
+      'exist{?s} on the server `{.server {auth$servername}}`.'))
     ids_bad # for lintr
   }
 
@@ -91,7 +91,7 @@ scto_read = function(
     r = r[[1L]]
   } else {
     names(r) = catalog_now$id
-    r$.catalog = catalog # surveycto prohibits "." in IDs, so we're safe
+    r$.catalog = catalog # surveycto prohibits "." in ids, so we're safe
   }
   r
 }
