@@ -42,7 +42,7 @@ get_scto_data = function(
   content = rawToChar(res$content)
 
   if (status != 200L) {
-    cli::cli_alert_warning('Response content:\n{content}')
+    cli_alert_warning('Response content:\n{content}')
     scto_abort('Non-200 response: {status}')
   }
 
@@ -55,7 +55,14 @@ get_scto_data = function(
   }
   setattr(scto_data, 'scto_type', type)
 
-  if (drop_empty_cols) drop_empties(scto_data)
+  if (drop_empty_cols) {
+    drop_empties(scto_data)
+  } else if (nrow(scto_data) > 0L) {
+    idx = sapply(scto_data, \(x) is.logical(x) && all(is.na(x)))
+    for (j in colnames(scto_data)[idx]) {
+      set(scto_data, j = j, value = as.character(scto_data[[j]]))
+    }
+  }
 
   cols = intersect(colnames(scto_data), convert_datetime)
   for (col in cols) {

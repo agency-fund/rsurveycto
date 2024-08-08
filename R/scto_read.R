@@ -40,7 +40,7 @@
 #' @export
 scto_read = function(
     auth, ids = NULL, start_date = as.POSIXct('1900-01-01', tz = 'UTC'),
-    review_status = 'approved', private_key = NULL, drop_empty_cols = TRUE,
+    review_status = 'approved', private_key = NULL, drop_empty_cols = FALSE,
     convert_datetime = c(
       'CompletionDate', 'SubmissionDate', 'starttime', 'endtime'),
     datetime_format = '%b %e, %Y %I:%M:%S %p', simplify = TRUE) {
