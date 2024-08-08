@@ -45,7 +45,7 @@ scto_read = function(
       'CompletionDate', 'SubmissionDate', 'starttime', 'endtime'),
     datetime_format = '%b %e, %Y %I:%M:%S %p', simplify = TRUE) {
 
-  catalog = scto_catalog(auth)
+  assert_class(auth, 'scto_auth')
   assert_character(ids, any.missing = FALSE, unique = TRUE, null.ok = TRUE)
 
   start_date = as.POSIXct(start_date, tz = 'UTC')
@@ -64,12 +64,13 @@ scto_read = function(
   assert_string(datetime_format)
   assert_flag(simplify)
 
+  catalog = scto_catalog(auth)
+
   if (!is.null(ids) && !(all(ids %in% catalog$id))) {
-    ids_bad = ids[!(ids %in% catalog$id)]
+    ids_bad = ids[!(ids %in% catalog$id)] # nolint
     scto_abort(paste(
       '{qty(ids_bad)} The id{?s} {.id {ids_bad}} {?was/were}',
       'not found on the server {.server {auth$servername}}.'))
-    ids_bad # for lintr
   }
 
   catalog_now = if (is.null(ids)) catalog else catalog[catalog$id %in% ids]

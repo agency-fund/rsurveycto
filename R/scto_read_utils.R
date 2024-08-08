@@ -42,7 +42,7 @@ get_scto_data = function(
   content = rawToChar(res$content)
 
   if (status != 200L) {
-    cli::cli_alert_info('Response content:\n{content}')
+    cli::cli_alert_warning('Response content:\n{content}')
     scto_abort('Non-200 response: {status}')
   }
 

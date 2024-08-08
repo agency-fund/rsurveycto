@@ -26,7 +26,7 @@ existing title, regardless of \code{append}.}
 \item{append}{Logical indicating whether to append or replace the dataset.}
 
 \item{fill}{Logical indicating whether to implicitly fill missing columns
-with \code{NA}s, i.e., whether to allow a mismatch between columns of the
+with \code{NA}, i.e., whether to allow a mismatch between columns of the
 existing dataset and columns of \code{data}. Only used if \code{append} is \code{TRUE}.}
 }
 \value{

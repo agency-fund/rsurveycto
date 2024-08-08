@@ -7,18 +7,12 @@ NULL
 
 
 assert_form_ids = function(auth, form_ids) {
+  assert_character(
+    form_ids, any.missing = FALSE, min.len = 1L, unique = TRUE, null.ok = TRUE)
+  if (!is.null(form_ids)) return(form_ids)
   catalog = scto_catalog(auth)
   ids = catalog[catalog$type == 'form']$id
-
-  if (!is.null(form_ids) && !(all(form_ids %in% ids))) {
-    ids_bad = form_ids[!(form_ids %in% ids)]
-    scto_abort(paste(
-      '{qty(ids_bad)} Form id{?s} {.id {ids_bad}} {?was/were}',
-      'not found on the server {.server {auth$servername}}.'))
-    ids_bad # for lintr
-  }
-  if (is.null(form_ids)) form_ids = ids
-  form_ids
+  ids
 }
 
 
@@ -27,8 +21,8 @@ get_api_response = function(auth, request_url) {
   status = res$status_code
   content = rawToChar(res$content)
   if (status != 200L) {
-    cli_alert_info('Response content:\n{content}')
-    cli_abort('Non-200 response: {status}')
+    cli_alert_warning('Response content:\n{content}')
+    scto_abort('Non-200 response: {status}')
   }
   content
 }

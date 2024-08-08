@@ -25,12 +25,20 @@
 #'
 #' @export
 scto_get_form_definitions = function(auth, form_ids = NULL, simplify = TRUE) {
-assert_character(form_ids, any.missing = FALSE, unique = TRUE, null.ok = TRUE)
-  assert_flag(simplify)
+  assert_character(form_ids, any.missing = FALSE, unique = TRUE, null.ok = TRUE)
+
+  assert_class(auth, 'scto_auth')
   form_ids = assert_form_ids(auth, form_ids)
+  assert_flag(simplify)
 
   # works even if no forms
-  r = lapply(form_ids, \(id) get_form_def(auth, id))
+  r = list()
+  for (i in seq_len(length(form_ids))) {
+    id = form_ids[i]
+    cot = tryCatch(get_form_def(auth, id), error = \(e) e)
+    if (inherits(cot, 'error')) scto_abort('Form {.form {id}} was not found.')
+    r[[i]] = cot
+  }
   names(r) = form_ids
   if (length(r) == 1L && simplify) r = r[[1L]]
   r
