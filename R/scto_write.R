@@ -13,7 +13,7 @@
 #'   existing title, regardless of `append`.
 #' @param append Logical indicating whether to append or replace the dataset.
 #' @param fill Logical indicating whether to implicitly fill missing columns
-#'   with `NA`s, i.e., whether to allow a mismatch between columns of the
+#'   with `NA`, i.e., whether to allow a mismatch between columns of the
 #'   existing dataset and columns of `data`. Only used if `append` is `TRUE`.
 #'
 #' @return A list with elements:
@@ -29,8 +29,8 @@
 #'
 #' @export
 scto_write = function(
-    auth, data, dataset_id, dataset_title = dataset_id,
-    append = FALSE, fill = FALSE) {
+    auth, data, dataset_id, dataset_title = dataset_id, append = FALSE,
+    fill = FALSE) {
   assert_class(auth, 'scto_auth')
   assert_data_frame(data)
   assert_string(dataset_id)

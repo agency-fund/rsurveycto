@@ -25,12 +25,21 @@
 #' @export
 scto_get_form_metadata = function(
     auth, form_ids = NULL, deployed_only = FALSE, get_defs = TRUE) {
-  assert_character(form_ids, any.missing = FALSE, unique = TRUE, null.ok = TRUE)
+  assert_class(auth, 'scto_auth')
+  form_ids = assert_form_ids(auth, form_ids)
   assert_flag(deployed_only)
   assert_flag(get_defs)
-  form_ids = assert_form_ids(auth, form_ids)
-  d = lapply(form_ids, \(id) get_form_meta(auth, id, deployed_only, get_defs))
-  d = rbindlist(d, use.names = TRUE, fill = TRUE)
+
+  r = list()
+  for (i in seq_len(length(form_ids))) {
+    id = form_ids[i]
+    cot = tryCatch(
+      get_form_meta(auth, id, deployed_only, get_defs), error = \(e) e)
+    if (inherits(cot, 'error')) scto_abort('Form {.form {id}} was not found.')
+    r[[i]] = cot
+  }
+
+  d = rbindlist(r, use.names = TRUE, fill = TRUE)
   d
 }
 
