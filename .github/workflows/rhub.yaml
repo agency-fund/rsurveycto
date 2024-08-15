@@ -9,6 +9,10 @@
 name: R-hub
 run-name: "${{ github.event.inputs.id }}: ${{ github.event.inputs.name || format('Manually run by {0}', github.triggering_actor) }}"
 
+env:
+  SCTO_AUTH: ${{ secrets.SCTO_AUTH }}
+  SCTO_PRIVATE_KEY: ${{ secrets.SCTO_PRIVATE_KEY }}
+
 on:
   workflow_dispatch:
     inputs:
