@@ -8,23 +8,15 @@
 
 ### R-hub
 
-  0 errors ✓ | 0 warnings ✓ | 2 notes x
+  0 errors ✓ | 0 warnings ✓ | 0 notes ✓
 
-❯ checking for non-standard things in the check directory ... NOTE
-  Found the following files/directories:
-    ''NULL''
-
-❯ checking for detritus in the temp directory ... NOTE
-  Found the following files/directories:
-    'lastMiKTeXException'
-
-See results for [Windows](), [Ubuntu](), and [Fedora]().
+See results for Mac, Windows, and Linux [here](https://github.com/agency-fund/rsurveycto/actions/runs/10399161149).
 
 ### GitHub Actions
 
   0 errors ✓ | 0 warnings ✓ | 0 notes ✓
 
-See results for Mac, Windows, and Ubuntu [here]().
+See results for Mac, Windows, and Ubuntu [here](https://github.com/agency-fund/rsurveycto/actions/runs/10399151723).
 
 ## Changes from current CRAN release
 
@@ -35,4 +27,4 @@ See results for Mac, Windows, and Ubuntu [here]().
 
 ## Additional information
 
-The tests require login credentials for a SurveyCTO server, which is why they are skipped on CRAN. They pass locally, on GitHub Actions (using repository secrets), and on R-hub (using environmental variables).
+The tests require login credentials for a SurveyCTO server, which is why they are skipped on CRAN. They pass locally, on R-hub, and on GitHub Actions.
