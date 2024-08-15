@@ -2,7 +2,7 @@ pandoc: 3.1.11
 pkgdown: 2.1.0
 pkgdown_sha: ~
 articles: {}
-last_built: 2024-08-08T12:57Z
+last_built: 2024-08-15T05:16Z
 urls:
   reference: https://agency-fund.github.io/rsurveycto/reference
   article: https://agency-fund.github.io/rsurveycto/articles
