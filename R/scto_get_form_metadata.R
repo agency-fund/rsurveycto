@@ -76,6 +76,7 @@ get_form_meta = function(auth, id, deployed_only, get_defs) {
 
 
 get_form_def_excel = function(auth, url, ver) {
+  value = NULL
   path = withr::local_tempfile()
   scto_bullets(
     c(v = 'Fetching definition for form version {.version {ver}}.'))
