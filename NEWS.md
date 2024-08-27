@@ -1,3 +1,6 @@
+# rsurveycto 0.2.1
+* Improved handling of integer values in the choices sheet of form definitions.
+
 # rsurveycto 0.2.0
 * Added fetching of form metadata, including defintions, for previous and deployed versions using `scto_get_form_metadata()`.
 * Added unnesting of form definitions using `scto_unnest_form_definitions()`.
