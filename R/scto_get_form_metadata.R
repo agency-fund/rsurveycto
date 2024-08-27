@@ -76,6 +76,7 @@ get_form_meta = function(auth, id, deployed_only, get_defs) {
 
 
 get_form_def_excel = function(auth, url, ver) {
+  value = NULL
   path = withr::local_tempfile()
   scto_bullets(
     c(v = 'Fetching definition for form version {.version {ver}}.'))
@@ -85,11 +86,19 @@ get_form_def_excel = function(auth, url, ver) {
   f = \(...) vctrs::vec_as_names(..., repair = 'unique_quiet')
 
   r = sapply(sheets, \(sheet) {
-    # strings all the way, but col_types = 'text' gave "1.0" instead of "1"
-    d = readxl::read_excel(path, sheet, guess_max = 1e4, .name_repair = f)
+    d = readxl::read_excel(path, sheet, col_types = 'text', .name_repair = f)
     setDT(d)
-    cols = colnames(d)[!sapply(d, is.character)]
-    for (j in cols) set(d, j = j, value = as.character(d[[j]]))
+    # with or without col_types = 'text', was sometimes getting 1.0 instead of 1
+    if (sheet == 'choices') {
+      withr::local_options(list(warn = -1))
+      d[, value := fifelse(
+        !is.na(as.integer(value)) & endsWith(value, '.0'),
+        as.character(as.integer(value)), value)]
+    }
+    # d = readxl::read_excel(path, sheet, guess_max = 1e4, .name_repair = f)
+    # setDT(d)
+    # cols = colnames(d)[!sapply(d, is.character)]
+    # for (j in cols) set(d, j = j, value = as.character(d[[j]]))
     d
   })
   r
