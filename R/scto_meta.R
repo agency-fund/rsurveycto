@@ -40,7 +40,7 @@ scto_meta = function(auth) {
 #' @export
 scto_catalog = function(auth) {
   # surveycto enforces uniqueness of ids across forms and datasets
-  created_at = creationDate = last_incoming_data_at = # nolint
+  creationDate = last_version_created_at = last_incoming_data_at = # nolint
     lastIncomingDataDate = form_version = type = NULL # nolint
   m = scto_meta(auth)
   common_cols = c('id', 'title', 'version', 'groupId')
@@ -64,7 +64,8 @@ scto_catalog = function(auth) {
 
     forms = rbindlist(
       lapply(m$forms, \(x) x[form_cols]), use.names = TRUE, fill = TRUE)
-    forms[, created_at := as.POSIXct(creationDate / 1000, tz = 'UTC')]
+    forms[, last_version_created_at := as.POSIXct(
+      creationDate / 1000, tz = 'UTC')]
     forms[, last_incoming_data_at := as.POSIXct(
       lastIncomingDataDate / 1000, tz = 'UTC')]
     forms[, `:=`(creationDate = NULL, lastIncomingDataDate = NULL)]
@@ -88,10 +89,10 @@ scto_catalog = function(auth) {
   setnames(g, c('group_id', 'group_title'))
   d = merge(d, g, by = 'group_id', sort = FALSE)
   neworder = c(
-    'id', 'title', 'type', 'form_version', 'dataset_version', 'created_at',
-    'last_incoming_data_at', 'is_encrypted', 'is_deployed',
-    'is_review_workflow_enabled', 'is_cases_dataset', 'discriminator',
-    'group_id', 'group_title')
+    'id', 'title', 'type', 'form_version', 'dataset_version',
+    'last_version_created_at', 'last_incoming_data_at', 'is_encrypted',
+    'is_deployed', 'is_review_workflow_enabled', 'is_cases_dataset',
+    'discriminator', 'group_id', 'group_title')
   setcolorder(d, neworder)
   setkey(d)
 }

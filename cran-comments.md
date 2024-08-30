@@ -10,20 +10,18 @@
 
   0 errors ✓ | 0 warnings ✓ | 0 notes ✓
 
-See results for Mac, Windows, and Linux [here](https://github.com/agency-fund/rsurveycto/actions/runs/10399161149).
+See results for Mac, Windows, and Linux [here]().
 
 ### GitHub Actions
 
   0 errors ✓ | 0 warnings ✓ | 0 notes ✓
 
-See results for Mac, Windows, and Ubuntu [here](https://github.com/agency-fund/rsurveycto/actions/runs/10399151723).
+See results for Mac, Windows, and Ubuntu [here]().
 
 ## Changes from current CRAN release
 
-* Added fetching of form metadata, including defintions, for previous and deployed versions using `scto_get_form_metadata()`.
-* Added unnesting of form definitions using `scto_unnest_form_definitions()`.
-* Added information provided by `scto_catalog()`.
-* Fixed `scto_read()` to use and return timestamps in UTC.
+* Improved handling of integer values in the choices sheet of form definitions.
+* Clarified information in `scto_catalog()`.
 
 ## Additional information
 
