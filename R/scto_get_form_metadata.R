@@ -58,7 +58,7 @@ get_form_meta = function(auth, id, deployed_only, get_defs) {
 
   if (!deployed_only) d = rbind(d, as.data.table(r$previousDefinitionFiles))
   set(d, j = 'id', value = NULL)
-  set(d, j = 'is_deployed', value = c(1L, rep_len(0L, nrow(d) - 1L)))
+  set(d, j = 'is_deployed', value = c(TRUE, rep_len(FALSE, nrow(d) - 1L)))
   setnames(
     d, c('formVersion', 'downloadLink', 'dateStr'),
     c('form_version', 'download_link', 'date_str'))
