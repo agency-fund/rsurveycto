@@ -53,12 +53,6 @@ scto_write = function(
     }
   }
 
-  # TODO: potential function arguments that need to be tested/validated before
-  # turning into actual function arguments.
-  dataset_exists = 1 # possible to upload to non-existent datasets?
-  dataset_upload_mode = if (append) 'append' else 'clear' # ignoring merge
-  dataset_type = 'SERVER' # form dataset updates/uploads?
-
   path = withr::local_tempfile(fileext = '.csv')
   fwrite(data, path, logical01 = TRUE)
 
@@ -70,14 +64,16 @@ scto_write = function(
   # data upload
   scto_bullets(c(v = 'Writing dataset {.dataset {dataset_id}}.'))
 
+  dataset_upload_mode = if (append) 'append' else 'clear' # ignoring merge
+
   upload_res = POST(
     upload_url,
     body = list(
-      dataset_exists = dataset_exists,
+      dataset_exists = 1,
       dataset_id = dataset_id,
       dataset_title = dataset_title,
       dataset_upload_mode = dataset_upload_mode,
-      dataset_type = dataset_type,
+      dataset_type = 'SERVER',
       dataset_file = httr::upload_file(path)))
 
   r = list(data_old = data_old, response = upload_res)

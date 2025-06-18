@@ -10,19 +10,17 @@
 
   0 errors ✓ | 0 warnings ✓ | 0 notes ✓
 
-See results for Mac, Windows, and Linux [here](https://github.com/agency-fund/rsurveycto/actions/runs/10691311650).
+See results for Mac, Windows, and Linux [here]().
 
 ### GitHub Actions
 
   0 errors ✓ | 0 warnings ✓ | 0 notes ✓
 
-See results for Mac, Windows, and Ubuntu [here](https://github.com/agency-fund/rsurveycto/actions/runs/10645170317).
+See results for Mac, Windows, and Ubuntu [here]().
 
 ## Changes from current CRAN release
 
-* Improved handling of integer values in the choices sheet of form definitions.
-* Clarified information in `scto_catalog()`.
-* Changed `is_deployed` in `scto_get_form_metadata()` to logical.
+* Handle form definitions whose "choices" lack a `value` column.
 
 ## Additional information
 

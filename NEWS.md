@@ -1,3 +1,6 @@
+# rsurveycto 0.2.2
+* Handle form definitions whose "choices" lack a `value` column.
+
 # rsurveycto 0.2.1
 * Improved handling of integer values in the choices sheet of form definitions.
 * Clarified information in `scto_catalog()`.

@@ -90,10 +90,14 @@ get_form_def_excel = function(auth, url, ver) {
     setDT(d)
     # with or without col_types = 'text', was sometimes getting 1.0 instead of 1
     if (sheet == 'choices') {
-      withr::local_options(list(warn = -1))
-      d[, value := fifelse(
-        !is.na(as.integer(value)) & endsWith(value, '.0'),
-        as.character(as.integer(value)), value)]
+      if ('value' %in% colnames(d)) {
+        withr::local_options(list(warn = -1))
+        d[, value := fifelse(
+          !is.na(as.integer(value)) & endsWith(value, '.0'),
+          as.character(as.integer(value)), value)]
+      } else {
+        d[, value := NA_character_]
+      }
     }
     # d = readxl::read_excel(path, sheet, guess_max = 1e4, .name_repair = f)
     # setDT(d)
