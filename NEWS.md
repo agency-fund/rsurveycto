@@ -1,3 +1,6 @@
+# rsurveycto 0.2.3
+* Added ability to download form definitions to a directory of choice.
+
 # rsurveycto 0.2.2
 * Handle form definitions whose "choices" lack a `value` column.
 
