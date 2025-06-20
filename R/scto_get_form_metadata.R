@@ -9,6 +9,8 @@
 #' @param deployed_only Logical indicating whether to fetch metadata for all
 #'   versions of each form, or only for the deployed version.
 #' @param get_defs Logical indicating whether to fetch form definitions.
+#' @param def_dir String indicating directory in which to save the form
+#'   definitions as Excel files.
 #'
 #' @return A `data.table` with one row per form (and per version, if
 #'   `deployed_only` is `FALSE`). Definitions are returned as nested
@@ -24,17 +26,24 @@
 #'
 #' @export
 scto_get_form_metadata = function(
-    auth, form_ids = NULL, deployed_only = FALSE, get_defs = TRUE) {
+    auth, form_ids = NULL, deployed_only = FALSE, get_defs = TRUE,
+    def_dir = NULL) {
   assert_class(auth, 'scto_auth')
   form_ids = assert_form_ids(auth, form_ids)
   assert_flag(deployed_only)
   assert_flag(get_defs)
+  if (get_defs) {
+    assert_string(def_dir, null.ok = TRUE)
+    if (!is.null(def_dir)) {
+      assert_path_for_output(def_dir, overwrite = TRUE)
+    }
+  }
 
   r = list()
   for (i in seq_len(length(form_ids))) {
     id = form_ids[i]
     cot = tryCatch(
-      get_form_meta(auth, id, deployed_only, get_defs), error = \(e) e)
+      get_form_meta(auth, id, deployed_only, get_defs, def_dir), error = \(e) e)
     if (inherits(cot, 'error')) scto_abort('Form {.form {id}} was not found.')
     r[[i]] = cot
   }
@@ -44,7 +53,7 @@ scto_get_form_metadata = function(
 }
 
 
-get_form_meta = function(auth, id, deployed_only, get_defs) {
+get_form_meta = function(auth, id, deployed_only, get_defs, def_dir) {
   unix_ms = as.numeric(Sys.time()) * 1000
   request_url = glue(
     'https://{auth$servername}.surveycto.com/forms/{id}/files?t={unix_ms}')
@@ -68,14 +77,14 @@ get_form_meta = function(auth, id, deployed_only, get_defs) {
   if (isFALSE(get_defs)) return(d)
 
   defs = lapply(seq_len(nrow(d)), \(i) {
-    get_form_def_excel(auth, d$download_link[i], d$form_version[i])
+    get_form_def_excel(auth, d$download_link[i], d$form_version[i], id, def_dir)
   })
   for (j in names(defs[[1L]])) set(d, j = j, value = lapply(defs, \(x) x[[j]]))
   d
 }
 
 
-get_form_def_excel = function(auth, url, ver) {
+get_form_def_excel = function(auth, url, ver, id, def_dir) {
   value = NULL
   path = withr::local_tempfile()
   scto_bullets(
@@ -105,6 +114,13 @@ get_form_def_excel = function(auth, url, ver) {
     # for (j in cols) set(d, j = j, value = as.character(d[[j]]))
     d
   })
+
+  if (!is.null(def_dir)) {
+    ext = if (grepl('\\?file=.+\\.xlsx&', tolower(url))) 'xlsx' else 'xls'
+    # file name conflicts are possible, but hopefully pathological
+    file.rename(path, file.path(def_dir, glue('{id}__{ver}.{ext}')))
+  }
+
   r
 }
 

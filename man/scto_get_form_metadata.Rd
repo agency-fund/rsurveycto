@@ -8,7 +8,8 @@ scto_get_form_metadata(
   auth,
   form_ids = NULL,
   deployed_only = FALSE,
-  get_defs = TRUE
+  get_defs = TRUE,
+  def_dir = NULL
 )
 }
 \arguments{
@@ -21,6 +22,9 @@ all forms.}
 versions of each form, or only for the deployed version.}
 
 \item{get_defs}{Logical indicating whether to fetch form definitions.}
+
+\item{def_dir}{String indicating directory in which to save the form
+definitions as Excel files.}
 }
 \value{
 A \code{data.table} with one row per form (and per version, if

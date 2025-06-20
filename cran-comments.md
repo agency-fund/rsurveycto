@@ -10,13 +10,13 @@
 
   0 errors ✓ | 0 warnings ✓ | 0 notes ✓
 
-See results for Mac, Windows, and Linux [here]().
+See results for Mac, Windows, and Linux [here](https://github.com/agency-fund/rsurveycto/actions/runs/15727606068).
 
 ### GitHub Actions
 
   0 errors ✓ | 0 warnings ✓ | 0 notes ✓
 
-See results for Mac, Windows, and Ubuntu [here]().
+See results for Mac, Windows, and Ubuntu [here](https://github.com/agency-fund/rsurveycto/actions/runs/15727597426).
 
 ## Changes from current CRAN release
 
