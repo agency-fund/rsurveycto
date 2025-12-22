@@ -93,6 +93,6 @@ scto_catalog = function(auth) {
     'last_version_created_at', 'last_incoming_data_at', 'is_encrypted',
     'is_deployed', 'is_review_workflow_enabled', 'is_cases_dataset',
     'discriminator', 'group_id', 'group_title')
-  setcolorder(d, neworder)
+  setcolorder(d, neworder, skip_absent = TRUE)
   setkey(d)
 }

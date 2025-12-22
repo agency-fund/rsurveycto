@@ -20,7 +20,8 @@ See results for Mac, Windows, and Ubuntu [here](https://github.com/agency-fund/r
 
 ## Changes from current CRAN release
 
-* Handle form definitions whose "choices" lack a `value` column.
+* Ensured `scto_catalog()` works even if no datasets or no forms.
+* Clarified requirements for `scto_write()`.
 
 ## Additional information
 

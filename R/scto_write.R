@@ -3,8 +3,9 @@
 #' @description
 #' `r lifecycle::badge('experimental')`
 #'
-#' This function updates an existing dataset using a web POST request, as
-#' uploading data is not officially supported by the SurveyCTO API.
+#' This function updates an existing dataset using an unofficial API endpoint.
+#' For this to work, the SurveyCTO user must have permissions "Can edit server
+#' datasets" and "Can modify or delete server dataset data".
 #'
 #' @param auth [scto_auth()] object.
 #' @param data `data.frame` to upload.
@@ -19,7 +20,7 @@
 #' @return A list with elements:
 #'
 #' * `data_old`: A `data.table` of the previous version of the dataset.
-#' * `response`: An object of class [httr::response()] from the POST request.
+#' * `response`: An object of class [httr::response()] from the API call.
 #'
 #' @examples
 #' \dontrun{

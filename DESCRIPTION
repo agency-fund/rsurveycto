@@ -1,7 +1,7 @@
 Package: rsurveycto
 Type: Package
 Title: Interact with Data on 'SurveyCTO'
-Version: 0.2.3
+Version: 0.2.4
 Authors@R: c(
   person('Jake', 'Hughey', , 'jake@agency.fund', c('aut', 'cre')),
   person('Robert', 'On', , 'robert@agency.fund', 'aut'))
@@ -15,7 +15,7 @@ URL: https://agency-fund.github.io/rsurveycto/, https://github.com/agency-fund/r
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Roxygen: list(markdown = TRUE)
 Depends: R (>= 4.1)
 Imports:

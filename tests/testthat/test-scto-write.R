@@ -1,5 +1,3 @@
-skip('Skipping as unofficial API is now returning a 403 error.')
-
 if (identical(Sys.getenv('NOT_CRAN'), 'true')) { # !on_cran()
   auth = scto_auth(auth_file = auth_file)
   dataset_id = 'wallahs'
