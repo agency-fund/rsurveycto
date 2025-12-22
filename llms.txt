@@ -1,0 +1,81 @@
+# rsurveycto
+
+[![R-CMD-check](https://github.com/agency-fund/rsurveycto/workflows/R-CMD-check/badge.svg)](https://github.com/agency-fund/rsurveycto/actions)
+[![codecov](https://codecov.io/gh/agency-fund/rsurveycto/branch/main/graph/badge.svg)](https://codecov.io/gh/agency-fund/rsurveycto)
+[![CRAN
+Status](https://www.r-pkg.org/badges/version/rsurveycto)](https://cran.r-project.org/package=rsurveycto)
+
+## Overview
+
+[SurveyCTO](https://www.surveycto.com) is a platform for mobile data
+collection in offline settings. The `rsurveycto` R package uses the
+[SurveyCTO REST
+API](https://docs.surveycto.com/05-exporting-and-publishing-data/05-api-access/01.api-access.html)
+to read datasets and forms from a SurveyCTO server into R as
+`data.table`s and to download file attachments. The package also has
+limited support to write datasets to a server.
+
+## Installation
+
+Install from CRAN:
+
+``` r
+install.packages('rsurveycto')
+```
+
+Install the development version:
+
+``` r
+# install.packages('pak')
+pak::pak('agency-fund/rsurveycto')
+```
+
+## Usage
+
+A basic example:
+
+``` r
+library('data.table')
+library('rsurveycto')
+
+# user must have permission to download data and
+# "allow server API access" must be enabled
+auth = scto_auth('PATH_TO_AUTH_FILE')
+
+# read a single dataset or form
+cases = scto_read(auth, 'cases')
+
+# get a table of all datasets and forms
+catalog = scto_catalog(auth)
+```
+
+For more details, see the [reference
+documentation](https://agency-fund.github.io/rsurveycto/reference/index.html).
+
+# Package index
+
+## All functions
+
+- [`drop_empties()`](https://agency-fund.github.io/rsurveycto/reference/drop_empties.md)
+  : Drop empty columns from a data.table
+- [`scto_auth()`](https://agency-fund.github.io/rsurveycto/reference/scto_auth.md)
+  : Authenticate with a SurveyCTO server
+- [`scto_get_attachments()`](https://agency-fund.github.io/rsurveycto/reference/scto_get_attachments.md)
+  : Fetch file attachments from a SurveyCTO server
+- [`scto_get_form_definitions()`](https://agency-fund.github.io/rsurveycto/reference/scto_get_form_definitions.md)
+  **\[superseded\]** : Fetch deployed form definitions from a SurveyCTO
+  server
+- [`scto_get_form_metadata()`](https://agency-fund.github.io/rsurveycto/reference/scto_get_form_metadata.md)
+  : Fetch form metadata from a SurveyCTO server
+- [`scto_meta()`](https://agency-fund.github.io/rsurveycto/reference/scto_meta.md)
+  [`scto_catalog()`](https://agency-fund.github.io/rsurveycto/reference/scto_meta.md)
+  : Read metadata from a SurveyCTO server
+- [`scto_quiet()`](https://agency-fund.github.io/rsurveycto/reference/scto_quiet.md)
+  : Suppress or permit messages from rsurveycto
+- [`scto_read()`](https://agency-fund.github.io/rsurveycto/reference/scto_read.md)
+  : Read data from a SurveyCTO server
+- [`scto_unnest_form_definitions()`](https://agency-fund.github.io/rsurveycto/reference/scto_unnest_form_definitions.md)
+  : Unnest previously fetched form definitions
+- [`scto_write()`](https://agency-fund.github.io/rsurveycto/reference/scto_write.md)
+  **\[experimental\]** : Write data to a SurveyCTO server
+
