@@ -33,14 +33,15 @@ existing dataset and columns of \code{data}. Only used if \code{append} is \code
 A list with elements:
 \itemize{
 \item \code{data_old}: A \code{data.table} of the previous version of the dataset.
-\item \code{response}: An object of class \code{\link[httr:response]{httr::response()}} from the POST request.
+\item \code{response}: An object of class \code{\link[httr:response]{httr::response()}} from the API call.
 }
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-This function updates an existing dataset using a web POST request, as
-uploading data is not officially supported by the SurveyCTO API.
+This function updates an existing dataset using an unofficial API endpoint.
+For this to work, the SurveyCTO user must have permissions "Can edit server
+datasets" and "Can modify or delete server dataset data".
 }
 \examples{
 \dontrun{

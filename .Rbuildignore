@@ -8,7 +8,6 @@
 ^docs$
 ^download_actions_workflows\.R$
 ^lint_ignore\.csv$
-^NEWS\.md$
 ^README\.md$
 ^scto_data$
 ^LICENSE\.md$

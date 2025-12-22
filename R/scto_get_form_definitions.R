@@ -33,7 +33,7 @@ scto_get_form_definitions = function(auth, form_ids = NULL, simplify = TRUE) {
 
   # works even if no forms
   r = list()
-  for (i in seq_len(length(form_ids))) {
+  for (i in seq_along(form_ids)) {
     id = form_ids[i]
     cot = tryCatch(get_form_def(auth, id), error = \(e) e)
     if (inherits(cot, 'error')) scto_abort('Form {.form {id}} was not found.')

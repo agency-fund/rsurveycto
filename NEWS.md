@@ -1,3 +1,7 @@
+# rsurveycto 0.2.4
+* Ensured `scto_catalog()` works even if no datasets or no forms.
+* Clarified requirements for `scto_write()`.
+
 # rsurveycto 0.2.3
 * Added ability to download form definitions to a directory of choice.
 
