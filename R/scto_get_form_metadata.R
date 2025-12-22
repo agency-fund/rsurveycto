@@ -40,7 +40,7 @@ scto_get_form_metadata = function(
   }
 
   r = list()
-  for (i in seq_len(length(form_ids))) {
+  for (i in seq_along(form_ids)) {
     id = form_ids[i]
     cot = tryCatch(
       get_form_meta(auth, id, deployed_only, get_defs, def_dir), error = \(e) e)
