@@ -30,6 +30,8 @@
 #'   and dataset, along with a `data.table` named ".catalog" from
 #'   `scto_catalog()`.
 #'
+#' @seealso [scto_get_form_responses()]
+#'
 #' @examples
 #' \dontrun{
 #' auth = scto_auth('scto_auth.txt')

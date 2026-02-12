@@ -65,3 +65,6 @@ all_data = scto_read(auth)
 }
 
 }
+\seealso{
+\code{\link[=scto_get_form_responses]{scto_get_form_responses()}}
+}
