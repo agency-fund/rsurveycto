@@ -8,8 +8,7 @@
 
 ## Changes from current CRAN release
 
-* Ensured `scto_catalog()` works even if no datasets or no forms.
-* Clarified requirements for `scto_write()`.
+* Added function `scto_get_form_responses()` to get form data in long format.
 
 ## Additional information
 

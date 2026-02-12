@@ -1,3 +1,6 @@
+# rsurveycto 0.2.5
+* Added function `scto_get_form_responses()` to get form data in long format.
+
 # rsurveycto 0.2.4
 * Ensured `scto_catalog()` works even if no datasets or no forms.
 * Clarified requirements for `scto_write()`.
