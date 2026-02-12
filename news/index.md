@@ -1,6 +1,14 @@
 # Changelog
 
+## rsurveycto 0.2.5
+
+- Added function
+  [`scto_get_form_responses()`](https://agency-fund.github.io/rsurveycto/reference/scto_get_form_responses.md)
+  to get form data in long format.
+
 ## rsurveycto 0.2.4
+
+CRAN release: 2025-12-22
 
 - Ensured
   [`scto_catalog()`](https://agency-fund.github.io/rsurveycto/reference/scto_meta.md)

@@ -67,6 +67,8 @@ documentation](https://agency-fund.github.io/rsurveycto/reference/index.html).
   server
 - [`scto_get_form_metadata()`](https://agency-fund.github.io/rsurveycto/reference/scto_get_form_metadata.md)
   : Fetch form metadata from a SurveyCTO server
+- [`scto_get_form_responses()`](https://agency-fund.github.io/rsurveycto/reference/scto_get_form_responses.md)
+  : Read form data from a SurveyCTO server and convert to long format
 - [`scto_meta()`](https://agency-fund.github.io/rsurveycto/reference/scto_meta.md)
   [`scto_catalog()`](https://agency-fund.github.io/rsurveycto/reference/scto_meta.md)
   : Read metadata from a SurveyCTO server

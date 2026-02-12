@@ -77,6 +77,10 @@ Otherwise a named list of `data.table`s, one for each form and dataset,
 along with a `data.table` named ".catalog" from
 [`scto_catalog()`](https://agency-fund.github.io/rsurveycto/reference/scto_meta.md).
 
+## See also
+
+[`scto_get_form_responses()`](https://agency-fund.github.io/rsurveycto/reference/scto_get_form_responses.md)
+
 ## Examples
 
 ``` r
