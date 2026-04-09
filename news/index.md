@@ -1,6 +1,14 @@
 # Changelog
 
+## rsurveycto 0.2.6
+
+- Fixed bug in
+  [`scto_get_form_responses()`](https://agency-fund.github.io/rsurveycto/reference/scto_get_form_responses.md)
+  when the same choices are used by multiple fields.
+
 ## rsurveycto 0.2.5
+
+CRAN release: 2026-02-12
 
 - Added function
   [`scto_get_form_responses()`](https://agency-fund.github.io/rsurveycto/reference/scto_get_form_responses.md)
