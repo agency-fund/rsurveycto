@@ -8,7 +8,7 @@
 
 ## Changes from current CRAN release
 
-* Added function `scto_get_form_responses()` to get form data in long format.
+* Fixed bug in `scto_get_form_responses()` when the same choices are used by multiple fields.
 
 ## Additional information
 
