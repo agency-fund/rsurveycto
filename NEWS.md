@@ -1,3 +1,6 @@
+# rsurveycto 0.2.6
+* Fixed bug in `scto_get_form_responses()` when the same choices are used by multiple fields.
+
 # rsurveycto 0.2.5
 * Added function `scto_get_form_responses()` to get form data in long format.
 

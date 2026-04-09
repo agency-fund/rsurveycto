@@ -68,7 +68,8 @@ scto_get_form_responses = \(
 
   fields_choices = merge(
     fields[field_type %in% c('select_one', 'select_multiple')],
-    choices, by = c('_form_version', 'list_name'), sort = FALSE)
+    choices, by = c('_form_version', 'list_name'), sort = FALSE,
+    allow.cartesian = TRUE)
 
   fields_choices[, submission_field_name := fifelse(
     field_type == 'select_one', field_name,
